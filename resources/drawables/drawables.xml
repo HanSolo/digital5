@@ -1,0 +1,18 @@
+<drawables>
+    <bitmap id="LauncherIcon" filename="launcher_icon.png" />
+    <bitmap id="alarm"        filename="alarm.png" />
+    <bitmap id="alert"        filename="alert.png" />
+    <bitmap id="battery"      filename="battery.png" />
+    <bitmap id="ble"          filename="ble.png" />
+    <bitmap id="bpm"          filename="bpm.png" />
+    <bitmap id="bpm1"         filename="bpm1.png" />
+    <bitmap id="bpm2"         filename="bpm2.png" />
+    <bitmap id="bpm3"         filename="bpm3.png" />
+    <bitmap id="bpm4"         filename="bpm4.png" />
+    <bitmap id="bpm5"         filename="bpm5.png" />
+    <bitmap id="bpmMaxRed"    filename="bpmMaxRed.png" />
+    <bitmap id="bpmMaxBlack"  filename="bpmMaxBlack.png" />
+    <bitmap id="burned"       filename="burned.png" />
+    <bitmap id="mail"         filename="mail.png" />    
+    <bitmap id="steps"        filename="steps.png" />
+</drawables>

@@ -1,0 +1,100 @@
+<strings>
+
+    <string id="AppName">Digital</string>
+
+    <string id="Gender">Sexe</string>
+    <string id="Female">Femme</string>
+    <string id="Male">Homme</string>    
+
+	<string id="Weight">Poids [kg]</string>
+	
+	<string id="Height">Taille [cm]</string>
+	
+	<string id="Age">Âge</string>
+	
+	<string id="BpmZones">Voir les zones BPM</string>
+		
+	<string id="Sun">DI </string>
+	<string id="Mon">LU </string>
+	<string id="Tue">MA </string>
+	<string id="Wed">ME </string>
+	<string id="Thu">JE </string>
+	<string id="Fri">VE </string>
+	<string id="Sat">SA </string>
+		
+	<string id="LcdBackground">Afficher l'arrière-plan LCD</string>
+	
+	<string id="DST">Heure d'été</string>
+	
+	<string id="ShowHomeTimezone">Afficher le fuseau horaire Domicile</string>
+	
+	<string id="HomeTimezoneOffset">Fuseau horaire Domicile</string>
+	
+	<string id="UTC_M_1200">UTC-12:00</string>
+	<string id="UTC_M_1100">UTC-11:00</string>
+	<string id="UTC_M_1000">UTC-10:00</string>
+	<string id="UTC_M_0930">UTC-09:30</string>
+	<string id="UTC_M_0900">UTC-09:00</string>
+	<string id="UTC_M_0800">UTC-08:00</string>
+	<string id="UTC_M_0700">UTC-07:00</string>
+	<string id="UTC_M_0600">UTC-06:00</string>
+	<string id="UTC_M_0500">UTC-05:00</string>
+	<string id="UTC_M_0400">UTC-04:00</string>
+	<string id="UTC_M_0330">UTC-03:30</string>
+	<string id="UTC_M_0300">UTC-03:00</string>
+	<string id="UTC_M_0200">UTC-02:00</string>
+	<string id="UTC_M_0100">UTC-01:00</string>
+	<string id="UTC_M_0000">UTC-00:00</string>
+	<string id="UTC_P_0000">UTC+00:00</string>
+	<string id="UTC_P_0100">UTC+01:00</string>
+	<string id="UTC_P_0200">UTC+02:00</string>
+	<string id="UTC_P_0300">UTC+03:00</string>
+	<string id="UTC_P_0330">UTC+03:30</string>
+	<string id="UTC_P_0400">UTC+04:00</string>
+	<string id="UTC_P_0430">UTC+04:30</string>
+	<string id="UTC_P_0500">UTC+05:00</string>
+	<string id="UTC_P_0530">UTC+05:30</string>
+	<string id="UTC_P_0545">UTC+05:45</string>
+	<string id="UTC_P_0600">UTC+06:00</string>
+	<string id="UTC_P_0630">UTC+06:30</string>
+	<string id="UTC_P_0700">UTC+07:00</string>
+	<string id="UTC_P_0800">UTC+08:00</string>
+	<string id="UTC_P_0830">UTC+08:30</string>
+	<string id="UTC_P_0845">UTC+08:45</string>
+	<string id="UTC_P_0900">UTC+09:00</string>
+	<string id="UTC_P_0930">UTC+09:30</string>
+	<string id="UTC_P_1000">UTC+10:00</string>
+	<string id="UTC_P_1030">UTC+10:30</string>
+	<string id="UTC_P_1100">UTC+11:00</string>
+	<string id="UTC_P_1200">UTC+12:00</string>
+	<string id="UTC_P_1245">UTC+12:45</string>
+	<string id="UTC_P_1300">UTC+13:00</string>
+	<string id="UTC_P_1400">UTC+14:00</string>
+	
+	<string id="DistanceUnit">Unité de distance</string>
+	<string id="Kilometer">Kilomètre</string>
+	<string id="Miles">Miles</string>
+	
+	<string id="DateFormat">Format de date</string>
+	<string id="DayMonth">jour.mois</string>
+	<string id="MonthDay">mois/jour</string>
+		
+	<string id="ShowMoveBar">Afficher MoveBar</string>
+
+	<string id="ShowChargePercentage">Afficher la charge en %</string>
+	<string id="ShowPercentageUnder20">Afficher % seulement en dessous de 20%</string>
+
+	<string id="ShowActiveKcalOnly">Afficher uniquement les calories actives</string>
+	
+	<string id="ShowLeadingZero">Afficher les zéros de tête</string>
+	
+	<string id="LcdFont">Police LCD</string>
+	
+	<string id="ShowStepBar">Afficher la barre Pas</string>
+	
+	<string id="ShowCalorieBar">Afficher la barre Calories</string>
+	
+	<string id="ColorizeStepText">Coloriser le texte Pas</string>
+	
+	<string id="ColorizeCalorieText">Coloriser le texte Calories</string>
+</strings>

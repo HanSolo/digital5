@@ -1,0 +1,32 @@
+<resources>
+    <string id="AppName">Digital5</string>
+
+    <bitmap id="LauncherIcon" filename="drawables/launcher_icon.png" />
+    <bitmap id="alarm"        filename="drawables/alarm.png" />
+    <bitmap id="alert"        filename="drawables/alert.png" />
+    <bitmap id="battery"      filename="drawables/battery.png" />
+    <bitmap id="ble"          filename="drawables/ble.png" />
+    <bitmap id="bpm"          filename="drawables/bpm.png" />
+    <bitmap id="bpm1"  		  filename="drawables/bpm1.png" />
+    <bitmap id="bpm2"  		  filename="drawables/bpm2.png" />
+    <bitmap id="bpm3"  		  filename="drawables/bpm3.png" />
+    <bitmap id="bpm4"  		  filename="drawables/bpm4.png" />
+    <bitmap id="bpm5"  		  filename="drawables/bpm5.png" />
+    <bitmap id="bpmMaxRed"    filename="drawables/bpmMaxRed.png" />
+    <bitmap id="bpmMaxBlack"  filename="drawables/bpmMaxBlack.png" />
+    <bitmap id="burned" 	  filename="drawables/burned.png" />
+    <bitmap id="mail"    	  filename="drawables/mail.png" />
+    <bitmap id="steps"    	  filename="drawables/steps.png" />
+
+    <fonts>
+        <font id="digitalUpright66" filename="fonts/DigitalUprightThick_66.fnt" filter="0123456789: "/>
+        <font id="digitalUpright26" filename="fonts/DigitalUprightThick_26.fnt" filter="ADEFHIJLMORSTUVW0123456789.:/ "/>
+        <font id="digitalUpright24" filename="fonts/DigitalUprightThick_24.fnt" filter="0123456789. "/>
+        <font id="digitalUpright16" filename="fonts/DigitalUprightThick_16.fnt" filter="aikmp0123456789"/>        
+        <font id="droidSansMono12"  filename="fonts/DroidSansMono_12.fnt"       filter="0123456789% "/>
+                
+        <font id="analog60" filename="fonts/RobotoCondensed_60.fnt" filter="0123456789: "/>
+        <font id="analog22" filename="fonts/RobotoCondensed_22.fnt" filter="ADEFHIJLMORSTUVW0123456789.:/ "/>        
+        <font id="analog14" filename="fonts/RobotoCondensed_14.fnt" filter="aikmp0123456789"/>
+    </fonts>
+</resources>

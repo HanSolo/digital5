@@ -1,0 +1,42 @@
+<properties>
+
+    <property id="Gender" type="number">1</property>
+    <property id="Weight" type="number">79</property>
+    <property id="Height" type="number">189</property>
+    <property id="Age"    type="number">46</property>
+    
+    <property id="LcdBackground" type="boolean">false</property>
+    
+    <property id="BpmZones" type="boolean">true</property>
+    
+    <property id="DST" type="boolean">true</property>
+    
+    <property id="ShowHomeTimezone" type="boolean">false</property>
+    
+    <property id="HomeTimezoneOffset" type="number">3600</property>
+    
+    <property id="DistanceUnit" type="number">0</property>
+    
+    <property id="DateFormat" type="number">0</property>
+    
+    <property id="ShowMoveBar" type="boolean">true</property>
+    
+    <property id="ShowChargePercentage" type="boolean">true</property>
+    <property id="ShowPercentageUnder20" type="boolean">false</property>
+    
+    <property id="ShowActiveKcalOnly" type="boolean">false</property>
+    
+    <property id="ShowLeadingZero" type="boolean">true</property>
+    
+    <property id="LcdFont" type="boolean">true</property>
+    
+    <property id="ShowDeltaSteps" type="boolean">false</property>
+    
+    <property id="ShowStepBar" type="boolean">true</property>
+    
+    <property id="ShowCalorieBar" type="boolean">true</property>
+    
+    <property id="ColorizeStepText" type="boolean">false</property>
+    
+    <property id="ColorizeCalorieText" type="boolean">false</property>
+</properties>
