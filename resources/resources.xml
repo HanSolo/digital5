@@ -19,7 +19,7 @@
     <bitmap id="steps"    	  filename="drawables/steps.png" />
 
     <fonts>
-        <font id="digitalUpright66" filename="fonts/DigitalUprightThick_66.fnt" filter="0123456789: "/>
+        <font id="digitalUpright72" filename="fonts/DigitalUprightThick_72.fnt" filter="0123456789: "/>
         <font id="digitalUpright26" filename="fonts/DigitalUprightThick_26.fnt" filter="ADEFHIJLMORSTUVW0123456789.:/ "/>
         <font id="digitalUpright24" filename="fonts/DigitalUprightThick_24.fnt" filter="0123456789. "/>
         <font id="digitalUpright16" filename="fonts/DigitalUprightThick_16.fnt" filter="aikmp0123456789"/>        

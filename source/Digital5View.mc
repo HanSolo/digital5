@@ -35,7 +35,7 @@ enum { WOMAN, MEN }
 
     // Load your resources here
     function onLayout(dc) {
-        timeFont           = Ui.loadResource(Rez.Fonts.digitalUpright66);
+        timeFont           = Ui.loadResource(Rez.Fonts.digitalUpright72);
         dateFont           = Ui.loadResource(Rez.Fonts.digitalUpright26);
         valueFont          = Ui.loadResource(Rez.Fonts.digitalUpright24);
         distanceFont       = Ui.loadResource(Rez.Fonts.digitalUpright16);
@@ -208,7 +208,7 @@ enum { WOMAN, MEN }
         dc.fillRectangle(119, 151, 3, 60);
         
         // Notification
-        if (notificationCount > 0) { dc.drawBitmap(58, 4, mailIcon); }    
+        if (notificationCount > 0) { dc.drawBitmap(62, 34, mailIcon); }    
            
         // Battery
         dc.drawBitmap(106, 34, batteryIcon);
@@ -388,19 +388,19 @@ enum { WOMAN, MEN }
         if (lcdBackgroundVisible && lcdFont) {
             dc.setColor(Gfx.COLOR_DK_GRAY, Gfx.COLOR_TRANSPARENT);
             if (showLeadingZero) {
-                dc.drawText(centerX, 55, timeFont, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
+                dc.drawText(centerX, 51, timeFont, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
             } else {
                 if (is24Hour) {
                     if (clockTime.hour < 10) {
-                        dc.drawText(centerX, 55, timeFont, "8:88", Gfx.TEXT_JUSTIFY_CENTER);
+                        dc.drawText(centerX, 51, timeFont, "8:88", Gfx.TEXT_JUSTIFY_CENTER);
                     } else {
-                        dc.drawText(centerX, 55, timeFont, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
+                        dc.drawText(centerX, 51, timeFont, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
                     }
                 } else {
                     if (clockTime.hour < 10 || clockTime.hour > 12) {
-                        dc.drawText(centerX, 55, timeFont, "8:88", Gfx.TEXT_JUSTIFY_CENTER);
+                        dc.drawText(centerX, 51, timeFont, "8:88", Gfx.TEXT_JUSTIFY_CENTER);
                     } else {
-                        dc.drawText(centerX, 55, timeFont, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
+                        dc.drawText(centerX, 51, timeFont, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
                     }
                 }
             }            
@@ -408,7 +408,7 @@ enum { WOMAN, MEN }
         dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
         if (is24Hour) {
             if (lcdFont) {
-                dc.drawText(centerX, 55, timeFont, Lang.format("$1$:$2$", [clockTime.hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
+                dc.drawText(centerX, 51, timeFont, Lang.format("$1$:$2$", [clockTime.hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
             } else {
                 dc.drawText(centerX, 44, timeFontAnalog, Lang.format("$1$:$2$", [clockTime.hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
             }
@@ -427,7 +427,7 @@ enum { WOMAN, MEN }
                 amPm = "pm";
             }         
             if (lcdFont) {   
-                dc.drawText(centerX, 55, timeFont, Lang.format("$1$:$2$", [hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
+                dc.drawText(centerX, 51, timeFont, Lang.format("$1$:$2$", [hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
                 dc.drawText(195, 95, distanceFont, amPm, Gfx.TEXT_JUSTIFY_LEFT);
             } else {
                 dc.drawText(centerX, 44, timeFontAnalog, Lang.format("$1$:$2$", [hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
