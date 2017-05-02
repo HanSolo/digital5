@@ -413,7 +413,7 @@ enum { WOMAN, MEN }
                 dc.drawText(centerX, 44, timeFontAnalog, Lang.format("$1$:$2$", [clockTime.hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
             }
             if (showSeconds) {
-                dc.drawText(195, (lcdFont ? (95) : (92)), lcdFont ? distanceFont : distanceFontAnalog, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
+                dc.drawText(199, (lcdFont ? (97) : (92)), lcdFont ? distanceFont : distanceFontAnalog, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
             }
         } else {
             var hour = clockTime.hour;
@@ -428,13 +428,13 @@ enum { WOMAN, MEN }
             }         
             if (lcdFont) {   
                 dc.drawText(centerX, 51, timeFont, Lang.format("$1$:$2$", [hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
-                dc.drawText(195, 95, distanceFont, amPm, Gfx.TEXT_JUSTIFY_LEFT);
+                dc.drawText(199, 97, distanceFont, amPm, Gfx.TEXT_JUSTIFY_LEFT);
             } else {
                 dc.drawText(centerX, 44, timeFontAnalog, Lang.format("$1$:$2$", [hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
-                dc.drawText(195, 92, distanceFontAnalog, amPm, Gfx.TEXT_JUSTIFY_LEFT);
+                dc.drawText(199, 92, distanceFontAnalog, amPm, Gfx.TEXT_JUSTIFY_LEFT);
             }
             if (showSeconds) {
-                dc.drawText(195, (lcdFont ? (75) : (72)), lcdFont ? distanceFont : distanceFontAnalog, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
+                dc.drawText(199, (lcdFont ? (75) : (72)), lcdFont ? distanceFont : distanceFontAnalog, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
             }
         }        
     
