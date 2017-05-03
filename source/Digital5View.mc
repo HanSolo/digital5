@@ -147,7 +147,7 @@ enum { WOMAN, MEN }
         // Mifflin-St.Jeor Formula (1990)
         var baseKcalMen   = (9.99 * userWeight) + (6.25 * userHeight) - (4.92 * userAge) + 5;               // base kcal men
         var baseKcalWoman = (9.99 * userWeight) + (6.25 * userHeight) - (4.92 * userAge) - 161.0;           // base kcal woman        
-        var baseKcal      = (gender == MEN ? baseKcalMen : baseKcalWoman) * 1.20802630921224;               // base kcal related to gender incl. correction factor for fenix 5x
+        var baseKcal      = (gender == MEN ? baseKcalMen : baseKcalWoman) * 1.20858335897263;               // base kcal related to gender incl. correction factor for fenix 5x
         var kcalPerMinute = baseKcal / 1440;                                                                // base kcal per minute
         var activeKcal    = (kcal - (kcalPerMinute * (clockTime.hour * 60.0 + clockTime.min))).toNumber();  // active kcal
         var kcalReached   = kcal / baseKcal;
