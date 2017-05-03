@@ -82,7 +82,6 @@ enum { WOMAN, MEN }
         // General
         var width                 = dc.getWidth();
         var height                = dc.getHeight();
-        //var isFenix3Hr            = Sys.getDeviceSettings().screenShape == Sys.SCREEN_SHAPE_ROUND && width == 218 && height == 218;
         var centerX               = width * 0.5;
         var centerY               = height * 0.5;
         var clockTime             = Sys.getClockTime();
@@ -95,6 +94,9 @@ enum { WOMAN, MEN }
         var hr                    = hrIter.next();
         var steps                 = actinfo.steps;
         var stepGoal              = actinfo.stepGoal;
+        var actMinutes            = actinfo.activeMinutesDay.total;
+        var activeHours           = (actMinutes / 60.0).toNumber();
+        var activeMinutes         = (actMinutes % 60).toNumber();
         var deltaSteps            = stepGoal - steps;
         var stepsReached          = steps.toDouble() / stepGoal;        
         var kcal                  = actinfo.calories;        
@@ -147,7 +149,7 @@ enum { WOMAN, MEN }
         // Mifflin-St.Jeor Formula (1990)
         var baseKcalMen   = (9.99 * userWeight) + (6.25 * userHeight) - (4.92 * userAge) + 5;               // base kcal men
         var baseKcalWoman = (9.99 * userWeight) + (6.25 * userHeight) - (4.92 * userAge) - 161.0;           // base kcal woman        
-        var baseKcal      = (gender == MEN ? baseKcalMen : baseKcalWoman) * 1.20858335897263;               // base kcal related to gender incl. correction factor for fenix 5x
+        var baseKcal      = (gender == MEN ? baseKcalMen : baseKcalWoman) * 1.20895617865909;               // base kcal related to gender incl. correction factor for fenix 5x
         var kcalPerMinute = baseKcal / 1440;                                                                // base kcal per minute
         var activeKcal    = (kcal - (kcalPerMinute * (clockTime.hour * 60.0 + clockTime.min))).toNumber();  // active kcal
         var kcalReached   = kcal / baseKcal;
@@ -308,11 +310,9 @@ enum { WOMAN, MEN }
         // Bottom field
         dc.setColor(Gfx.COLOR_BLACK, Gfx.COLOR_TRANSPARENT);        
         if (lcdFont) {
-            dc.drawText(138, 215, valueFont, "", Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawText(148, 221, distanceFont, "", Gfx.TEXT_JUSTIFY_RIGHT); // Unit
+            dc.drawText(centerX, 214, valueFont, Lang.format("$1$:$2$", [activeHours.format(showLeadingZero ? "%02d" : "%01d"), activeMinutes.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
         } else {
-            dc.drawText(138, 210, valueFontAnalog, "", Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawText(148, 221, distanceFontAnalog, "", Gfx.TEXT_JUSTIFY_RIGHT); // Unit
+            dc.drawText(centerX, 221, distanceFontAnalog, Lang.format("$1$:$2$", [activeHours.format(showLeadingZero ? "%02d" : "%01d"), activeMinutes.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
         }
                                 
         // Step Bar background
@@ -480,13 +480,9 @@ enum { WOMAN, MEN }
         }
     }
     
-    function floor(x) {
-        if(x > 0) { return x.toNumber(); }
-        return (x - 0.9999999999999999).toNumber();
-    }
     
     function daysOfMonth(month) { 
-        return 28 + (month + floor(month / 8)) % 2 + 2 % month + 2 * floor(1 / month); 
+        return 28 + (month + Math.floor(month / 8)) % 2 + 2 % month + 2 * Math.floor(1 / month); 
     }
 
     // Called when this View is removed from the screen. Save the
