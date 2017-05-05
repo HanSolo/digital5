@@ -21,6 +21,7 @@ enum { WOMAN, MEN }
     const BRIGHT_BLUE  = 0x0055ff;
     const BRIGHT_GREEN = 0x55ff00;
     const DARK_RED     = 0xaa0000;
+    const BRIGHT_RED   = 0xff0055;
     const DARK_ORANGE  = 0xff5500;
     const ORANGE       = 0xffaa00;
     const YELLOW_GREEN = 0xaaff00;
@@ -250,7 +251,7 @@ enum { WOMAN, MEN }
         dc.drawBitmap(21, 157, stepsIcon);
         if (showDeltaSteps) {
             if (deltaSteps > 0) {
-                dc.setColor(Gfx.COLOR_DK_RED, Gfx.COLOR_TRANSPARENT);
+                dc.setColor(BRIGHT_RED, Gfx.COLOR_TRANSPARENT);
             } else {
                 dc.setColor(Gfx.COLOR_BLACK, Gfx.COLOR_TRANSPARENT);
             }
