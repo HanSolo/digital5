@@ -18,7 +18,7 @@ var showSeconds;
 
 class Digital5View extends Ui.WatchFace {
 enum { WOMAN, MEN }
-    const BRIGHT_BLUE  = 0x00aaff;
+    const BRIGHT_BLUE  = 0x0055ff;
     const BRIGHT_GREEN = 0x55ff00;
     const DARK_RED     = 0xaa0000;
     const DARK_ORANGE  = 0xff5500;
@@ -356,7 +356,7 @@ enum { WOMAN, MEN }
             } else if (kcalReached > 2.0) {
                 dc.setColor(Gfx.COLOR_GREEN, Gfx.COLOR_TRANSPARENT);
             } else if (kcalReached > 1.0) {
-                dc.setColor(Gfx.COLOR_DK_BLUE, Gfx.COLOR_TRANSPARENT);
+                dc.setColor(BRIGHT_BLUE, Gfx.COLOR_TRANSPARENT);
             } else {
                 dc.setColor(Gfx.COLOR_DK_GRAY, Gfx.COLOR_TRANSPARENT);
             }
