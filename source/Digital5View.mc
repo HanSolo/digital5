@@ -4,6 +4,7 @@ using Toybox.System as Sys;
 using Toybox.Lang as Lang;
 using Toybox.Math as Math;
 using Toybox.ActivityMonitor as Act;
+//using Toybox.SensorHistory as Sensor;
 using Toybox.Attention as Att;
 using Toybox.Time as Time;
 using Toybox.Time.Gregorian as Greg;
@@ -17,7 +18,14 @@ var showSeconds;
 
 class Digital5View extends Ui.WatchFace {
 enum { WOMAN, MEN }
-    const STEP_COLORS  = [ Gfx.COLOR_DK_RED, Gfx.COLOR_RED, Gfx.COLOR_ORANGE, Gfx.COLOR_ORANGE, Gfx.COLOR_YELLOW, Gfx.COLOR_YELLOW, Gfx.COLOR_DK_GREEN, Gfx.COLOR_DK_GREEN, Gfx.COLOR_GREEN, Gfx.COLOR_GREEN ];
+    const BRIGHT_BLUE  = 0x00aaff;
+    const BRIGHT_GREEN = 0x55ff00;
+    const DARK_RED     = 0xaa0000;
+    const DARK_ORANGE  = 0xff5500;
+    const ORANGE       = 0xffaa00;
+    const YELLOW_GREEN = 0xaaff00;
+    
+    const STEP_COLORS  = [ DARK_RED, Gfx.COLOR_RED, DARK_ORANGE, ORANGE, Gfx.COLOR_YELLOW, Gfx.COLOR_YELLOW, YELLOW_GREEN, YELLOW_GREEN, Gfx.COLOR_GREEN, BRIGHT_GREEN ];
     const LEVEL_COLORS = [ Gfx.COLOR_GREEN, Gfx.COLOR_DK_GREEN, Gfx.COLOR_YELLOW, Gfx.COLOR_ORANGE, Gfx.COLOR_RED ];
     var weekdays       = new [7];
     var timeFont, dateFont, valueFont, distanceFont, sunFont;
@@ -78,7 +86,7 @@ enum { WOMAN, MEN }
         View.onUpdate(dc);
                 
         var bpmZoneIcons          = [ bpm1Icon, bpm2Icon, bpm3Icon, bpm4Icon, bpm5Icon ];
-
+ 
         // General
         var width                 = dc.getWidth();
         var height                = dc.getHeight();
@@ -90,8 +98,12 @@ enum { WOMAN, MEN }
         var actinfo               = Act.getInfo();
         var systemStats           = Sys.getSystemStats();
         var is24Hour              = Sys.getDeviceSettings().is24Hour;
-        var hrIter                = Act.getHeartRateHistory(null, true);
-        var hr                    = hrIter.next();
+        var hrHistory             = Act.getHeartRateHistory(null, true);
+        var hr                    = hrHistory.next();
+        //var altHistory            = Sensor.getElevationHistory(null, true);
+        //var altitude              = altHistory.next();
+        //var pressureHistory       = Sensor.getPressureHistory(null, true);
+        //var pressure              = pressureHistory.next();
         var steps                 = actinfo.steps;
         var stepGoal              = actinfo.stepGoal;
         var actMinutes            = actinfo.activeMinutesDay.total;
@@ -128,7 +140,8 @@ enum { WOMAN, MEN }
         var showCalorieBar        = Application.getApp().getProperty("ShowCalorieBar");
         var colorizeStepText      = Application.getApp().getProperty("ColorizeStepText");
         var colorizeCalorieText   = Application.getApp().getProperty("ColorizeCalorieText");
-        
+        //System.println("Altitude: " + altitude == null ? "-" : altitude.data);
+        //System.println("Pressure: " + pressure == null ? "-" : pressure.data);
         var gender;
         var userWeight;
         var userHeight;
@@ -264,7 +277,7 @@ enum { WOMAN, MEN }
             } else if (kcalReached > 2.0) {
                 dc.setColor(Gfx.COLOR_GREEN, Gfx.COLOR_TRANSPARENT);
             } else if (kcalReached > 1.0) {
-                dc.setColor(Gfx.COLOR_DK_BLUE, Gfx.COLOR_TRANSPARENT);
+                dc.setColor(BRIGHT_BLUE, Gfx.COLOR_TRANSPARENT);
             } else {
                 dc.setColor(Gfx.COLOR_BLACK, Gfx.COLOR_TRANSPARENT);
             }
@@ -363,7 +376,7 @@ enum { WOMAN, MEN }
                 dc.setColor(Gfx.COLOR_GREEN, Gfx.COLOR_TRANSPARENT);
                 kcalReached -= 1.0;
             } else {
-                dc.setColor(Gfx.COLOR_DK_BLUE, Gfx.COLOR_TRANSPARENT);
+                dc.setColor(BRIGHT_BLUE, Gfx.COLOR_TRANSPARENT);
             }
             var stopAngleRight = (-10.0 + 59.0 * kcalReached).toNumber();
             stopAngleRight = stopAngleRight > 59.0 ? 59.0 : stopAngleRight;
