@@ -11,22 +11,21 @@ using Toybox.Time.Gregorian as Greg;
 using Toybox.Application as App;
 using Toybox.UserProfile as UserProfile;
 using Toybox.Ant as Ant;
-using Toybox.Timer as Timer;
 
 var timer;
 var showSeconds;
 
 class Digital5View extends Ui.WatchFace {
 enum { WOMAN, MEN }
+    const DARK_RED     = 0x550000;
     const BRIGHT_BLUE  = 0x0055ff;
     const BRIGHT_GREEN = 0x55ff00;
-    const DARK_RED     = 0xaa0000;
     const BRIGHT_RED   = 0xff0055;
-    const DARK_ORANGE  = 0xff5500;
-    const ORANGE       = 0xffaa00;
+    const YELLOW       = 0xffff00;
     const YELLOW_GREEN = 0xaaff00;
+    const GREEN_YELLOW = 0x55ff55;
     
-    const STEP_COLORS  = [ DARK_RED, Gfx.COLOR_RED, DARK_ORANGE, ORANGE, Gfx.COLOR_YELLOW, Gfx.COLOR_YELLOW, YELLOW_GREEN, YELLOW_GREEN, Gfx.COLOR_GREEN, BRIGHT_GREEN ];
+    const STEP_COLORS  = [ DARK_RED, Gfx.COLOR_DK_RED, Gfx.COLOR_RED, Gfx.COLOR_ORANGE, Gfx.COLOR_YELLOW, YELLOW, YELLOW_GREEN, GREEN_YELLOW, BRIGHT_GREEN, Gfx.COLOR_GREEN ];
     const LEVEL_COLORS = [ Gfx.COLOR_GREEN, Gfx.COLOR_DK_GREEN, Gfx.COLOR_YELLOW, Gfx.COLOR_ORANGE, Gfx.COLOR_RED ];
     var weekdays       = new [7];
     var timeFont, dateFont, valueFont, distanceFont, sunFont;
@@ -227,7 +226,7 @@ enum { WOMAN, MEN }
            
         // Battery
         dc.drawBitmap(106, 34, batteryIcon);
-        dc.setColor(charge < 20 ? Gfx.COLOR_RED : Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
+        dc.setColor(charge < 20 ? BRIGHT_RED : Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
         dc.fillRectangle(108, 36 , 24.0 * charge / 100.0, 7);        
         if (showChargePercentage) {
             if (showPercentageUnder20) {
@@ -505,20 +504,13 @@ enum { WOMAN, MEN }
     function onHide() {
     }
 
-    // Will be called by timer
-    function callback() {
-        Ui.requestUpdate();
-    }
-
     //! The user has just looked at their watch. Timers and animations may be started here.
     function onExitSleep() {        
         showSeconds = true;
-        timer.start(method(:callback), 1000, true);
     }
 
     //! Terminate any active timers and prepare for slow updates.
     function onEnterSleep() {        
-        timer.stop();
         showSeconds = false;
         Ui.requestUpdate();
     }
