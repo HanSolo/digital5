@@ -17,17 +17,18 @@ var showSeconds;
 
 class Digital5View extends Ui.WatchFace {
 enum { WOMAN, MEN }
-    const DARK_RED     = 0x550000;
-    const BRIGHT_BLUE  = 0x0055ff;
-    const BRIGHT_GREEN = 0x55ff00;
-    const BRIGHT_RED   = 0xff0055;
-    const YELLOW       = 0xffff00;
-    const YELLOW_GREEN = 0xaaff00;
-    const GREEN_YELLOW = 0x55ff55;
+    const DARK_RED      = 0x550000;
+    const BRIGHT_BLUE   = 0x0055ff;
+    const BRIGHT_GREEN  = 0x55ff00;
+    const BRIGHT_RED    = 0xff0055;
+    const YELLOW        = 0xffff00;
+    const YELLOW_GREEN  = 0xaaff00;
+    const GREEN_YELLOW  = 0x55ff55;
     
-    const STEP_COLORS  = [ DARK_RED, Gfx.COLOR_DK_RED, Gfx.COLOR_RED, Gfx.COLOR_ORANGE, Gfx.COLOR_YELLOW, YELLOW, YELLOW_GREEN, GREEN_YELLOW, BRIGHT_GREEN, Gfx.COLOR_GREEN ];
-    const LEVEL_COLORS = [ Gfx.COLOR_GREEN, Gfx.COLOR_DK_GREEN, Gfx.COLOR_YELLOW, Gfx.COLOR_ORANGE, Gfx.COLOR_RED ];
-    var weekdays       = new [7];
+    const STEP_COLORS   = [ DARK_RED, Gfx.COLOR_DK_RED, Gfx.COLOR_RED, Gfx.COLOR_ORANGE, Gfx.COLOR_YELLOW, YELLOW, YELLOW_GREEN, GREEN_YELLOW, BRIGHT_GREEN, Gfx.COLOR_GREEN ];
+    const LEVEL_COLORS  = [ Gfx.COLOR_GREEN, Gfx.COLOR_DK_GREEN, Gfx.COLOR_YELLOW, Gfx.COLOR_ORANGE, Gfx.COLOR_RED ];
+    const DAY_COUNT     = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+    var weekdays        = new [7];
     var timeFont, dateFont, valueFont, distanceFont, sunFont;
     var timeFontAnalog, valueFontAnalog, distanceFontAnalog;    
     var chargeFont;
@@ -131,6 +132,7 @@ enum { WOMAN, MEN }
         var distanceUnit          = Application.getApp().getProperty("DistanceUnit"); // 0 -> Kilometer, 1 -> Miles
         var distance              = distanceUnit == 0 ? actinfo.distance * 0.00001 : actinfo.distance * 0.00001 * 0.621371;        
         var dateFormat            = Application.getApp().getProperty("DateFormat") == 0 ? "$1$.$2$" : "$2$/$1$";
+        var showCalendarWeek      = Application.getApp().getProperty("ShowCalendarWeek");
         var showMoveBar           = Application.getApp().getProperty("ShowMoveBar");
         var showLeadingZero       = Application.getApp().getProperty("ShowLeadingZero");
         var lcdFont               = Application.getApp().getProperty("LcdFont");
@@ -140,6 +142,7 @@ enum { WOMAN, MEN }
         var showCalorieBar        = Application.getApp().getProperty("ShowCalorieBar");
         var colorizeStepText      = Application.getApp().getProperty("ColorizeStepText");
         var colorizeCalorieText   = Application.getApp().getProperty("ColorizeCalorieText");
+        var weekOfYear            = getWeekOfYear(nowinfo);
         //System.println("Altitude: " + altitude == null ? "-" : altitude.data);
         //System.println("Pressure: " + pressure == null ? "-" : pressure.data);
         var gender;
@@ -448,7 +451,13 @@ enum { WOMAN, MEN }
             if (showSeconds) {
                 dc.drawText(199, (lcdFont ? (75) : (72)), lcdFont ? distanceFont : distanceFontAnalog, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
             }
-        }        
+        }     
+        
+        // Calendar week
+        if (showCalendarWeek) {
+            dc.drawText(45, (lcdFont ? (77) : (72)), lcdFont ? distanceFont : distanceFontAnalog, ("KW"), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(45, (lcdFont ? (97) : (92)), lcdFont ? distanceFont : distanceFontAnalog, (weekOfYear), Gfx.TEXT_JUSTIFY_RIGHT);
+        }
     
         // Date and home timezone
         dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
@@ -513,5 +522,15 @@ enum { WOMAN, MEN }
     function onEnterSleep() {        
         showSeconds = false;
         Ui.requestUpdate();
+    }
+    
+    function getWeekOfYear(nowinfo) {
+        var isLeapYear = nowinfo.year % 4 == 0;
+        var mn         = nowinfo.month;
+        var dn         = nowinfo.day;
+        var dayOfYear  = DAY_COUNT[mn - 1] + dn;
+        if (mn > 1 && isLeapYear) { dayOfYear++; }       
+        var kw = Math.floor((dayOfYear - nowinfo.day_of_week + 10) / 7.0);
+        return kw.toNumber();
     }
 }

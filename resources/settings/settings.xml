@@ -93,6 +93,10 @@
         </settingConfig>
     </setting>
     
+    <setting propertyKey="@Properties.ShowCalendarWeek" title="@Strings.ShowCalendarWeek">
+        <settingConfig type="boolean" />
+    </setting>
+    
     <setting propertyKey="@Properties.ShowMoveBar" title="@Strings.ShowMoveBar">
         <settingConfig type="boolean" />
     </setting>

@@ -19,6 +19,8 @@
     
     <property id="DateFormat" type="number">0</property>
     
+    <property id="ShowCalendarWeek" type="boolean">false</property>
+    
     <property id="ShowMoveBar" type="boolean">true</property>
     
     <property id="ShowChargePercentage" type="boolean">true</property>

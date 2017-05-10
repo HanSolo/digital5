@@ -79,6 +79,8 @@
 	<string id="DayMonth">Tag.Monat</string>
 	<string id="MonthDay">Monat/Tag</string>
 	
+	<string id="ShowCalendarWeek">Kalenderwoche anzeigen</string>
+	
 	<string id="ShowMoveBar">MoveBar anzeigen</string>
 	
 	<string id="ShowChargePercentage">Batterieladung in % anzeigen</string>

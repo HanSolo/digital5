@@ -78,6 +78,8 @@
 	<string id="DateFormat">Format de date</string>
 	<string id="DayMonth">jour.mois</string>
 	<string id="MonthDay">mois/jour</string>
+	
+	<string id="ShowCalendarWeek">Afficher Semaine</string>
 		
 	<string id="ShowMoveBar">Afficher MoveBar</string>
 

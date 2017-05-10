@@ -79,6 +79,8 @@
 	<string id="DayMonth">Day.Month</string>
 	<string id="MonthDay">Month/Day</string>
 	
+	<string id="ShowCalendarWeek">Show Calendar Week</string>
+	
 	<string id="ShowMoveBar">Show MoveBar</string>
 	
 	<string id="ShowChargePercentage">Show charge in %</string>
