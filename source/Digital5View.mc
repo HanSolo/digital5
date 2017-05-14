@@ -525,12 +525,27 @@ enum { WOMAN, MEN }
     }
     
     function getWeekOfYear(nowinfo) {
-        var isLeapYear = nowinfo.year % 4 == 0;
-        var mn         = nowinfo.month;
-        var dn         = nowinfo.day;
-        var dayOfYear  = DAY_COUNT[mn - 1] + dn;
-        if (mn > 1 && isLeapYear) { dayOfYear++; }       
-        var kw = Math.floor((dayOfYear - nowinfo.day_of_week + 10) / 7.0);
+        var year          = nowinfo.year;
+        var isLeapYear    = year % 4 == 0;
+        var month         = nowinfo.month;
+        var day           = nowinfo.day;
+        var dayOfYear     = DAY_COUNT[month - 1] + day;
+        var dayOfWeek     = nowinfo.day_of_week - 1;
+        if (month > 0 && isLeapYear) { dayOfYear++; }
+        if (0 == dayOfWeek) { dayOfWeek = 7; }        
+        var kw            = 1 + 4 * (month - 1) + ( 2 * (month - 1) + day - 1 - dayOfWeek + 6 ) * 36 / 256;      
+        var dayOfWeek0101 = getDayOfWeek(year, 1, 1);
         return kw.toNumber();
+    }
+    
+    function getDayOfWeek(year, month, day) {
+        var dayOfYear  = DAY_COUNT[month - 1] + day;
+        var year_ordinal = dayOfYear;
+        var a = (year - 1901) % 28;
+        var b = Math.floor(a / 4);
+        var week_ordinal = (2 + a + b) % 7 + 1;
+        var dow = ((year_ordinal - 1) + (week_ordinal - 1)) % 7 + 1 - 1;
+        if (0 == dow) { dow = 7; }        
+        return dow;
     }
 }
