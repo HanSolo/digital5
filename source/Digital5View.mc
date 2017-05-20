@@ -142,7 +142,6 @@ enum { WOMAN, MEN }
         var showCalorieBar        = Application.getApp().getProperty("ShowCalorieBar");
         var colorizeStepText      = Application.getApp().getProperty("ColorizeStepText");
         var colorizeCalorieText   = Application.getApp().getProperty("ColorizeCalorieText");
-        var weekOfYear            = getWeekOfYear(nowinfo);
         //System.println("Altitude: " + altitude == null ? "-" : altitude.data);
         //System.println("Pressure: " + pressure == null ? "-" : pressure.data);
         var gender;
@@ -267,9 +266,10 @@ enum { WOMAN, MEN }
             }
         }
         if (lcdFont) {
-            dc.drawText(115, 154, valueFont, (showDeltaSteps ? deltaSteps.abs() : steps), Gfx.TEXT_JUSTIFY_RIGHT);
+            //dc.drawText(115, 154, valueFont, (showDeltaSteps ? deltaSteps.abs() : steps), Gfx.TEXT_JUSTIFY_RIGHT);            
+            dc.drawText(115, 154, valueFont, (showDeltaSteps ? deltaSteps * -1 : steps), Gfx.TEXT_JUSTIFY_RIGHT);
         } else {
-            dc.drawText(115, 149, valueFontAnalog, (showDeltaSteps ? deltaSteps.abs() : steps), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(115, 149, valueFontAnalog, (showDeltaSteps ? deltaSteps * -1 : steps), Gfx.TEXT_JUSTIFY_RIGHT);
         }
             
         // KCal
@@ -456,7 +456,7 @@ enum { WOMAN, MEN }
         // Calendar week
         if (showCalendarWeek) {
             dc.drawText(45, (lcdFont ? (77) : (72)), lcdFont ? distanceFont : distanceFontAnalog, ("KW"), Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawText(45, (lcdFont ? (97) : (92)), lcdFont ? distanceFont : distanceFontAnalog, (weekOfYear), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(45, (lcdFont ? (97) : (92)), lcdFont ? distanceFont : distanceFontAnalog, (getWeekOfYear(nowinfo)), Gfx.TEXT_JUSTIFY_RIGHT);
         }
     
         // Date and home timezone
