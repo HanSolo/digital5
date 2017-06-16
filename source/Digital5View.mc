@@ -87,8 +87,10 @@ class Digital5View extends Ui.WatchFace {
     }
 
     // Update the view
-    function onUpdate(dc) {        
+    function onUpdate(dc) {
         View.onUpdate(dc);
+ 
+        dc.clearClip();
  
         is24Hour                  = Sys.getDeviceSettings().is24Hour;
         secondsAlwaysOn           = Application.getApp().getProperty("SecondsAlwaysOn");
@@ -456,7 +458,7 @@ class Digital5View extends Ui.WatchFace {
             } else {
                 dc.drawText(centerX, 44, analogFont60, Lang.format("$1$:$2$", [clockTime.hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
             }
-            if (showSeconds || secondsAlwaysOn) {
+            if (showSeconds) {
                 drawSeconds(dc);
             }
         } else {
@@ -530,14 +532,16 @@ class Digital5View extends Ui.WatchFace {
                 dc.drawText(centerX, dateYPosition, analogFont22, Lang.format(weekdays[dayOfWeek -1] + dateFormat, [nowinfo.day.format(showLeadingZero ? "%02d" : "%01d"), nowinfo.month.format(showLeadingZero ? "%02d" : "%01d")]), Gfx.TEXT_JUSTIFY_CENTER);
             }
         }
+        
+        onPartialUpdate(dc);
     }
     
     function drawSeconds(dc) {
         clockTime = Sys.getClockTime();
         dc.setColor(Gfx.COLOR_BLACK, Gfx.COLOR_TRANSPARENT);
         if (is24Hour) {
-            dc.fillRectangle(199, 96, 18, 15);
-            dc.setClip(199, 96, 18, 15);
+            dc.fillRectangle(199, 96, 18, 15);                    // clear the background behind the seconds
+            dc.setClip(199, 96, 18, 15);                          // set the clip
             dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
             dc.drawText(199, (lcdFont ? (97) : (92)), lcdFont ? digitalUpright16 : analogFont14, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
         } else {
@@ -546,7 +550,7 @@ class Digital5View extends Ui.WatchFace {
             dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
             dc.drawText(199, (lcdFont ? (75) : (72)), lcdFont ? digitalUpright16 : analogFont14, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
         }
-        dc.clearClip();
+        //dc.clearClip(); // does not work here, instead clear clip at the beginning on onUpdate()
     }
     
     function daysOfMonth(month) { 
@@ -559,15 +563,15 @@ class Digital5View extends Ui.WatchFace {
     function onHide() {
     }
 
-    //! The user has just looked at their watch. Timers and animations may be started here.
-    function onExitSleep() {        
-        showSeconds = true;
-    }
-
     //! Terminate any active timers and prepare for slow updates.
     function onEnterSleep() {        
         showSeconds = false;
         Ui.requestUpdate();
+    }
+    
+    //! The user has just looked at their watch. Timers and animations may be started here.
+    function onExitSleep() {        
+        showSeconds = true;
     }
     
     //! Called every second
