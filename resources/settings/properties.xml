@@ -1,9 +1,9 @@
 <properties>
 
     <property id="Gender" type="number">1</property>
-    <property id="Weight" type="number">79</property>
+    <property id="Weight" type="number">80</property>
     <property id="Height" type="number">189</property>
-    <property id="Age"    type="number">46</property>
+    <property id="Age"    type="number">47</property>
     
     <property id="LcdBackground" type="boolean">false</property>
     
@@ -41,4 +41,9 @@
     <property id="ColorizeStepText" type="boolean">false</property>
     
     <property id="ColorizeCalorieText" type="boolean">false</property>
+    
+    <property id="SecondsAlwaysOn" type="boolean">false</property>
+    
+    <property id="BottomField" type="number">2</property>
+    
 </properties>

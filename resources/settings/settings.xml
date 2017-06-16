@@ -140,4 +140,16 @@
     <setting propertyKey="@Properties.ColorizeCalorieText" title="@Strings.ColorizeCalorieText">
     	<settingConfig type="boolean" />
     </setting>
+    
+    <setting propertyKey="@Properties.SecondsAlwaysOn" title="@Strings.SecondsAlwaysOn">
+    	<settingConfig type="boolean" />
+    </setting>
+    
+    <setting propertyKey="@Properties.BottomField" title="@Strings.BottomField">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.Altitude</listEntry>
+            <listEntry value="1">@Strings.Pressure</listEntry>
+            <listEntry value="2">@Strings.ActiveTime</listEntry>            
+        </settingConfig>
+    </setting>
 </settings>

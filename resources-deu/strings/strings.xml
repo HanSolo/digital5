@@ -101,4 +101,11 @@
 	<string id="ColorizeStepText">Farbiger Steps Text</string>
 	
 	<string id="ColorizeCalorieText">Farbiger Kalorien Text</string>
+	
+	<string id="SecondsAlwaysOn">Immer Sekunden anzeigen</string>
+	
+	<string id="BottomField">Unterstes Feld</string>
+	<string id="Altitude">Höhe</string>
+    <string id="Pressure">Luftdruck</string>
+    <string id="ActiveTime">Aktive Zeit</string>
 </strings>

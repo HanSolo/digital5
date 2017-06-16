@@ -1,6 +1,6 @@
 <strings>
 
-    <string id="AppName">Digital5</string>
+	<string id="AppName">Digital5</string>
 
     <string id="Gender">Gender</string>
     <string id="Female">Female</string>
@@ -101,4 +101,11 @@
 	<string id="ColorizeStepText">Colorize Steps text</string>
 	
 	<string id="ColorizeCalorieText">Colorize Calories text</string>
+	
+	<string id="SecondsAlwaysOn">Seconds always on</string>
+	
+	<string id="BottomField">Bottom Field</string>
+	<string id="Altitude">Altitude</string>
+    <string id="Pressure">Pressure</string>
+    <string id="ActiveTime">Active time</string>
 </strings>

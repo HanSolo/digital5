@@ -1,6 +1,6 @@
 <strings>
 
-    <string id="AppName">Digital</string>
+    <string id="AppName">Digital5</string>
 
     <string id="Gender">Sexe</string>
     <string id="Female">Femme</string>
@@ -92,6 +92,8 @@
 	
 	<string id="LcdFont">Police LCD</string>
 	
+	<string id="ShowDeltaSteps">Afficher la différence á la destination du jour (étapes)</string>
+	
 	<string id="ShowStepBar">Afficher la barre Pas</string>
 	
 	<string id="ShowCalorieBar">Afficher la barre Calories</string>
@@ -99,4 +101,11 @@
 	<string id="ColorizeStepText">Coloriser le texte Pas</string>
 	
 	<string id="ColorizeCalorieText">Coloriser le texte Calories</string>
+	
+	<string id="SecondsAlwaysOn">Toujours montrer secondes</string>
+	
+	<string id="BottomField">Panneau inférieur</string>
+	<string id="Altitude">Altitude</string>
+    <string id="Pressure">Pression atmosphérique</string>
+    <string id="ActiveTime">Temps actif</string>
 </strings>
