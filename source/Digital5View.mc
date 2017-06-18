@@ -55,7 +55,7 @@ class Digital5View extends Ui.WatchFace {
         digitalUpright16   = Ui.loadResource(Rez.Fonts.digitalUpright16);
         analogFont60       = Ui.loadResource(Rez.Fonts.analog60);        
         analogFont22       = Ui.loadResource(Rez.Fonts.analog22);
-        analogFont14       = Ui.loadResource(Rez.Fonts.analog14);        
+        analogFont14       = Ui.loadResource(Rez.Fonts.analog14);
         alarmIcon          = Ui.loadResource(Rez.Drawables.alarm);
         alertIcon          = Ui.loadResource(Rez.Drawables.alert);
         batteryIcon        = Ui.loadResource(Rez.Drawables.battery);
@@ -344,7 +344,7 @@ class Digital5View extends Ui.WatchFace {
             if (null != pressure) {
                 bottomFieldText       = (pressure.data.toDouble() / 100.0).toNumber().format("%0.0f");
                 bottomFieldUnitText   = "mb";
-                bottomFieldUnitSpacer = 8;
+                bottomFieldUnitSpacer = 10;
             }
         } else {
             var actMinutes        = actinfo.activeMinutesDay.total;
