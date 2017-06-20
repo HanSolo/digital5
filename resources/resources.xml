@@ -17,6 +17,7 @@
     <bitmap id="burned" 	  filename="drawables/burned.png" />
     <bitmap id="mail"    	  filename="drawables/mail.png" />
     <bitmap id="steps"    	  filename="drawables/steps.png" />
+    <bitmap id="dnd"    	  filename="drawables/dnd.png" />
 
     <fonts>
         <font id="digitalUpright72" filename="fonts/DigitalUprightThick_72.fnt" filter="0123456789: "/>

@@ -37,7 +37,7 @@ class Digital5View extends Ui.WatchFace {
     var digitalUpright72, digitalUpright26, digitalUpright24, digitalUpright20, digitalUpright16;
     var analogFont60, analogFont22, analogFont14;    
     var bpm1Icon, bpm2Icon, bpm3Icon, bpm4Icon, bpm5Icon, bpmMaxRedIcon, bpmMaxBlackIcon;
-    var alarmIcon, alertIcon, batteryIcon, bleIcon, bpmIcon, burnedIcon, mailIcon, stepsIcon;    
+    var alarmIcon, alertIcon, batteryIcon, bleIcon, bpmIcon, burnedIcon, mailIcon, stepsIcon, dndIcon;    
     var heartRate;    
       
     function initialize() {
@@ -70,7 +70,8 @@ class Digital5View extends Ui.WatchFace {
         bpmMaxBlackIcon    = Ui.loadResource(Rez.Drawables.bpmMaxBlack);
         burnedIcon         = Ui.loadResource(Rez.Drawables.burned);
         mailIcon           = Ui.loadResource(Rez.Drawables.mail);
-        stepsIcon          = Ui.loadResource(Rez.Drawables.steps);        
+        stepsIcon          = Ui.loadResource(Rez.Drawables.steps);
+        dndIcon            = Ui.loadResource(Rez.Drawables.dnd);        
         weekdays[0]        = Ui.loadResource(Rez.Strings.Sun);
         weekdays[1]        = Ui.loadResource(Rez.Strings.Mon);
         weekdays[2]        = Ui.loadResource(Rez.Strings.Tue);
@@ -228,7 +229,10 @@ class Digital5View extends Ui.WatchFace {
         dc.fillRectangle(119, 151, 3, 60);
 
         // Notification
-        if (notificationCount > 0) { dc.drawBitmap(62, 34, mailIcon); }    
+        if (notificationCount > 0) { dc.drawBitmap(58, 34, mailIcon); }    
+           
+        // Do not disturb
+        if (System.getDeviceSettings().doNotDisturb) { dc.drawBitmap(85, 33, dndIcon); }
            
         // Battery
         dc.drawBitmap(106, 34, batteryIcon);
@@ -578,12 +582,7 @@ class Digital5View extends Ui.WatchFace {
     function onPartialUpdate(dc) {
         if (secondsAlwaysOn) { drawSeconds(dc); }
     }
-    
-    //! Called when power budget of devices was exceeded in onPartialUpdate()
-    function onPowerBudgetExceeded(powerInfo) {
-        showSeconds = false;
-    }
-    
+
     function getWeekOfYear(nowinfo) {
         var year          = nowinfo.year;
         var isLeapYear    = year % 4 == 0;
@@ -607,5 +606,11 @@ class Digital5View extends Ui.WatchFace {
         var dow = ((year_ordinal - 1) + (week_ordinal - 1)) % 7 + 1 - 1;
         if (0 == dow) { dow = 7; }        
         return dow;
+    }
+}
+
+class Digital5Delegate extends Ui.WatchFaceDelegate {
+    function onPowerBudgetExceeded(powerInfo) {
+        showSeconds = false;        
     }
 }
