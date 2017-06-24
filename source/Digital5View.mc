@@ -483,10 +483,6 @@ class Digital5View extends Ui.WatchFace {
                 dc.drawText(centerX, 44, analogFont60, Lang.format("$1$:$2$", [hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
                 dc.drawText(199, 92, analogFont14, amPm, Gfx.TEXT_JUSTIFY_LEFT);
             }
-            
-            if (showSeconds || secondsAlwaysOn) {
-                drawSeconds(dc);
-            }
         }     
         
         // Calendar week
@@ -535,6 +531,10 @@ class Digital5View extends Ui.WatchFace {
             } else {
                 dc.drawText(centerX, dateYPosition, analogFont22, Lang.format(weekdays[dayOfWeek -1] + dateFormat, [nowinfo.day.format(showLeadingZero ? "%02d" : "%01d"), nowinfo.month.format(showLeadingZero ? "%02d" : "%01d")]), Gfx.TEXT_JUSTIFY_CENTER);
             }
+        }
+        
+        if (showSeconds || secondsAlwaysOn) {
+            drawSeconds(dc);
         }
         
         onPartialUpdate(dc);
