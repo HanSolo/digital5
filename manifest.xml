@@ -2,6 +2,7 @@
     <iq:application entry="Digital5App" id="3236983B2D294343A23560587DD07015" launcherIcon="@Drawables.LauncherIcon" minSdkVersion="2.1.0" name="@Strings.AppName" type="watchface">
         <iq:products>
             <iq:product id="fenix5x"/>
+            <iq:product id="fenix5"/>
         </iq:products>
         <iq:permissions>
             <iq:uses-permission id="SensorHistory"/>
