@@ -21,7 +21,7 @@ var clockTime;
 
 class Digital5View extends Ui.WatchFace {
     enum { WOMAN, MEN }
-    enum { ALTITUDE, PRESSURE, ACTIVE_TIME }
+    enum { ALTITUDE, PRESSURE, ACTIVE_TIME, FLOORS }
     const DARK_RED      = 0x550000;
     const BRIGHT_BLUE   = 0x0055ff;
     const BRIGHT_GREEN  = 0x55ff00;
@@ -112,10 +112,12 @@ class Digital5View extends Ui.WatchFace {
         var hrHistory             = Act.getHeartRateHistory(null, true);
         var hr                    = hrHistory.next();
         var steps                 = actinfo.steps;
-        var stepGoal              = actinfo.stepGoal;        
+        var stepGoal              = actinfo.stepGoal;
         var deltaSteps            = stepGoal - steps;
-        var stepsReached          = steps.toDouble() / stepGoal;        
-        var kcal                  = actinfo.calories;        
+        var stepsReached          = steps.toDouble() / stepGoal;
+        var kcal                  = actinfo.calories;
+        var floorsClimbed         = actinfo.floorsClimbed;
+        var floorsDescended       = actinfo.floorsDescended;
         var showActiveKcalOnly    = Application.getApp().getProperty("ShowActiveKcalOnly");
         var bpm                   = (hr.heartRate != Act.INVALID_HR_SAMPLE && hr.heartRate > 0) ? hr.heartRate : 0;        
         var charge                = systemStats.battery;
@@ -148,7 +150,6 @@ class Digital5View extends Ui.WatchFace {
         var bottomFieldText       = "";
         var bottomFieldUnitText   = "";
         var bottomFieldUnitSpacer = 0;
-
         var gender;
         var userWeight;
         var userHeight;
@@ -350,6 +351,10 @@ class Digital5View extends Ui.WatchFace {
                 bottomFieldUnitText   = "mb";
                 bottomFieldUnitSpacer = 10;
             }
+        } else if (bottomField == FLOORS) {            
+            bottomFieldText       = "+" + floorsClimbed.toString() + "/-" + floorsDescended.toString();
+            bottomFieldUnitText   = "";
+            bottomFieldUnitSpacer = 0;
         } else {
             var actMinutes        = actinfo.activeMinutesDay.total;
             var activeHours       = (actMinutes / 60.0).toNumber();

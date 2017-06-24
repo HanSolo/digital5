@@ -107,6 +107,7 @@
 	<string id="BottomField">Bottom Field</string>
 	<string id="Altitude">Altitude</string>
     <string id="Pressure">Pressure</string>
-    <string id="ActiveTime">Active time</string>    
+    <string id="ActiveTime">Active time</string>
+    <string id="Floors">Floors up/down</string>    
 	
 </strings>

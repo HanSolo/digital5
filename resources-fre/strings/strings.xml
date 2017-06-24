@@ -108,4 +108,5 @@
 	<string id="Altitude">Altitude</string>
     <string id="Pressure">Pression atmosphérique</string>
     <string id="ActiveTime">Temps actif</string>
+    <string id="Floors">L'étage haut/en bas</string>
 </strings>

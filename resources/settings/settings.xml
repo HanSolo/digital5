@@ -149,7 +149,8 @@
         <settingConfig type="list">
             <listEntry value="0">@Strings.Altitude</listEntry>
             <listEntry value="1">@Strings.Pressure</listEntry>
-            <listEntry value="2">@Strings.ActiveTime</listEntry>            
+            <listEntry value="2">@Strings.ActiveTime</listEntry>
+            <listEntry value="3">@Strings.Floors</listEntry>
         </settingConfig>
     </setting>
 </settings>

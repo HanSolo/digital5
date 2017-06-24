@@ -108,4 +108,5 @@
 	<string id="Altitude">Höhe</string>
     <string id="Pressure">Luftdruck</string>
     <string id="ActiveTime">Aktive Zeit</string>
+    <string id="Floors">Stockwerke rauf/runter</string>
 </strings>
