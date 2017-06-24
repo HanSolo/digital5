@@ -38,7 +38,9 @@ class Digital5View extends Ui.WatchFace {
     var analogFont60, analogFont22, analogFont14;    
     var bpm1Icon, bpm2Icon, bpm3Icon, bpm4Icon, bpm5Icon, bpmMaxRedIcon, bpmMaxBlackIcon;
     var alarmIcon, alertIcon, batteryIcon, bleIcon, bpmIcon, burnedIcon, mailIcon, stepsIcon, dndIcon;    
-    var heartRate;    
+    var heartRate;
+    var width;
+    var height;
       
     function initialize() {
         timer       = new Timer.Timer();
@@ -97,12 +99,12 @@ class Digital5View extends Ui.WatchFace {
         secondsAlwaysOn           = Application.getApp().getProperty("SecondsAlwaysOn");
         lcdFont                   = Application.getApp().getProperty("LcdFont");
         clockTime                 = Sys.getClockTime();
+        width                     = dc.getWidth();
+        height                    = dc.getHeight();
         
         var bpmZoneIcons          = [ bpm1Icon, bpm2Icon, bpm3Icon, bpm4Icon, bpm5Icon ];
  
         // General
-        var width                 = dc.getWidth();
-        var height                = dc.getHeight();
         var centerX               = width * 0.5;
         var centerY               = height * 0.5;        
         var midnightInfo          = Greg.info(Time.today(), Time.FORMAT_SHORT);
@@ -199,45 +201,45 @@ class Digital5View extends Ui.WatchFace {
         // Draw Background
         dc.setPenWidth(1);     
         dc.setColor(Gfx.COLOR_BLACK, Gfx.COLOR_TRANSPARENT);
-        dc.fillRectangle(0, 0, width, 151);
+        dc.fillRectangle(0, 0, width, height * 0.62916667);
         
         dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);    
-        dc.fillRectangle(0, 151, width, 89);
-            
+        dc.fillRectangle(0, height * 0.62916667, width, height * 0.37083333);
+        
         dc.setColor(Gfx.COLOR_DK_GRAY, Gfx.COLOR_TRANSPARENT);
-        dc.drawLine(0, 151, width, 151);
+        dc.drawLine(0, height * 0.62916667, width, height * 0.62916667);        
         dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);
-        dc.drawLine(0, 152, width, 152);
+        dc.drawLine(0, height * 0.63333333, width, height * 0.63333333);
 
         dc.setColor(Gfx.COLOR_BLACK, Gfx.COLOR_TRANSPARENT);
-        dc.fillRectangle(0, 179, width, 3);
+        dc.fillRectangle(0, height * 0.74583333, width, height * 0.0125);
         
         dc.setColor(Gfx.COLOR_DK_GRAY, Gfx.COLOR_TRANSPARENT);
-        dc.drawLine(0, 182, width, 182);
+        dc.drawLine(0, height * 0.75833333, width, height * 0.75833333);        
         dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);
-        dc.drawLine(0, 183, width, 183);
-        
+        dc.drawLine(0, height * 0.7625, width, height * 0.7625);
+                
         dc.setColor(Gfx.COLOR_BLACK, Gfx.COLOR_TRANSPARENT);
-        dc.fillRectangle(0, 210, width, 3);
+        dc.fillRectangle(0, height * 0.875, width, height * 0.0125);
         
         dc.setColor(Gfx.COLOR_DK_GRAY, Gfx.COLOR_TRANSPARENT);
-        dc.drawLine(0, 213, width, 213);
+        dc.drawLine(0, height * 0.8875, width, height * 0.8875);        
         dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);
-        dc.drawLine(0, 214, width, 214);
+        dc.drawLine(0, height * 0.89166667, width, height * 0.89166667);        
         
         dc.setColor(Gfx.COLOR_BLACK, Gfx.COLOR_TRANSPARENT);
-        dc.fillRectangle(119, 151, 3, 60);
+        dc.fillRectangle(width * 0.49583333, height * 0.62916667, width * 0.0125, height * 0.25); 
 
         // Notification
-        if (notificationCount > 0) { dc.drawBitmap(58, 34, mailIcon); }    
+        if (notificationCount > 0) { dc.drawBitmap(width * 0.24166667, height * 0.14166667, mailIcon); }
            
         // Do not disturb
-        if (System.getDeviceSettings().doNotDisturb) { dc.drawBitmap(85, 33, dndIcon); }
+        if (System.getDeviceSettings().doNotDisturb) { dc.drawBitmap(width * 0.35416667, height * 0.1375, dndIcon); }
            
         // Battery
-        dc.drawBitmap(106, 34, batteryIcon);
+        dc.drawBitmap(width * 0.44166667, height * 0.14166667, batteryIcon);
         dc.setColor(charge < 20 ? BRIGHT_RED : Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
-        dc.fillRectangle(108, 36 , 24.0 * charge / 100.0, 7);        
+        dc.fillRectangle(width * 0.45, height * 0.15, width * 0.1 * charge / 100.0, height * 0.02916667);        
         if (showChargePercentage) {
             if (showPercentageUnder20) {
                 if (charge.toNumber() <= 20) {
@@ -246,20 +248,20 @@ class Digital5View extends Ui.WatchFace {
             } else {
                 dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
             }
-            dc.drawText(130, 15, digitalUpright16, charge.toNumber(), Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawLine(131, 28, 137, 18);
-            dc.drawRectangle(131, 19, 3, 3);
-            dc.drawRectangle(134, 26, 3, 3);            
+            dc.drawText(width * 0.54166667, height * 0.0625, digitalUpright16, charge.toNumber(), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawLine(width * 0.54583333, height * 0.11666667, width * 0.57083333, height * 0.075);
+            dc.drawRectangle(width * 0.54583333, height * 0.07916667, width * 0.0125, height * 0.0125);
+            dc.drawRectangle(width * 0.55833333, height * 0.10833333, width * 0.0125, height * 0.0125);
         }
         
         // BLE
-        if (connected) { dc.drawBitmap(150, 32, bleIcon); }
+        if (connected) { dc.drawBitmap(width * 0.625, height * 0.13333333, bleIcon); }
         
         // Alarm
-        if (alarmCount > 0) { dc.drawBitmap(169, 33, alarmIcon); }
+        if (alarmCount > 0) { dc.drawBitmap(width * 0.70416667, height * 0.1375, alarmIcon); }
        
         // Steps
-        dc.drawBitmap(21, 157, stepsIcon);
+        dc.drawBitmap(width * 0.0875, height * 0.65416667, stepsIcon);
         if (showDeltaSteps) {
             if (deltaSteps > 0) {
                 dc.setColor(BRIGHT_RED, Gfx.COLOR_TRANSPARENT);
@@ -276,14 +278,14 @@ class Digital5View extends Ui.WatchFace {
             }
         }
         if (lcdFont) {
-            //dc.drawText(115, 154, digitalUpright24, (showDeltaSteps ? deltaSteps.abs() : steps), Gfx.TEXT_JUSTIFY_RIGHT);            
-            dc.drawText(115, 154, digitalUpright24, (showDeltaSteps ? deltaSteps * -1 : steps), Gfx.TEXT_JUSTIFY_RIGHT);
+            //dc.drawText(115, 154, digitalUpright24, (showDeltaSteps ? deltaSteps.abs() : steps), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(width * 0.47916667, height * 0.64166667, digitalUpright24, (showDeltaSteps ? deltaSteps * -1 : steps), Gfx.TEXT_JUSTIFY_RIGHT);
         } else {
-            dc.drawText(115, 149, analogFont22, (showDeltaSteps ? deltaSteps * -1 : steps), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(width * 0.47916667, height * 0.62083333, analogFont22, (showDeltaSteps ? deltaSteps * -1 : steps), Gfx.TEXT_JUSTIFY_RIGHT);
         }
             
         // KCal
-        dc.drawBitmap(206, 157, burnedIcon);
+        dc.drawBitmap(width * 0.85833333, height * 0.65416667, burnedIcon);
         if (colorizeCalorieText) {
             if (kcalReached > 3.0) {
                 dc.setColor(Gfx.COLOR_PINK, Gfx.COLOR_TRANSPARENT);
@@ -299,38 +301,38 @@ class Digital5View extends Ui.WatchFace {
         }
         if (showActiveKcalOnly) {            
             if (lcdFont) {
-                dc.drawText(202, 154, digitalUpright24, activeKcal < 0 ? 0 : activeKcal.toString(), Gfx.TEXT_JUSTIFY_RIGHT);
+                dc.drawText(width * 0.84166667, height * 0.64166667, digitalUpright24, activeKcal < 0 ? 0 : activeKcal.toString(), Gfx.TEXT_JUSTIFY_RIGHT);
             } else {
-                dc.drawText(202, 149, analogFont22, activeKcal < 0 ? 0 : activeKcal.toString(), Gfx.TEXT_JUSTIFY_RIGHT);
+                dc.drawText(width * 0.84166667, height * 0.62083333, analogFont22, activeKcal < 0 ? 0 : activeKcal.toString(), Gfx.TEXT_JUSTIFY_RIGHT);
             }
         } else {
             if (lcdFont) {
-                dc.drawText(202, 154, digitalUpright24, kcal.toString(), Gfx.TEXT_JUSTIFY_RIGHT);
+                dc.drawText(width * 0.84166667, height * 0.64166667, digitalUpright24, kcal.toString(), Gfx.TEXT_JUSTIFY_RIGHT);
             } else {
-                dc.drawText(202, 149, analogFont22, kcal.toString(), Gfx.TEXT_JUSTIFY_RIGHT);
+                dc.drawText(width * 0.84166667, height * 0.62083333, analogFont22, kcal.toString(), Gfx.TEXT_JUSTIFY_RIGHT);
             }
         }        
 
         // BPM        
         if (bpm >= maxBpm) {
-            dc.drawBitmap(43, 188, showBpmZones ? bpmMaxRedIcon : bpmMaxBlackIcon);
+            dc.drawBitmap(width * 0.17916667, height * 0.78333333, showBpmZones ? bpmMaxRedIcon : bpmMaxBlackIcon);
         } else {
-            dc.drawBitmap(43, 188, showBpmZones ? bpmZoneIcons[currentZone - 1] : bpmIcon);
+            dc.drawBitmap(width * 0.17916667, height * 0.78333333, showBpmZones ? bpmZoneIcons[currentZone - 1] : bpmIcon);
         }        
         dc.setColor(Gfx.COLOR_BLACK, Gfx.COLOR_TRANSPARENT);        
         if (lcdFont) {
-            dc.drawText(115, 185, digitalUpright24, (bpm > 0 ? bpm.toString() : ""), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(width * 0.47916667, height * 0.77083333, digitalUpright24, (bpm > 0 ? bpm.toString() : ""), Gfx.TEXT_JUSTIFY_RIGHT);
         } else {
-            dc.drawText(115, 180, analogFont22, (bpm > 0 ? bpm.toString() : ""), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(width * 0.47916667, height * 0.75, analogFont22, (bpm > 0 ? bpm.toString() : ""), Gfx.TEXT_JUSTIFY_RIGHT);
         }
 
         // Distance
         if (lcdFont) {
-            dc.drawText(175, 185, digitalUpright24, distance > 99.99 ? distance.format("%0.0f") : distance.format("%0.1f"), Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawText(195, 192, digitalUpright16, distanceUnit == 0 ? "km" : "mi", Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(width * 0.72916667, height * 0.77083333, digitalUpright24, distance > 99.99 ? distance.format("%0.0f") : distance.format("%0.1f"), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(width * 0.8125, height * 0.8, digitalUpright16, distanceUnit == 0 ? "km" : "mi", Gfx.TEXT_JUSTIFY_RIGHT);
         } else {
-            dc.drawText(175, 180, analogFont22, distance > 99.99 ? distance.format("%0.0f") : distance.format("%0.1f"), Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawText(197, 189, analogFont14, distanceUnit == 0 ? "km" : "mi", Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(width * 0.72916667, height * 0.75, analogFont22, distance > 99.99 ? distance.format("%0.0f") : distance.format("%0.1f"), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(width * 0.82083333, height * 0.7875, analogFont14, distanceUnit == 0 ? "km" : "mi", Gfx.TEXT_JUSTIFY_RIGHT);
         }
                 
         // Bottom field
@@ -348,7 +350,7 @@ class Digital5View extends Ui.WatchFace {
             if (null != pressure) {
                 bottomFieldText       = (pressure.data.toDouble() / 100.0).toNumber().format("%0.0f");
                 bottomFieldUnitText   = "mb";
-                bottomFieldUnitSpacer = 10;
+                bottomFieldUnitSpacer = width * 0.04166667;
             }
         } else {
             var actMinutes        = actinfo.activeMinutesDay.total;
@@ -360,10 +362,10 @@ class Digital5View extends Ui.WatchFace {
         }
         dc.setColor(Gfx.COLOR_BLACK, Gfx.COLOR_TRANSPARENT);        
         if (lcdFont) {
-            dc.drawText(143 - bottomFieldUnitSpacer, 215, digitalUpright20, bottomFieldText, Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawText(155, 219, digitalUpright16, bottomFieldUnitText, Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(width * 0.59583333 - bottomFieldUnitSpacer, height * 0.89583333, digitalUpright20, bottomFieldText, Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(width * 0.64583333, height * 0.9125, digitalUpright16, bottomFieldUnitText, Gfx.TEXT_JUSTIFY_RIGHT);
         } else {
-            dc.drawText(centerX, 216, analogFont14, bottomFieldText + bottomFieldUnitText, Gfx.TEXT_JUSTIFY_CENTER);            
+            dc.drawText(centerX, height * 0.9, analogFont14, bottomFieldText + bottomFieldUnitText, Gfx.TEXT_JUSTIFY_CENTER);            
         }
                                 
         // Step Bar background
@@ -372,7 +374,7 @@ class Digital5View extends Ui.WatchFace {
             dc.setColor(Gfx.COLOR_DK_GRAY, Gfx.COLOR_TRANSPARENT);
             for(var i = 0; i < 10 ; i++) {            
                 var startAngleLeft  = 130 + (i * 6);
-                dc.drawArc(centerX, centerY, 117, 0, startAngleLeft, startAngleLeft + 5);
+                dc.drawArc(centerX, centerY, width * 0.4875, 0, startAngleLeft, startAngleLeft + 5);
             }
             
             // Step Goal Bar
@@ -383,7 +385,7 @@ class Digital5View extends Ui.WatchFace {
             dc.setColor(endIndex > 0 ? STEP_COLORS[endIndex - 1] : Gfx.COLOR_TRANSPARENT, Gfx.COLOR_TRANSPARENT);
             for(var i = 0; i < endIndex ; i++) {            
                 var startAngleLeft  = 184 - (i * 6);
-                dc.drawArc(centerX, centerY, 117, 0, startAngleLeft, startAngleLeft + 5);
+                dc.drawArc(centerX, centerY, width * 0.4875, 0, startAngleLeft, startAngleLeft + 5);
             }
         }
 
@@ -400,7 +402,7 @@ class Digital5View extends Ui.WatchFace {
             }
             for(var i = 0; i < 10 ; i++) {            
                 var startAngleRight = -10 + (i * 6);         
-                dc.drawArc(centerX, centerY, 117, 0, startAngleRight, startAngleRight + 5);            
+                dc.drawArc(centerX, centerY, width * 0.4875, 0, startAngleRight, startAngleRight + 5);
             }
                     
             // KCal Goal Bar
@@ -420,17 +422,17 @@ class Digital5View extends Ui.WatchFace {
             stopAngleRight = stopAngleRight > 59.0 ? 59.0 : stopAngleRight;
             for(var i = 0; i < 10 ; i++) {
                 var startAngleRight = -10 + (i * 6);
-                if (startAngleRight < stopAngleRight) { dc.drawArc(centerX, centerY, 117, 0, startAngleRight, startAngleRight + 5); }
+                if (startAngleRight < stopAngleRight) { dc.drawArc(centerX, centerY, width * 0.4875, 0, startAngleRight, startAngleRight + 5); }
             }
         }
 
         // Move Bar
         if (showMoveBar) {
             dc.setColor(Gfx.COLOR_DK_GRAY, Gfx.COLOR_TRANSPARENT);
-            for (var i = 0 ; i < 5 ; i++) { dc.fillRectangle(54 + (i * 27), 146, 25, 4); }
+            for (var i = 0 ; i < 5 ; i++) { dc.fillRectangle(width * 0.225 + (i * 27), height * 0.60833333, width * 0.10416667, height * 0.01666667); }
             if (moveBarLevel > Act.MOVE_BAR_LEVEL_MIN) { dc.setColor(LEVEL_COLORS[moveBarLevel - 1], Gfx.COLOR_TRANSPARENT); }
-            for (var i = 0 ; i < moveBarLevel ; i++) { dc.fillRectangle(54 + (i * 27), 146, 25, 4); }
-            if (moveBarLevel == 5) { dc.drawBitmap(190, 142, alertIcon); }
+            for (var i = 0 ; i < moveBarLevel ; i++) { dc.fillRectangle(width * 0.225 + (i * 27), height * 0.60833333, width * 0.10416667, height * 0.01666667); }
+            if (moveBarLevel == 5) { dc.drawBitmap(width * 0.79166667, height * 0.59166667, alertIcon); }
         }
         
 
@@ -438,19 +440,19 @@ class Digital5View extends Ui.WatchFace {
         if (lcdBackgroundVisible && lcdFont) {
             dc.setColor(Gfx.COLOR_DK_GRAY, Gfx.COLOR_TRANSPARENT);
             if (showLeadingZero) {
-                dc.drawText(centerX, 51, digitalUpright72, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
+                dc.drawText(centerX, height * 0.2125, digitalUpright72, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
             } else {
                 if (is24Hour) {
                     if (clockTime.hour < 10) {
-                        dc.drawText(centerX, 51, digitalUpright72, "8:88", Gfx.TEXT_JUSTIFY_CENTER);
+                        dc.drawText(centerX, height * 0.2125, digitalUpright72, "8:88", Gfx.TEXT_JUSTIFY_CENTER);
                     } else {
-                        dc.drawText(centerX, 51, digitalUpright72, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
+                        dc.drawText(centerX, height * 0.2125, digitalUpright72, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
                     }
                 } else {
                     if (clockTime.hour < 10 || clockTime.hour > 12) {
-                        dc.drawText(centerX, 51, digitalUpright72, "8:88", Gfx.TEXT_JUSTIFY_CENTER);
+                        dc.drawText(centerX, height * 0.2125, digitalUpright72, "8:88", Gfx.TEXT_JUSTIFY_CENTER);
                     } else {
-                        dc.drawText(centerX, 51, digitalUpright72, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
+                        dc.drawText(centerX, height * 0.2125, digitalUpright72, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
                     }
                 }
             }            
@@ -458,9 +460,9 @@ class Digital5View extends Ui.WatchFace {
         dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
         if (is24Hour) {
             if (lcdFont) {
-                dc.drawText(centerX, 51, digitalUpright72, Lang.format("$1$:$2$", [clockTime.hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
+                dc.drawText(centerX, height * 0.2125, digitalUpright72, Lang.format("$1$:$2$", [clockTime.hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
             } else {
-                dc.drawText(centerX, 44, analogFont60, Lang.format("$1$:$2$", [clockTime.hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
+                dc.drawText(centerX, height * 0.18333333, analogFont60, Lang.format("$1$:$2$", [clockTime.hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
             }
             if (showSeconds) {
                 drawSeconds(dc);
@@ -477,28 +479,24 @@ class Digital5View extends Ui.WatchFace {
                 amPm = "pm";
             }         
             if (lcdFont) {   
-                dc.drawText(centerX, 51, digitalUpright72, Lang.format("$1$:$2$", [hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
-                dc.drawText(199, 97, digitalUpright16, amPm, Gfx.TEXT_JUSTIFY_LEFT);
+                dc.drawText(centerX, height * 0.2125, digitalUpright72, Lang.format("$1$:$2$", [hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
+                dc.drawText(width * 0.82916667, height * 0.40416667, digitalUpright16, amPm, Gfx.TEXT_JUSTIFY_LEFT);
             } else {
-                dc.drawText(centerX, 44, analogFont60, Lang.format("$1$:$2$", [hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
-                dc.drawText(199, 92, analogFont14, amPm, Gfx.TEXT_JUSTIFY_LEFT);
-            }
-            
-            if (showSeconds || secondsAlwaysOn) {
-                drawSeconds(dc);
+                dc.drawText(centerX, height * 0.18333333, analogFont60, Lang.format("$1$:$2$", [hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
+                dc.drawText(width * 0.82916667, height * 0.38333333, analogFont14, amPm, Gfx.TEXT_JUSTIFY_LEFT);
             }
         }     
         
         // Calendar week
         if (showCalendarWeek) {
-            dc.drawText(45, (lcdFont ? (77) : (72)), lcdFont ? digitalUpright16 : analogFont14, ("KW"), Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawText(45, (lcdFont ? (97) : (92)), lcdFont ? digitalUpright16 : analogFont14, (getWeekOfYear(nowinfo)), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(width * 0.1875, lcdFont ? (height * 0.3125) : (height * 0.3), lcdFont ? digitalUpright16 : analogFont14, ("KW"), Gfx.TEXT_JUSTIFY_RIGHT);            
+            dc.drawText(width * 0.1875, lcdFont ? (height * 0.40416667) : (height * 0.38333333), lcdFont ? digitalUpright16 : analogFont14, (getWeekOfYear(nowinfo)), Gfx.TEXT_JUSTIFY_RIGHT);
         }
     
         // Date and home timezone
         dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
-        var dateYPosition = showMoveBar ? 116 : 119;
-        dateYPosition = lcdFont ? dateYPosition : dateYPosition - 6;
+        var dateYPosition = showMoveBar ? (height * 0.48333333) : (height * 0.49583333);
+        dateYPosition = lcdFont ? dateYPosition : dateYPosition - (height * 0.025);
         if (onTravel && showHomeTimezone) {
             var homeDayOfWeek  = dayOfWeek - 1;
             var homeDay        = nowinfo.day;
@@ -523,11 +521,11 @@ class Digital5View extends Ui.WatchFace {
             if (homeMinute < 0) { homeMinute += 60; }
                         
             if (lcdFont) {
-                dc.drawText(38, dateYPosition, digitalUpright26, Lang.format(weekdays[homeDayOfWeek] + dateFormat, [homeDay.format(showLeadingZero ? "%02d" : "%01d"), homeMonth.format(showLeadingZero ? "%02d" : "%01d")]), Gfx.TEXT_JUSTIFY_LEFT);
-                dc.drawText(203, dateYPosition, digitalUpright26, Lang.format("$1$:$2$", [homeHour.format(showLeadingZero ? "%02d" : "%01d"), homeMinute.format("%02d")]), Gfx.TEXT_JUSTIFY_RIGHT);
+                dc.drawText(width * 0.15833333, dateYPosition, digitalUpright26, Lang.format(weekdays[homeDayOfWeek] + dateFormat, [homeDay.format(showLeadingZero ? "%02d" : "%01d"), homeMonth.format(showLeadingZero ? "%02d" : "%01d")]), Gfx.TEXT_JUSTIFY_LEFT);
+                dc.drawText(width * 0.84583333, dateYPosition, digitalUpright26, Lang.format("$1$:$2$", [homeHour.format(showLeadingZero ? "%02d" : "%01d"), homeMinute.format("%02d")]), Gfx.TEXT_JUSTIFY_RIGHT);
             } else {
-                dc.drawText(38, dateYPosition, analogFont22, Lang.format(weekdays[homeDayOfWeek] + dateFormat, [homeDay.format(showLeadingZero ? "%02d" : "%01d"), homeMonth.format(showLeadingZero ? "%02d" : "%01d")]), Gfx.TEXT_JUSTIFY_LEFT);
-                dc.drawText(203, dateYPosition, analogFont22, Lang.format("$1$:$2$", [homeHour.format(showLeadingZero ? "%02d" : "%01d"), homeMinute.format("%02d")]), Gfx.TEXT_JUSTIFY_RIGHT);
+                dc.drawText(width * 0.15833333, dateYPosition, analogFont22, Lang.format(weekdays[homeDayOfWeek] + dateFormat, [homeDay.format(showLeadingZero ? "%02d" : "%01d"), homeMonth.format(showLeadingZero ? "%02d" : "%01d")]), Gfx.TEXT_JUSTIFY_LEFT);
+                dc.drawText(width * 0.84583333, dateYPosition, analogFont22, Lang.format("$1$:$2$", [homeHour.format(showLeadingZero ? "%02d" : "%01d"), homeMinute.format("%02d")]), Gfx.TEXT_JUSTIFY_RIGHT);
             }   
         } else {
             if (lcdFont) {
@@ -537,6 +535,10 @@ class Digital5View extends Ui.WatchFace {
             }
         }
         
+        if (showSeconds || secondsAlwaysOn) {
+            drawSeconds(dc);
+        }
+        
         onPartialUpdate(dc);
     }
     
@@ -544,15 +546,15 @@ class Digital5View extends Ui.WatchFace {
         clockTime = Sys.getClockTime();
         dc.setColor(Gfx.COLOR_BLACK, Gfx.COLOR_TRANSPARENT);
         if (is24Hour) {
-            dc.fillRectangle(199, 96, 18, 15);                    // clear the background behind the seconds
-            dc.setClip(199, 96, 18, 15);                          // set the clip
+            dc.fillRectangle(width * 0.82916667, height * 0.4, 18, 15);    // clear the background behind the seconds
+            dc.setClip(width * 0.82916667, height * 0.4, 18, 15);          // set the clip
             dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
-            dc.drawText(199, (lcdFont ? (97) : (92)), lcdFont ? digitalUpright16 : analogFont14, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
+            dc.drawText(width * 0.82916667, lcdFont ? (height * 0.40416667) : (height * 0.38333333), lcdFont ? digitalUpright16 : analogFont14, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
         } else {
-            dc.fillRectangle(199, 76, 18, 15);
-            dc.setClip(199, 76, 18, 15);
+            dc.fillRectangle(width * 0.82916667, height * 0.31666667, 18, 15);
+            dc.setClip(width * 0.82916667, height * 0.31666667, 18, 15);
             dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
-            dc.drawText(199, (lcdFont ? (75) : (72)), lcdFont ? digitalUpright16 : analogFont14, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
+            dc.drawText(width * 0.82916667, lcdFont ? (height * 0.3125) : (height * 0.3), lcdFont ? digitalUpright16 : analogFont14, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
         }
         //dc.clearClip(); // does not work here, instead clear clip at the beginning on onUpdate()
     }
