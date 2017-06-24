@@ -15,4 +15,5 @@
     <bitmap id="burned"       filename="burned.png" />
     <bitmap id="mail"         filename="mail.png" />    
     <bitmap id="steps"        filename="steps.png" />
+    <bitmap id="dnd"          filename="dnd.png" />
 </drawables>
