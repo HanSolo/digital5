@@ -365,8 +365,12 @@ class Digital5View extends Ui.WatchFace {
         }
         dc.setColor(Gfx.COLOR_BLACK, Gfx.COLOR_TRANSPARENT);        
         if (lcdFont) {
-            dc.drawText(143 - bottomFieldUnitSpacer, 215, digitalUpright20, bottomFieldText, Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawText(155, 219, digitalUpright16, bottomFieldUnitText, Gfx.TEXT_JUSTIFY_RIGHT);
+            if (bottomFieldUnitText.length() == 0) {
+                dc.drawText(centerX, 215, digitalUpright20, bottomFieldText, Gfx.TEXT_JUSTIFY_CENTER);            
+            } else {
+                dc.drawText(143 - bottomFieldUnitSpacer, 215, digitalUpright20, bottomFieldText, Gfx.TEXT_JUSTIFY_RIGHT);
+                dc.drawText(155, 219, digitalUpright16, bottomFieldUnitText, Gfx.TEXT_JUSTIFY_RIGHT);
+            }
         } else {
             dc.drawText(centerX, 216, analogFont14, bottomFieldText + bottomFieldUnitText, Gfx.TEXT_JUSTIFY_CENTER);            
         }
@@ -492,8 +496,8 @@ class Digital5View extends Ui.WatchFace {
         
         // Calendar week
         if (showCalendarWeek) {
-            dc.drawText(45, (lcdFont ? (77) : (72)), lcdFont ? digitalUpright16 : analogFont14, ("KW"), Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawText(45, (lcdFont ? (97) : (92)), lcdFont ? digitalUpright16 : analogFont14, (getWeekOfYear(nowinfo)), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(45, (lcdFont ? (75) : (72)), lcdFont ? digitalUpright16 : analogFont14, ("KW"), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(45, (lcdFont ? (97) : (92)), lcdFont ? digitalUpright16 : analogFont14, (getWeekOfYear(nowinfo)), Gfx.TEXT_JUSTIFY_RIGHT);            
         }
     
         // Date and home timezone
