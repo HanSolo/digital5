@@ -130,7 +130,7 @@ class Digital5View extends Ui.WatchFace {
         var showHomeTimezone      = Application.getApp().getProperty("ShowHomeTimezone");
         var homeTimezoneOffset    = dst ? Application.getApp().getProperty("HomeTimezoneOffset") + 3600 : Application.getApp().getProperty("HomeTimezoneOffset");
         var onTravel              = timezoneOffset != homeTimezoneOffset;        
-        var distanceUnit          = Sys.getDeviceSettings().distanceUnits; //Application.getApp().getProperty("DistanceUnit"); // 0 -> Kilometer, 1 -> Miles
+        var distanceUnit          = Sys.getDeviceSettings().distanceUnits; // 0 -> Kilometer, 1 -> Miles
         var distance              = distanceUnit == 0 ? actinfo.distance * 0.00001 : actinfo.distance * 0.00001 * 0.621371;        
         var dateFormat            = Application.getApp().getProperty("DateFormat") == 0 ? "$1$.$2$" : "$2$/$1$";
         var showCalendarWeek      = Application.getApp().getProperty("ShowCalendarWeek");
