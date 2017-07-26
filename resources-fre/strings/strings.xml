@@ -71,10 +71,6 @@
 	<string id="UTC_P_1300">UTC+13:00</string>
 	<string id="UTC_P_1400">UTC+14:00</string>
 	
-	<string id="DistanceUnit">Unité de distance</string>
-	<string id="Kilometer">Kilomètre</string>
-	<string id="Miles">Miles</string>
-	
 	<string id="DateFormat">Format de date</string>
 	<string id="DayMonth">jour.mois</string>
 	<string id="MonthDay">mois/jour</string>

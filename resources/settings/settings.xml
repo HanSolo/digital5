@@ -79,13 +79,6 @@
         </settingConfig>
     </setting>
     
-    <setting propertyKey="@Properties.DistanceUnit" title="@Strings.DistanceUnit">
-        <settingConfig type="list">
-            <listEntry value="0">@Strings.Kilometer</listEntry>
-            <listEntry value="1">@Strings.Miles</listEntry>
-        </settingConfig>
-    </setting>
-    
     <setting propertyKey="@Properties.DateFormat" title="@Strings.DateFormat">
         <settingConfig type="list">
             <listEntry value="0">@Strings.DayMonth</listEntry>

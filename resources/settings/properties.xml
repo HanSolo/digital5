@@ -15,8 +15,6 @@
     
     <property id="HomeTimezoneOffset" type="number">3600</property>
     
-    <property id="DistanceUnit" type="number">0</property>
-    
     <property id="DateFormat" type="number">0</property>
     
     <property id="ShowCalendarWeek" type="boolean">false</property>

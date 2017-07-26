@@ -12,9 +12,7 @@ using Toybox.UserProfile as UserProfile;
 using Toybox.Ant as Ant;
 using Toybox.SensorHistory as Sensor;
 
-var timer;
 var is24Hour;
-var showSeconds;
 var secondsAlwaysOn;
 var lcdFont;
 var clockTime;
@@ -41,8 +39,6 @@ class Digital5View extends Ui.WatchFace {
     var heartRate;    
       
     function initialize() {
-        timer       = new Timer.Timer();
-        showSeconds = false;
         WatchFace.initialize();
     }
 
@@ -134,7 +130,7 @@ class Digital5View extends Ui.WatchFace {
         var showHomeTimezone      = Application.getApp().getProperty("ShowHomeTimezone");
         var homeTimezoneOffset    = dst ? Application.getApp().getProperty("HomeTimezoneOffset") + 3600 : Application.getApp().getProperty("HomeTimezoneOffset");
         var onTravel              = timezoneOffset != homeTimezoneOffset;        
-        var distanceUnit          = Application.getApp().getProperty("DistanceUnit"); // 0 -> Kilometer, 1 -> Miles
+        var distanceUnit          = Sys.getDeviceSettings().distanceUnits; //Application.getApp().getProperty("DistanceUnit"); // 0 -> Kilometer, 1 -> Miles
         var distance              = distanceUnit == 0 ? actinfo.distance * 0.00001 : actinfo.distance * 0.00001 * 0.621371;        
         var dateFormat            = Application.getApp().getProperty("DateFormat") == 0 ? "$1$.$2$" : "$2$/$1$";
         var showCalendarWeek      = Application.getApp().getProperty("ShowCalendarWeek");
@@ -154,7 +150,7 @@ class Digital5View extends Ui.WatchFace {
         var userWeight;
         var userHeight;
         var userAge;
-
+        
         if (profile == null) {
             gender     = Application.getApp().getProperty("Gender");
             userWeight = Application.getApp().getProperty("Weight");
@@ -471,9 +467,6 @@ class Digital5View extends Ui.WatchFace {
             } else {
                 dc.drawText(centerX, 44, analogFont60, Lang.format("$1$:$2$", [clockTime.hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
             }
-            if (showSeconds) {
-                drawSeconds(dc);
-            }
         } else {
             var hour = clockTime.hour;
             var amPm = "am";
@@ -542,7 +535,7 @@ class Digital5View extends Ui.WatchFace {
             }
         }
         
-        if (showSeconds || secondsAlwaysOn) {
+        if (secondsAlwaysOn) {
             drawSeconds(dc);
         }
         
@@ -578,13 +571,12 @@ class Digital5View extends Ui.WatchFace {
 
     //! Terminate any active timers and prepare for slow updates.
     function onEnterSleep() {        
-        showSeconds = false;
-        Ui.requestUpdate();
+            
     }
     
     //! The user has just looked at their watch. Timers and animations may be started here.
     function onExitSleep() {        
-        showSeconds = true;
+        
     }
     
     //! Called every second
@@ -620,6 +612,6 @@ class Digital5View extends Ui.WatchFace {
 
 class Digital5Delegate extends Ui.WatchFaceDelegate {
     function onPowerBudgetExceeded(powerInfo) {
-        showSeconds = false;        
+                 
     }
 }

@@ -70,11 +70,7 @@
 	<string id="UTC_P_1245">UTC+12:45</string>
 	<string id="UTC_P_1300">UTC+13:00</string>
 	<string id="UTC_P_1400">UTC+14:00</string>
-	
-	<string id="DistanceUnit">Längeneinheit</string>
-	<string id="Kilometer">Kilometer</string>
-	<string id="Miles">Meilen</string>
-	
+		
 	<string id="DateFormat">Datumsformat</string>
 	<string id="DayMonth">Tag.Monat</string>
 	<string id="MonthDay">Monat/Tag</string>
