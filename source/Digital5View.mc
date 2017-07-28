@@ -206,7 +206,7 @@ class Digital5View extends Ui.WatchFace {
         dc.fillRectangle(0, 0, width, 151);
         
         if (darkFieldBackground) {
-            dc.setColor(Gfx.COLOR_DK_GRAY, Gfx.COLOR_TRANSPARENT);
+            dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);
             dc.fillRectangle(0, 152, width, 2);
             dc.fillRectangle(0, 180, width, 2);
             dc.fillRectangle(0, 211, width, 2);
