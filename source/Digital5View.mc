@@ -221,23 +221,23 @@ class Digital5View extends Ui.WatchFace {
             dc.drawLine(0, 152, width, 152);
     
             dc.setColor(foregroundColor, Gfx.COLOR_TRANSPARENT);
-            dc.fillRectangle(0, 179, width, 3);
+            dc.fillRectangle(0, 179, width, 2);
             
             dc.setColor(Gfx.COLOR_DK_GRAY, Gfx.COLOR_TRANSPARENT);
+            dc.drawLine(0, 181, width, 181);
+            dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);
             dc.drawLine(0, 182, width, 182);
-            dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);
-            dc.drawLine(0, 183, width, 183);
             
             dc.setColor(foregroundColor, Gfx.COLOR_TRANSPARENT);
-            dc.fillRectangle(0, 210, width, 3);
+            dc.fillRectangle(0, 210, width, 2);
             
             dc.setColor(Gfx.COLOR_DK_GRAY, Gfx.COLOR_TRANSPARENT);
-            dc.drawLine(0, 213, width, 213);
+            dc.drawLine(0, 212, width, 212);
             dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);
-            dc.drawLine(0, 214, width, 214);
+            dc.drawLine(0, 213, width, 213);
             
             dc.setColor(foregroundColor, Gfx.COLOR_TRANSPARENT);
-            dc.fillRectangle(119, 151, 3, 60);
+            dc.fillRectangle(119, 150, 2, 60);
         }
 
         // Notification
@@ -325,26 +325,26 @@ class Digital5View extends Ui.WatchFace {
 
         // BPM        
         if (bpm >= maxBpm) {
-            dc.drawBitmap(43, 188, showBpmZones ? bpmMaxRedIcon : darkFieldBackground ? bpmMaxWhiteIcon : bpmMaxBlackIcon);
+            dc.drawBitmap(43, 187, showBpmZones ? bpmMaxRedIcon : darkFieldBackground ? bpmMaxWhiteIcon : bpmMaxBlackIcon);
         } else {
-            dc.drawBitmap(43, 188, showBpmZones ? bpmZoneIcons[currentZone - 1] : darkFieldBackground ? bpmIconWhite : bpmIcon);
+            dc.drawBitmap(43, 187, showBpmZones ? bpmZoneIcons[currentZone - 1] : darkFieldBackground ? bpmIconWhite : bpmIcon);
         }        
         
         dc.setColor(foregroundColor, Gfx.COLOR_TRANSPARENT);        
         
         if (lcdFont) {
-            dc.drawText(115, 185, digitalUpright24, (bpm > 0 ? bpm.toString() : ""), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(115, 184, digitalUpright24, (bpm > 0 ? bpm.toString() : ""), Gfx.TEXT_JUSTIFY_RIGHT);
         } else {
-            dc.drawText(115, 180, analogFont22, (bpm > 0 ? bpm.toString() : ""), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(115, 179, analogFont22, (bpm > 0 ? bpm.toString() : ""), Gfx.TEXT_JUSTIFY_RIGHT);
         }
 
         // Distance
         if (lcdFont) {
-            dc.drawText(175, 185, digitalUpright24, distance > 99.99 ? distance.format("%0.0f") : distance.format("%0.1f"), Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawText(195, 192, digitalUpright16, distanceUnit == 0 ? "km" : "mi", Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(175, 184, digitalUpright24, distance > 99.99 ? distance.format("%0.0f") : distance.format("%0.1f"), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(195, 191, digitalUpright16, distanceUnit == 0 ? "km" : "mi", Gfx.TEXT_JUSTIFY_RIGHT);
         } else {
-            dc.drawText(175, 180, analogFont22, distance > 99.99 ? distance.format("%0.0f") : distance.format("%0.1f"), Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawText(197, 189, analogFont14, distanceUnit == 0 ? "km" : "mi", Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(175, 179, analogFont22, distance > 99.99 ? distance.format("%0.0f") : distance.format("%0.1f"), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(197, 188, analogFont14, distanceUnit == 0 ? "km" : "mi", Gfx.TEXT_JUSTIFY_RIGHT);
         }
                 
         // Bottom field
@@ -381,13 +381,13 @@ class Digital5View extends Ui.WatchFace {
         
         if (lcdFont) {
             if (bottomFieldUnitText.length() == 0) {
-                dc.drawText(centerX, 215, digitalUpright20, bottomFieldText, Gfx.TEXT_JUSTIFY_CENTER);            
+                dc.drawText(centerX, 213, digitalUpright20, bottomFieldText, Gfx.TEXT_JUSTIFY_CENTER);            
             } else {
-                dc.drawText(147 - bottomFieldUnitSpacer, 215, digitalUpright20, bottomFieldText, Gfx.TEXT_JUSTIFY_RIGHT);
-                dc.drawText(159, 219, digitalUpright16, bottomFieldUnitText, Gfx.TEXT_JUSTIFY_RIGHT);
+                dc.drawText(149 - bottomFieldUnitSpacer, 213, digitalUpright20, bottomFieldText, Gfx.TEXT_JUSTIFY_RIGHT);
+                dc.drawText(161, 217, digitalUpright16, bottomFieldUnitText, Gfx.TEXT_JUSTIFY_RIGHT);
             }
         } else {
-            dc.drawText(centerX, 216, analogFont14, bottomFieldText + bottomFieldUnitText, Gfx.TEXT_JUSTIFY_CENTER);            
+            dc.drawText(centerX, 214, analogFont14, bottomFieldText + bottomFieldUnitText, Gfx.TEXT_JUSTIFY_CENTER);            
         }
                                 
         // Step Bar background
