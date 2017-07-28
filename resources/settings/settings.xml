@@ -146,4 +146,8 @@
             <listEntry value="3">@Strings.Floors</listEntry>
         </settingConfig>
     </setting>
+    
+    <setting propertyKey="@Properties.DarkFieldBackground" title="@Strings.DarkFieldBackground">
+    	<settingConfig type="boolean" />
+    </setting>
 </settings>

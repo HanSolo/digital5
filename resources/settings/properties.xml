@@ -44,4 +44,6 @@
     
     <property id="BottomField" type="number">2</property>
     
+    <property id="DarkFieldBackground" type="boolean">false</property>
+    
 </properties>

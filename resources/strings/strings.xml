@@ -105,5 +105,7 @@
     <string id="Pressure">Pressure</string>
     <string id="ActiveTime">Active time</string>
     <string id="Floors">Floors up/down</string>    
+    
+    <string id="DarkFieldBackground">Dark datafield background</string>
 	
 </strings>
