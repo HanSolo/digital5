@@ -171,13 +171,13 @@ class Digital5View extends Ui.WatchFace {
         }
 
         // Mifflin-St.Jeor Formula (1990)
-        var baseKcalMen   = (9.99 * userWeight) + (6.25 * userHeight) - (4.92 * userAge) + 5;               // base kcal men
+        var baseKcalMen   = (9.99 * userWeight) + (6.25 * userHeight) - (4.92 * userAge) + 5.0;               // base kcal men
         var baseKcalWoman = (9.99 * userWeight) + (6.25 * userHeight) - (4.92 * userAge) - 161.0;           // base kcal woman        
         var baseKcal      = (gender == MEN ? baseKcalMen : baseKcalWoman) * 1.21385;                        // base kcal related to gender incl. correction factor for fenix 5x
         var kcalPerMinute = baseKcal / 1440;                                                                // base kcal per minute
         var activeKcal    = (kcal - (kcalPerMinute * (clockTime.hour * 60.0 + clockTime.min))).toNumber();  // active kcal
         var kcalReached   = kcal / baseKcal;
-
+        
         // Heart Rate Zones
         var showBpmZones  = Application.getApp().getProperty("BpmZones");        
         var maxBpm        = (211.0 - 0.64 * userAge).toNumber(); // calculated after a study at NTNU (http://www.ntnu.edu/cerg/hrmax-info)
@@ -252,7 +252,7 @@ class Digital5View extends Ui.WatchFace {
         dc.fillRectangle(108, 36 , 24.0 * charge / 100.0, 7);        
         if (showChargePercentage) {
             if (showPercentageUnder20) {
-                if (charge.toNumber() <= 20) {
+                if (charge <= 20) {
                     dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
                 }
             } else {
@@ -360,7 +360,7 @@ class Digital5View extends Ui.WatchFace {
             var pressureHistory = Sensor.getPressureHistory(null);
             var pressure        = pressureHistory.next();
             if (null != pressure) {
-                bottomFieldText       = (pressure.data.toDouble() / 100.0).toNumber().format("%0.2f");
+                bottomFieldText       = (pressure.data.toDouble() / 100.0).format("%0.2f");
                 bottomFieldUnitText   = "mb";
                 bottomFieldUnitSpacer = 10;
             }
