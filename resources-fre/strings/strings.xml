@@ -106,5 +106,7 @@
     <string id="ActiveTime">Temps actif</string>
     <string id="Floors">L'étage haut/en bas</string>
     
+    <string id="DarkUpperBackground">Fond sombre pour la zone supérieure</string>
+    
     <string id="DarkFieldBackground">Fond sombre pour les champs</string>
 </strings>

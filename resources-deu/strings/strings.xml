@@ -106,5 +106,7 @@
     <string id="ActiveTime">Aktive Zeit</string>
     <string id="Floors">Stockwerke rauf/runter</string>
     
+    <string id="DarkUpperBackground">Dunkler Hintergrund für oberen Bereich</string>
+    
     <string id="DarkFieldBackground">Dunkler Hintergrund für Felder</string>
 </strings>

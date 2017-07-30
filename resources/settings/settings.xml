@@ -147,6 +147,10 @@
         </settingConfig>
     </setting>
     
+    <setting propertyKey="@Properties.DarkUpperBackground" title="@Strings.DarkUpperBackground">
+    	<settingConfig type="boolean" />
+    </setting>
+    
     <setting propertyKey="@Properties.DarkFieldBackground" title="@Strings.DarkFieldBackground">
     	<settingConfig type="boolean" />
     </setting>

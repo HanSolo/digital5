@@ -106,5 +106,7 @@
     <string id="ActiveTime">Active time</string>
     <string id="Floors">Floors up/down</string>
     
+    <string id="DarkUpperBackground">Dark upper area background</string>
+    
     <string id="DarkFieldBackground">Dark field background</string>
 </strings>
