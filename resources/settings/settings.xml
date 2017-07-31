@@ -23,6 +23,14 @@
         <settingConfig type="boolean" />
     </setting>
     
+    <setting propertyKey="@Properties.LcdFont" title="@Strings.LcdFont">
+        <settingConfig type="boolean" />
+    </setting>
+    
+    <setting propertyKey="@Properties.LcdFontDataFields" title="@Strings.LcdFontDataFields">
+        <settingConfig type="boolean" />
+    </setting>
+    
     <setting propertyKey="@Properties.BpmZones" title="@Strings.BpmZones">
         <settingConfig type="boolean" />
     </setting>
@@ -86,6 +94,10 @@
         </settingConfig>
     </setting>
     
+    <setting propertyKey="@Properties.MonthAsText" title="@Strings.MonthAsText">
+    	<settingConfig type="boolean" />
+   	</setting>
+    
     <setting propertyKey="@Properties.ShowCalendarWeek" title="@Strings.ShowCalendarWeek">
         <settingConfig type="boolean" />
     </setting>
@@ -109,11 +121,7 @@
     <setting propertyKey="@Properties.ShowLeadingZero" title="@Strings.ShowLeadingZero">
         <settingConfig type="boolean" />
     </setting>
-    
-    <setting propertyKey="@Properties.LcdFont" title="@Strings.LcdFont">
-        <settingConfig type="boolean" />
-    </setting>
-    
+     
     <setting propertyKey="@Properties.ShowDeltaSteps" title="@Strings.ShowDeltaSteps">
         <settingConfig type="boolean" />
     </setting>
@@ -142,8 +150,10 @@
         <settingConfig type="list">
             <listEntry value="0">@Strings.Altitude</listEntry>
             <listEntry value="1">@Strings.Pressure</listEntry>
-            <listEntry value="2">@Strings.ActiveTime</listEntry>
-            <listEntry value="3">@Strings.Floors</listEntry>
+            <listEntry value="2">@Strings.ActiveTimeDay</listEntry>
+            <listEntry value="3">@Strings.ActiveTimeWeek</listEntry>
+            <listEntry value="4">@Strings.Floors</listEntry>
+            <listEntry value="5">@Strings.Meters</listEntry>
         </settingConfig>
     </setting>
     

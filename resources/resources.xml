@@ -31,13 +31,9 @@
 
     <fonts>
         <font id="digitalUpright72" filename="fonts/DigitalUprightThick_72.fnt" filter="0123456789: "/>
-        <font id="digitalUpright26" filename="fonts/DigitalUprightThick_26.fnt" filter="ADEFHIJLMORSTUVW0123456789.:/ "/>
+        <font id="digitalUpright26" filename="fonts/DigitalUprightThick_26.fnt" filter="ADCDEFGHIJKLMNOPRSTUVWZ0123456789.:/ "/>
         <font id="digitalUpright24" filename="fonts/DigitalUprightThick_24.fnt" filter="0123456789:.- "/>
         <font id="digitalUpright20" filename="fonts/DigitalUprightThick_20.fnt" filter="0123456789:mb. +-/"/>        
         <font id="digitalUpright16" filename="fonts/DigitalUprightThick_16.fnt" filter="aikmbpCKW0123456789/"/>
-		                
-        <font id="analog60" filename="fonts/RobotoCondensed_60.fnt" filter="0123456789: "/>
-        <font id="analog22" filename="fonts/RobotoCondensed_22.fnt" filter="ADEFHIJLMORSTUVW0123456789.:/ "/>        
-        <font id="analog14" filename="fonts/RobotoCondensed_14.fnt" filter="+-aikmbpCKW0123456789:/. "/>
     </fonts>
 </resources>

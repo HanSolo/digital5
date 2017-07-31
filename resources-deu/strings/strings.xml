@@ -22,7 +22,24 @@
 	<string id="Fri">FR </string>
 	<string id="Sat">SA </string>
 	
+	<string id="Jan">JAN</string>
+	<string id="Feb">FEB</string>
+	<string id="Mar">MAR</string>
+	<string id="Apr">APR</string>
+	<string id="May">MAI</string>
+	<string id="Jun">JUN</string>
+	<string id="Jul">JUL</string>
+	<string id="Aug">AUG</string>
+	<string id="Sep">SEP</string>
+	<string id="Oct">OKT</string>
+	<string id="Nov">NOV</string>
+	<string id="Dec">DEZ</string>
+	
 	<string id="LcdBackground">LCD Hintergrund anzeigen</string>
+	
+	<string id="LcdFont">LCD Schriftart</string>
+	
+	<string id="LcdFontDataFields">LCD Schriftart für Datenfelder</string>
 	
 	<string id="DST">Sommerzeit</string>
 	
@@ -75,6 +92,8 @@
 	<string id="DayMonth">Tag.Monat</string>
 	<string id="MonthDay">Monat/Tag</string>
 	
+	<string id="MonthAsText">Monat als Text</string>
+	
 	<string id="ShowCalendarWeek">Kalenderwoche anzeigen</string>
 	
 	<string id="ShowMoveBar">MoveBar anzeigen</string>
@@ -85,8 +104,6 @@
 	<string id="ShowActiveKcalOnly">Nur Aktiv-Kalorien anzeigen</string>
 	
 	<string id="ShowLeadingZero">Führende Nullen anzeigen</string>
-	
-	<string id="LcdFont">LCD Schriftart</string>
 	
 	<string id="ShowDeltaSteps">Differenz zum Tagesziel (Schritte) anzeigen</string>
 	
@@ -103,8 +120,10 @@
 	<string id="BottomField">Unterstes Feld</string>
 	<string id="Altitude">Höhe</string>
     <string id="Pressure">Luftdruck</string>
-    <string id="ActiveTime">Aktive Zeit</string>
+    <string id="ActiveTimeDay">Aktive Zeit Heute</string>
+    <string id="ActiveTimeWeek">Aktive Zeit diese Woche</string>
     <string id="Floors">Stockwerke rauf/runter</string>
+    <string id="Meters">Meter rauf/runter</string>
     
     <string id="DarkUpperBackground">Dunkler Hintergrund für oberen Bereich</string>
     

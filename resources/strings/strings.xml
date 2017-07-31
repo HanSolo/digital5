@@ -22,7 +22,24 @@
 	<string id="Fri">FR </string>
 	<string id="Sat">SA </string>
 	
+	<string id="Jan">JAN</string>
+	<string id="Feb">FEB</string>
+	<string id="Mar">MAR</string>
+	<string id="Apr">APR</string>
+	<string id="May">MAY</string>
+	<string id="Jun">JUN</string>
+	<string id="Jul">JUL</string>
+	<string id="Aug">AUG</string>
+	<string id="Sep">SEP</string>
+	<string id="Oct">OCT</string>
+	<string id="Nov">NOV</string>
+	<string id="Dec">DEC</string>
+	
 	<string id="LcdBackground">Show LCD Background</string>
+	
+	<string id="LcdFont">Lcd font</string>
+	
+	<string id="LcdFontDataFields">Lcd font for datafields</string>
 	
 	<string id="DST">Daylight Saving Time</string>
 	
@@ -75,6 +92,8 @@
 	<string id="DayMonth">Day.Month</string>
 	<string id="MonthDay">Month/Day</string>
 	
+	<string id="MonthAsText">Month as text</string>
+	
 	<string id="ShowCalendarWeek">Show Calendar Week</string>
 	
 	<string id="ShowMoveBar">Show MoveBar</string>
@@ -85,9 +104,7 @@
 	<string id="ShowActiveKcalOnly">Show active calories only</string>
 	
 	<string id="ShowLeadingZero">Show leading zeroes</string>
-	
-	<string id="LcdFont">Lcd font</string>
-	
+
 	<string id="ShowDeltaSteps">Show delta to Step goal</string>
 	
 	<string id="ShowStepBar">Show Steps bar</string>
@@ -103,8 +120,10 @@
 	<string id="BottomField">Bottom Field</string>
 	<string id="Altitude">Altitude</string>
     <string id="Pressure">Pressure</string>
-    <string id="ActiveTime">Active time</string>
-    <string id="Floors">Floors up/down</string>    
+    <string id="ActiveTimeDay">Active time today</string>
+    <string id="ActiveTimeWeek">Active time this week</string>
+    <string id="Floors">Floors up/down</string>   
+    <string id="Meters">Meters up/down</string>
     
     <string id="DarkUpperBackground">Dark upper area background</string>
     

@@ -21,8 +21,25 @@
 	<string id="Thu">JE </string>
 	<string id="Fri">VE </string>
 	<string id="Sat">SA </string>
+	
+	<string id="Jan">JAN</string>
+	<string id="Feb">FEV</string>
+	<string id="Mar">MAR</string>
+	<string id="Apr">AVR</string>
+	<string id="May">MAI</string>
+	<string id="Jun">JUN</string>
+	<string id="Jul">JUL</string>
+	<string id="Aug">AOU</string>
+	<string id="Sep">SEP</string>
+	<string id="Oct">OCT</string>
+	<string id="Nov">NOV</string>
+	<string id="Dec">DEC</string>
 		
 	<string id="LcdBackground">Afficher l'arrière-plan LCD</string>
+	
+	<string id="LcdFont">Police LCD</string>
+	
+	<string id="LcdFontDataFields">Police LCD pour le champ de données</string>
 	
 	<string id="DST">Heure d'été</string>
 	
@@ -75,6 +92,8 @@
 	<string id="DayMonth">jour.mois</string>
 	<string id="MonthDay">mois/jour</string>
 	
+	<string id="MonthAsText">Mois en tant que texte</string>
+	
 	<string id="ShowCalendarWeek">Afficher Semaine</string>
 		
 	<string id="ShowMoveBar">Afficher MoveBar</string>
@@ -85,8 +104,6 @@
 	<string id="ShowActiveKcalOnly">Afficher uniquement les calories actives</string>
 	
 	<string id="ShowLeadingZero">Afficher les zéros de tête</string>
-	
-	<string id="LcdFont">Police LCD</string>
 	
 	<string id="ShowDeltaSteps">Afficher la différence á la destination du jour (étapes)</string>
 	
@@ -103,8 +120,10 @@
 	<string id="BottomField">Panneau inférieur</string>
 	<string id="Altitude">Altitude</string>
     <string id="Pressure">Pression atmosphérique</string>
-    <string id="ActiveTime">Temps actif</string>
+    <string id="ActiveTimeDay">Aujourd'hui Active Time</string>
+    <string id="ActiveTimeWeek">Active Time Cette semaine</string>
     <string id="Floors">L'étage haut/en bas</string>
+    <string id="Meters">Hauteur grimpée/descendue</string>
     
     <string id="DarkUpperBackground">Fond sombre pour la zone supérieure</string>
     
