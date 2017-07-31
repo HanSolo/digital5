@@ -397,8 +397,7 @@ class Digital5View extends Ui.WatchFace {
             if (lcdFont) {
                 dc.drawText(centerX, 51, digitalUpright72, Lang.format("$1$:$2$", [clockTime.hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
             } else {
-                //dc.drawText(centerX, 56, Graphics.FONT_NUMBER_HOT, Lang.format("$1$:$2$", [clockTime.hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
-                dc.drawText(centerX, 56, Graphics.FONT_NUMBER_HOT, "23:34", Gfx.TEXT_JUSTIFY_CENTER);
+                dc.drawText(centerX, 56, Graphics.FONT_NUMBER_HOT, Lang.format("$1$:$2$", [clockTime.hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
             }
         } else {
             var hour = clockTime.hour;
