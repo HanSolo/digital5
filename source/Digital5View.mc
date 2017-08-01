@@ -717,6 +717,11 @@ class Digital5View extends Ui.WatchFace {
 }
 
 class Digital5Delegate extends Ui.WatchFaceDelegate {
+
+    function initialize() {
+        WatchUi.WatchFaceDelegate.initialize();
+    }
+    
     function onPowerBudgetExceeded(powerInfo) {
                  
     }
