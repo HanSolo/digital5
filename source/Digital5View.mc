@@ -13,7 +13,6 @@ using Toybox.Ant as Ant;
 using Toybox.SensorHistory as Sensor;
 
 var is24Hour;
-var isPhoneConnected;
 var secondsAlwaysOn;
 var lcdFont;
 var lcdFontDataFields;
@@ -52,7 +51,6 @@ class Digital5View extends Ui.WatchFace {
         WatchFace.initialize();
     }
 
-    // Load your resources here
     function onLayout(dc) {
         digitalUpright72   = Ui.loadResource(Rez.Fonts.digitalUpright72);
         digitalUpright26   = Ui.loadResource(Rez.Fonts.digitalUpright26);
@@ -100,20 +98,12 @@ class Digital5View extends Ui.WatchFace {
         months[11]         = Ui.loadResource(Rez.Strings.Dec);
     }
 
-    // Called when this View is brought to the foreground. Restore
-    // the state of this View and prepare it to be shown. This includes
-    // loading resources into memory.
-    function onShow() {
-    }
-
-    // Update the view
     function onUpdate(dc) {
         View.onUpdate(dc);
  
         dc.clearClip();
  
         is24Hour                  = Sys.getDeviceSettings().is24Hour;
-        isPhoneConnected          = Sys.getDeviceSettings().phoneConnected;
         secondsAlwaysOn           = App.getApp().getProperty("SecondsAlwaysOn");
         lcdFont                   = App.getApp().getProperty("LcdFont");
         lcdFontDataFields         = App.getApp().getProperty("LcdFontDataFields");
@@ -156,7 +146,7 @@ class Digital5View extends Ui.WatchFace {
         var showHomeTimezone      = App.getApp().getProperty("ShowHomeTimezone");
         var homeTimezoneOffset    = dst ? App.getApp().getProperty("HomeTimezoneOffset") + 3600 : App.getApp().getProperty("HomeTimezoneOffset");
         var onTravel              = timezoneOffset != homeTimezoneOffset;        
-        var distanceUnit          = Sys.getDeviceSettings().distanceUnits; // 0 -> Kilometer, 1 -> Miles
+        var distanceUnit          = Sys.getDeviceSettings().distanceUnits;
         var distance              = distanceUnit == 0 ? actinfo.distance * 0.00001 : actinfo.distance * 0.00001 * 0.621371;        
         var dayMonth              = App.getApp().getProperty("DateFormat") == 0;
         var dateFormat            = dayMonth ? "$1$.$2$" : "$2$/$1$";
@@ -194,7 +184,6 @@ class Digital5View extends Ui.WatchFace {
             userHeight = profile.height;
             userAge    = nowinfo.year - profile.birthYear;            
         }
-
 
         // Mifflin-St.Jeor Formula (1990)
         var baseKcalMen   = (9.99 * userWeight) + (6.25 * userHeight) - (4.92 * userAge) + 5.0;             // base kcal men
@@ -556,7 +545,6 @@ class Digital5View extends Ui.WatchFace {
             }
         }
         if (lcdFontDataFields) {
-            //dc.drawText(115, 154, digitalUpright24, (showDeltaSteps ? deltaSteps.abs() : steps), Gfx.TEXT_JUSTIFY_RIGHT);            
             dc.drawText(115, 154, digitalUpright24, (showDeltaSteps ? deltaSteps * -1 : steps), Gfx.TEXT_JUSTIFY_RIGHT);
         } else {
             dc.drawText(115, 153, Graphics.FONT_TINY, (showDeltaSteps ? deltaSteps * -1 : steps), Gfx.TEXT_JUSTIFY_RIGHT);
@@ -713,22 +701,15 @@ class Digital5View extends Ui.WatchFace {
         return 28 + (month + Math.floor(month / 8)) % 2 + 2 % month + 2 * Math.floor(1 / month); 
     }
 
-    // Called when this View is removed from the screen. Save the
-    // state of this View here. This includes freeing resources from
-    // memory.
-    function onHide() {
-    
-    }
+    function onShow() {}
+
+    function onHide() {}
 
     //! Terminate any active timers and prepare for slow updates.
-    function onEnterSleep() {        
-            
-    }
+    function onEnterSleep() {}
     
     //! The user has just looked at their watch. Timers and animations may be started here.
-    function onExitSleep() {        
-        
-    }
+    function onExitSleep() {}
     
     //! Called every second
     function onPartialUpdate(dc) {
