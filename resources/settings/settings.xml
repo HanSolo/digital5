@@ -164,4 +164,16 @@
     <setting propertyKey="@Properties.DarkFieldBackground" title="@Strings.DarkFieldBackground">
     	<settingConfig type="boolean" />
     </setting>
+    
+    <setting propertyKey="@Properties.UserLat" title="@Strings.UserLat">
+    	<settingConfig type="numeric" required="true" />
+    </setting>
+    
+    <setting propertyKey="@Properties.UserLng" title="@Strings.UserLng">
+    	<settingConfig type="numeric" required="true" />
+    </setting>
+    
+    <setting propertyKey="@Properties.SunriseSunset" title="@Strings.SunriseSunset">
+    	<settingConfig type="boolean" />
+    </setting>
 </settings>
