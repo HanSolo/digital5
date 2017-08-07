@@ -1,6 +1,5 @@
 using Toybox.Background;
 using Toybox.System;
-using Toybox.Time;
 using Toybox.Application as App;
 using Toybox.Communications as Comm;
 using Toybox.WatchUi as Ui;
@@ -15,7 +14,6 @@ class Digital5ServiceDelegate extends System.ServiceDelegate {
     function onTemporalEvent() {
         var location = Activity.getActivityInfo().currentLocation;
         if (null == location) {
-            System.println("null == location");
             var lat = App.getApp().getProperty("UserLat");
             var lng = App.getApp().getProperty("UserLng");
             if (null != lat && null != lng) {
