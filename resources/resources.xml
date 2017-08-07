@@ -4,16 +4,10 @@
     <bitmap id="LauncherIcon" filename="drawables/launcher_icon.png" />
     <bitmap id="mail"    	  filename="drawables/mail.png" />
     <bitmap id="mailBlack"    filename="drawables/mailBlack.png" />
-    <bitmap id="dnd"    	  filename="drawables/dnd.png" />
-    <bitmap id="dndBlack"     filename="drawables/dndBlack.png" />
     <bitmap id="alarm"        filename="drawables/alarm.png" />
     <bitmap id="alarmBlack"   filename="drawables/alarmBlack.png" />
     <bitmap id="alert"        filename="drawables/alert.png" />
     <bitmap id="alertBlack"   filename="drawables/alertBlack.png" />
-    <bitmap id="battery"      filename="drawables/battery.png" />
-    <bitmap id="batteryBlack" filename="drawables/batteryBlack.png" />
-    <bitmap id="ble"          filename="drawables/ble.png" />
-    <bitmap id="bleBlack"     filename="drawables/bleBlack.png" />
     <bitmap id="bpmWhite"     filename="drawables/bpmWhite.png" />
     <bitmap id="bpm"          filename="drawables/bpm.png" />
     <bitmap id="bpm1"  		  filename="drawables/bpm1.png" />
@@ -33,7 +27,7 @@
         <font id="digitalUpright72" filename="fonts/DigitalUprightThick_72.fnt" filter="0123456789: "/>
         <font id="digitalUpright26" filename="fonts/DigitalUprightThick_26.fnt" filter="ADCDEFGHIJKLMNOPRSTUVWZ0123456789.:/ "/>
         <font id="digitalUpright24" filename="fonts/DigitalUprightThick_24.fnt" filter="0123456789:.- "/>
-        <font id="digitalUpright20" filename="fonts/DigitalUprightThick_20.fnt" filter="0123456789:mb. +-/"/>        
-        <font id="digitalUpright16" filename="fonts/DigitalUprightThick_16.fnt" filter="aikmbpCKW0123456789/"/>
+        <font id="digitalUpright20" filename="fonts/DigitalUprightThick_20.fnt" filter="0123456789:. /"/>        
+        <font id="digitalUpright16" filename="fonts/DigitalUprightThick_16.fnt" filter="aikmpCKW0123456789:-/"/>
     </fonts>
 </resources>
