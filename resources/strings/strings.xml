@@ -111,9 +111,9 @@
 	
 	<string id="ShowCalorieBar">Show Calories bar</string>
 	
-	<string id="ColorizeStepText">Colorize Steps text</string>
+	<string id="ColorizeStepText">Colored Steps text</string>
 	
-	<string id="ColorizeCalorieText">Colorize Calories text</string>
+	<string id="ColorizeCalorieText">Colored Calories text</string>
 	
 	<string id="SecondsAlwaysOn">Seconds always on</string>
 	
