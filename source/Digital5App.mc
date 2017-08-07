@@ -17,8 +17,9 @@ class Digital5App extends App.AppBase {
         AppBase.initialize();
     }
 
-    function onStart(state) {
-    }
+    function onStart(state) {}
+    
+    function onStop(state) {}
 
     function getInitialView() {
         Background.deleteTemporalEvent();
@@ -65,9 +66,6 @@ class Digital5App extends App.AppBase {
         WatchUi.requestUpdate();
     }
     
-    function onStop(state) {
-    }
-
     function enableSunriseSunsetCheck(enabled) {
         if (enabled) {
             Background.registerForTemporalEvent(FIVE_MINUTES);
