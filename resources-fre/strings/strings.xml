@@ -128,4 +128,11 @@
     <string id="DarkUpperBackground">Fond sombre pour la zone supérieure</string>
     
     <string id="DarkFieldBackground">Fond sombre pour les champs</string>
+    
+    <string id="UserLat">Position Latitude (DDD.dddd)</string>
+    
+    <string id="UserLng">Position Longitude (DDD.dddd)</string>
+    
+    <string id="SunriseSunset">Afficher le lever et le coucher du soleil</string>
+    
 </strings>

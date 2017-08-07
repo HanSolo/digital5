@@ -128,5 +128,11 @@
     <string id="DarkUpperBackground">Dark upper area background</string>
     
     <string id="DarkFieldBackground">Dark datafield background</string>
+    
+    <string id="UserLat">Position Latitude (DDD.dddd)</string>
+    
+    <string id="UserLng">Position Longitude (DDD.dddd)</string>
+    
+    <string id="SunriseSunset">Show Sunrise/Sunset</string>
 	
 </strings>
