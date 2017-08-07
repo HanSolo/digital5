@@ -15,7 +15,7 @@
     
     <property id="DST" type="boolean">true</property>
     
-    <property id="ShowHomeTimezone" type="boolean">false</property>
+    <property id="ShowHomeTimezone" type="boolean">true</property>
     
     <property id="HomeTimezoneOffset" type="number">3600</property>
     
@@ -25,16 +25,16 @@
     
     <property id="ShowCalendarWeek" type="boolean">false</property>
     
-    <property id="ShowMoveBar" type="boolean">true</property>
+    <property id="ShowMoveBar" type="boolean">false</property>
     
-    <property id="ShowChargePercentage" type="boolean">true</property>
+    <property id="ShowChargePercentage" type="boolean">false</property>
     <property id="ShowPercentageUnder20" type="boolean">false</property>
     
-    <property id="ShowActiveKcalOnly" type="boolean">false</property>
+    <property id="ShowActiveKcalOnly" type="boolean">true</property>
     
     <property id="ShowLeadingZero" type="boolean">true</property>
     
-    <property id="ShowDeltaSteps" type="boolean">false</property>
+    <property id="ShowDeltaSteps" type="boolean">true</property>
     
     <property id="ShowStepBar" type="boolean">true</property>
     
@@ -46,10 +46,15 @@
     
     <property id="SecondsAlwaysOn" type="boolean">false</property>
     
-    <property id="BottomField" type="number">2</property>
+    <property id="BottomField" type="number">4</property>
     
     <property id="DarkUpperBackground" type="boolean">true</property>
     
     <property id="DarkFieldBackground" type="boolean">false</property>
     
+    <property id="UserLat" type="float">51.9117959</property>
+    
+    <property id="UserLng" type="float">7.6331887</property>
+    
+    <property id="SunriseSunset" type="boolean">true</property>
 </properties>
