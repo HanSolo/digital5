@@ -152,6 +152,7 @@ class Digital5View extends Ui.WatchFace {
         var dateFormat            = dayMonth ? "$1$.$2$" : "$2$/$1$";
         var monthAsText           = App.getApp().getProperty("MonthAsText");
         var showCalendarWeek      = App.getApp().getProperty("ShowCalendarWeek");
+        var calendarWeekText      = Ui.loadResource(Rez.Strings.CalendarWeek);
         var showMoveBar           = App.getApp().getProperty("ShowMoveBar");
         var showDeltaSteps        = App.getApp().getProperty("ShowDeltaSteps");
         var moveBarLevel          = actinfo.moveBarLevel;
@@ -449,9 +450,9 @@ class Digital5View extends Ui.WatchFace {
         
         // ******************** DATE ******************************************
         
-        // Calendar week
+        // 
         if (showCalendarWeek) {
-            dc.drawText((lcdFont ? 45 : 50), (lcdFont ? 75 : 66), lcdFont ? digitalUpright16 : Graphics.FONT_TINY, ("KW"), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText((lcdFont ? 45 : 50), (lcdFont ? 75 : 66), lcdFont ? digitalUpright16 : Graphics.FONT_TINY, (calendarWeekText), Gfx.TEXT_JUSTIFY_RIGHT);
             dc.drawText((lcdFont ? 45 : 50), (lcdFont ? 97 : 87), lcdFont ? digitalUpright16 : Graphics.FONT_TINY, (getWeekOfYear(nowinfo)), Gfx.TEXT_JUSTIFY_RIGHT);            
         }
     

@@ -1,6 +1,6 @@
 <strings>
 
-    <!--<string id="AppName">Digital5</string>-->
+    <string id="AppName">Digital5</string>
 
     <string id="Gender">Género</string>
     <string id="Female">Femenino</string>
@@ -14,13 +14,13 @@
 
 	<string id="BpmZones">Visualizar Zonas BPM</string>
 
-	<string id="Sun">DO</string>
-	<string id="Mon">LU </string>
-	<string id="Tue">MA </string>
-	<string id="Wed">MI </string>
-	<string id="Thu">JU </string>
-	<string id="Fri">VI </string>
-	<string id="Sat">SA </string>
+	<string id="Sun">DO </string>
+	<string id="Mon">LU </string>
+	<string id="Tue">MA </string>
+	<string id="Wed">MI </string>
+	<string id="Thu">JU </string>
+	<string id="Fri">VI </string>
+	<string id="Sat">SA </string>
 	
 	<string id="Jan">ENE</string>
 	<string id="Feb">FEB</string>
@@ -95,6 +95,7 @@
 	<string id="MonthAsText">Mes como texto</string>
 	
 	<string id="ShowCalendarWeek">Mostrar calendario semanal</string>
+	<string id="CalendarWeek">CW</string>
 	
 	<string id="ShowMoveBar">Mostrar Barra de Movimiento</string>
 	

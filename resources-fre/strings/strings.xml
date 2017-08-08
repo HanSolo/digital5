@@ -95,6 +95,7 @@
 	<string id="MonthAsText">Mois en tant que texte</string>
 	
 	<string id="ShowCalendarWeek">Afficher Semaine</string>
+	<string id="CalendarWeek">CW</string>
 		
 	<string id="ShowMoveBar">Afficher MoveBar</string>
 
