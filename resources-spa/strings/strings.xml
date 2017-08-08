@@ -1,0 +1,138 @@
+<strings>
+
+    <!--<string id="AppName">Digital5</string>-->
+
+    <string id="Gender">Género</string>
+    <string id="Female">Femenino</string>
+    <string id="Male">Masculino</string>
+
+	<string id="Weight">Peso [kg]</string>
+
+	<string id="Height">Altura [cm]</string>
+
+	<string id="Age">Edad</string>
+
+	<string id="BpmZones">Visualizar Zonas BPM</string>
+
+	<string id="Sun">DO</string>
+	<string id="Mon">LU </string>
+	<string id="Tue">MA </string>
+	<string id="Wed">MI </string>
+	<string id="Thu">JU </string>
+	<string id="Fri">VI </string>
+	<string id="Sat">SA </string>
+	
+	<string id="Jan">ENE</string>
+	<string id="Feb">FEB</string>
+	<string id="Mar">MAR</string>
+	<string id="Apr">ABR</string>
+	<string id="May">MAY</string>
+	<string id="Jun">JUN</string>
+	<string id="Jul">JUL</string>
+	<string id="Aug">AGO</string>
+	<string id="Sep">SEP</string>
+	<string id="Oct">OCT</string>
+	<string id="Nov">NOV</string>
+	<string id="Dec">DIC</string>
+	
+	<string id="LcdBackground">Mostrar fondo LCD</string>
+	
+	<string id="LcdFont">Fuente Lcd</string>
+	
+	<string id="LcdFontDataFields">Fuente Lcd para campos de datos</string>
+	
+	<string id="DST">Horario de Verano</string>
+	
+	<string id="ShowHomeTimezone">Mostrar zona horaria local</string>
+	
+	<string id="HomeTimezoneOffset">Mostrar desfase zona horaria local</string>
+	
+	<string id="UTC_M_1200">UTC-12:00</string>
+	<string id="UTC_M_1100">UTC-11:00</string>
+	<string id="UTC_M_1000">UTC-10:00</string>
+	<string id="UTC_M_0930">UTC-09:30</string>
+	<string id="UTC_M_0900">UTC-09:00</string>
+	<string id="UTC_M_0800">UTC-08:00</string>
+	<string id="UTC_M_0700">UTC-07:00</string>
+	<string id="UTC_M_0600">UTC-06:00</string>
+	<string id="UTC_M_0500">UTC-05:00</string>
+	<string id="UTC_M_0400">UTC-04:00</string>
+	<string id="UTC_M_0330">UTC-03:30</string>
+	<string id="UTC_M_0300">UTC-03:00</string>
+	<string id="UTC_M_0200">UTC-02:00</string>
+	<string id="UTC_M_0100">UTC-01:00</string>
+	<string id="UTC_M_0000">UTC-00:00</string>
+	<string id="UTC_P_0000">UTC+00:00</string>
+	<string id="UTC_P_0100">UTC+01:00</string>
+	<string id="UTC_P_0200">UTC+02:00</string>
+	<string id="UTC_P_0300">UTC+03:00</string>
+	<string id="UTC_P_0330">UTC+03:30</string>
+	<string id="UTC_P_0400">UTC+04:00</string>
+	<string id="UTC_P_0430">UTC+04:30</string>
+	<string id="UTC_P_0500">UTC+05:00</string>
+	<string id="UTC_P_0530">UTC+05:30</string>
+	<string id="UTC_P_0545">UTC+05:45</string>
+	<string id="UTC_P_0600">UTC+06:00</string>
+	<string id="UTC_P_0630">UTC+06:30</string>
+	<string id="UTC_P_0700">UTC+07:00</string>
+	<string id="UTC_P_0800">UTC+08:00</string>
+	<string id="UTC_P_0830">UTC+08:30</string>
+	<string id="UTC_P_0845">UTC+08:45</string>
+	<string id="UTC_P_0900">UTC+09:00</string>
+	<string id="UTC_P_0930">UTC+09:30</string>
+	<string id="UTC_P_1000">UTC+10:00</string>
+	<string id="UTC_P_1030">UTC+10:30</string>
+	<string id="UTC_P_1100">UTC+11:00</string>
+	<string id="UTC_P_1200">UTC+12:00</string>
+	<string id="UTC_P_1245">UTC+12:45</string>
+	<string id="UTC_P_1300">UTC+13:00</string>
+	<string id="UTC_P_1400">UTC+14:00</string>
+	
+	<string id="DateFormat">Formato de fechas</string>
+	<string id="DayMonth">Día.Mes</string>
+	<string id="MonthDay">Mes/Día</string>
+	
+	<string id="MonthAsText">Mes como texto</string>
+	
+	<string id="ShowCalendarWeek">Mostrar calendario semanal</string>
+	
+	<string id="ShowMoveBar">Mostrar Barra de Movimiento</string>
+	
+	<string id="ShowChargePercentage">Mostrar carga en %</string>
+	<string id="ShowPercentageUnder20">Mostrar % sólo por debajo del 20%</string>
+	
+	<string id="ShowActiveKcalOnly">Mostrar sólo calorías activas</string>
+	
+	<string id="ShowLeadingZero">Mostrar ceros a la izquierda</string>
+	
+	<string id="ShowDeltaSteps">Mostrar incremento de pasos</string>
+	
+	<string id="ShowStepBar">Mostrar barra de pasos</string>
+	
+	<string id="ShowCalorieBar">Mostrar barra de calorías</string>
+	
+	<string id="ColorizeStepText">Colorar texto de Pasos</string>
+	
+	<string id="ColorizeCalorieText">Colorear texto de Calorías</string>
+	
+	<string id="SecondsAlwaysOn">Segundos siempre encendidos</string>
+	
+	<string id="BottomField">Campo inferior</string>
+	<string id="Altitude">Altitud</string>
+    <string id="Pressure">Presión</string>
+    <string id="ActiveTimeDay">Tiempo activo diario</string>
+    <string id="ActiveTimeWeek">Tiempo activo semanal</string>
+    <string id="Floors">Pisos arriba/abajo</string>
+    <string id="Meters">Metros arriba/abajo</string>
+    
+    <string id="DarkUpperBackground">Área de fondo superior oscura</string>
+
+    <string id="DarkFieldBackground">Campo de fondo oscuro</string>
+
+    <string id="UserLat">Posición Latitud (DDD.dddd)</string>
+
+    <string id="UserLng">Posición Longitud (DDD.dddd)</string>
+
+    <string id="SunriseSunset">Mostrar la salida y puesta de sol</string>
+	
+</strings>
