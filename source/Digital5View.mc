@@ -173,7 +173,7 @@ class Digital5View extends Ui.WatchFace {
         var userWeight;
         var userHeight;
         var userAge;
-        
+
         if (profile == null) {
             gender     = App.getApp().getProperty("Gender");
             userWeight = App.getApp().getProperty("Weight");
@@ -524,8 +524,8 @@ class Digital5View extends Ui.WatchFace {
                 }
             }
         }
-        
-        
+                
+
         // ******************** DATA FIELDS ***********************************
        
         // Steps
@@ -578,7 +578,7 @@ class Digital5View extends Ui.WatchFace {
             } else {
                 dc.drawText(202, 153, Graphics.FONT_TINY, kcal.toString(), Gfx.TEXT_JUSTIFY_RIGHT);
             }
-        }        
+        }
 
         // BPM        
         if (bpm >= maxBpm) {
@@ -715,6 +715,10 @@ class Digital5View extends Ui.WatchFace {
     //! Called every second
     function onPartialUpdate(dc) {
         if (secondsAlwaysOn) { drawSeconds(dc); }
+        var clockTime = Sys.getClockTime();
+        if (clockTime.hour == 23 && clockTime.min == 59 && clockTime.sec == 59) {
+            addCaloriesToAverage(kcal); 
+        }
     }
 
     function getWeekOfYear(nowinfo) {
@@ -740,5 +744,23 @@ class Digital5View extends Ui.WatchFace {
         var dow = ((yearOrdinal - 1) + (weekOrdinal - 1)) % 7 + 1 - 1;
         if (0 == dow) { dow = 7; }        
         return dow;
+    }
+    
+    function getCaloriesAverage(kcal) {                
+        var calAvg = App.getApp().getProperty("CalAvg");
+        var sum = kcal;
+        for (var i = 0 ; i < 6 ; i++) {
+            sum += calAvg[i];
+        }        
+        return (sum / 7.0).toNumber();
+    }
+    
+    function addCaloriesToAverage(kcal) {        
+        var calAvg = App.getApp().getProperty("CalAvg");
+        for (var i = 0 ; i < 5 ; i++) {
+            calAvg[i] = calAvg[i+1];
+        }       
+        calAvg[5] = kcal;
+        App.getApp().setProperty("CalAvg", calAvg);
     }
 }
