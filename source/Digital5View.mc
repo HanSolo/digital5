@@ -46,7 +46,6 @@ class Digital5View extends Ui.WatchFace {
     var alertIcon, alertIconBlack;
     var bpmIcon, bpmIconWhite, burnedIcon, burnedIconWhite, stepsIcon, stepsIconWhite;
     var bpm1Icon, bpm2Icon, bpm3Icon, bpm4Icon, bpm5Icon, bpmMaxRedIcon, bpmMaxBlackIcon, bpmMaxWhiteIcon;
-    var heartRate;
       
     function initialize() {
         WatchFace.initialize();
@@ -402,7 +401,7 @@ class Digital5View extends Ui.WatchFace {
 
         // Time        
         if (lcdBackgroundVisible && lcdFont) {
-            dc.setColor(darkBackgroundColor ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);
+            dc.setColor(darkUpperBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);
             if (showLeadingZero) {
                 dc.drawText(centerX, 51, digitalUpright72, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
             } else {
@@ -716,7 +715,8 @@ class Digital5View extends Ui.WatchFace {
     function onEnterSleep() {}
     
     //! The user has just looked at their watch. Timers and animations may be started here.
-    function onExitSleep() {}
+    function onExitSleep() {
+    }
     
     //! Called every second
     function onPartialUpdate(dc) {
