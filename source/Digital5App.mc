@@ -25,9 +25,9 @@ class Digital5App extends App.AppBase {
         Background.deleteTemporalEvent();
         App.getApp().setProperty("status", "NA");
         enableSunriseSunsetCheck(App.getApp().getProperty("SunriseSunset"));        
-        if (null == App.getApp().getProperty("CalAvg")) {
-            var calAvg = [0, 0, 0, 0, 0, 0];
-            App.getApp().setProperty("CalAvg", calAvg);
+        if (null == App.getApp().getProperty("ActKcalAvg")) {
+            var actKcalAvg = [0, 0, 0, 0, 0, 0];
+            App.getApp().setProperty("ActKcalAvg", actKcalAvg);
         }
         view = new Digital5View();
         if( Toybox.WatchUi has :WatchFaceDelegate ) {

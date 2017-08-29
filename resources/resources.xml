@@ -1,27 +1,27 @@
 <resources>
     <string id="AppName">Digital5</string>
 
-    <bitmap id="LauncherIcon" filename="drawables/launcher_icon.png" />
-    <bitmap id="mail"    	  filename="drawables/mail.png" />
-    <bitmap id="mailBlack"    filename="drawables/mailBlack.png" />
-    <bitmap id="alarm"        filename="drawables/alarm.png" />
-    <bitmap id="alarmBlack"   filename="drawables/alarmBlack.png" />
-    <bitmap id="alert"        filename="drawables/alert.png" />
-    <bitmap id="alertBlack"   filename="drawables/alertBlack.png" />
-    <bitmap id="bpmWhite"     filename="drawables/bpmWhite.png" />
-    <bitmap id="bpm"          filename="drawables/bpm.png" />
-    <bitmap id="bpm1"  		  filename="drawables/bpm1.png" />
-    <bitmap id="bpm2"  		  filename="drawables/bpm2.png" />
-    <bitmap id="bpm3"  		  filename="drawables/bpm3.png" />
-    <bitmap id="bpm4"  		  filename="drawables/bpm4.png" />
-    <bitmap id="bpm5"  		  filename="drawables/bpm5.png" />
-    <bitmap id="bpmMaxRed"    filename="drawables/bpmMaxRed.png" />
-    <bitmap id="bpmMaxBlack"  filename="drawables/bpmMaxBlack.png" />
-    <bitmap id="bpmMaxWhite"  filename="drawables/bpmMaxWhite.png" />
-    <bitmap id="burned" 	  filename="drawables/burned.png" />
-    <bitmap id="burnedWhite"  filename="drawables/burnedWhite.png" />    
-    <bitmap id="steps"    	  filename="drawables/steps.png" />
-    <bitmap id="stepsWhite"   filename="drawables/stepsWhite.png" />
+    <bitmap id="LauncherIcon" 	  filename="drawables/launcher_icon.png" />
+    <bitmap id="mail"    	  	  filename="drawables/mail.png" />
+    <bitmap id="mailBlack"    	  filename="drawables/mailBlack.png" />
+    <bitmap id="alarm"        	  filename="drawables/alarm.png" />
+    <bitmap id="alarmBlack"   	  filename="drawables/alarmBlack.png" />
+    <bitmap id="alert"        	  filename="drawables/alert.png" />
+    <bitmap id="alertBlack"   	  filename="drawables/alertBlack.png" />
+    <bitmap id="bpmWhite"     	  filename="drawables/bpmWhite.png" />
+    <bitmap id="bpm"          	  filename="drawables/bpm.png" />
+    <bitmap id="bpm1"  		  	  filename="drawables/bpm1.png" />
+    <bitmap id="bpm2"  		  	  filename="drawables/bpm2.png" />
+    <bitmap id="bpm3"  		  	  filename="drawables/bpm3.png" />
+    <bitmap id="bpm4"  		  	  filename="drawables/bpm4.png" />
+    <bitmap id="bpm5"  		  	  filename="drawables/bpm5.png" />
+    <bitmap id="bpmMaxRed"    	  filename="drawables/bpmMaxRed.png" />
+    <bitmap id="bpmMaxBlack"  	  filename="drawables/bpmMaxBlack.png" />
+    <bitmap id="bpmMaxWhite"  	  filename="drawables/bpmMaxWhite.png" />
+    <bitmap id="burned" 	  	  filename="drawables/burned.png" />
+    <bitmap id="burnedWhite"  	  filename="drawables/burnedWhite.png" />    
+    <bitmap id="steps"    	  	  filename="drawables/steps.png" />
+    <bitmap id="stepsWhite"   	  filename="drawables/stepsWhite.png" />    
 
     <fonts>
         <font id="digitalUpright72" filename="fonts/DigitalUprightThick_72.fnt" filter="0123456789: "/>

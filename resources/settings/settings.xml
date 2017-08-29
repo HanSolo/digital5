@@ -154,6 +154,7 @@
             <listEntry value="3">@Strings.ActiveTimeWeek</listEntry>
             <listEntry value="4">@Strings.Floors</listEntry>
             <listEntry value="5">@Strings.Meters</listEntry>
+            <listEntry value="6">@Strings.ActKcalAvg</listEntry>
         </settingConfig>
     </setting>
     

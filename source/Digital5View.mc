@@ -20,11 +20,12 @@ var showLeadingZero;
 var clockTime;
 var upperBackgroundColor;
 var upperForegroundColor;
+var activeKcal;
 
 
 class Digital5View extends Ui.WatchFace {
     enum { WOMAN, MEN }
-    enum { ALTITUDE, PRESSURE, ACTIVE_TIME_TODAY, ACTIVE_TIME_WEEK, FLOORS, METERS }
+    enum { ALTITUDE, PRESSURE, ACTIVE_TIME_TODAY, ACTIVE_TIME_WEEK, FLOORS, METERS, AVG_KCAL_AVG }
     const DARK_RED      = 0x550000;
     const BRIGHT_BLUE   = 0x0055ff;
     const BRIGHT_GREEN  = 0x55ff00;
@@ -76,7 +77,7 @@ class Digital5View extends Ui.WatchFace {
         burnedIcon         = Ui.loadResource(Rez.Drawables.burned);
         burnedIconWhite    = Ui.loadResource(Rez.Drawables.burnedWhite);
         stepsIcon          = Ui.loadResource(Rez.Drawables.steps);
-        stepsIconWhite     = Ui.loadResource(Rez.Drawables.stepsWhite);
+        stepsIconWhite     = Ui.loadResource(Rez.Drawables.stepsWhite);        
         weekdays[0]        = Ui.loadResource(Rez.Strings.Sun);
         weekdays[1]        = Ui.loadResource(Rez.Strings.Mon);
         weekdays[2]        = Ui.loadResource(Rez.Strings.Tue);
@@ -173,7 +174,7 @@ class Digital5View extends Ui.WatchFace {
         var userWeight;
         var userHeight;
         var userAge;
-
+        
         if (profile == null) {
             gender     = App.getApp().getProperty("Gender");
             userWeight = App.getApp().getProperty("Weight");
@@ -188,12 +189,12 @@ class Digital5View extends Ui.WatchFace {
 
         // Mifflin-St.Jeor Formula (1990)
         var baseKcalMen   = (9.99 * userWeight) + (6.25 * userHeight) - (4.92 * userAge) + 5.0;             // base kcal men
-        var baseKcalWoman = (9.99 * userWeight) + (6.25 * userHeight) - (4.92 * userAge) - 161.0;           // base kcal woman        
+        var baseKcalWoman = (9.99 * userWeight) + (6.25 * userHeight) - (4.92 * userAge) - 161.0;           // base kcal woman
         var baseKcal      = (gender == MEN ? baseKcalMen : baseKcalWoman) * 1.21385;                        // base kcal related to gender incl. correction factor for fenix 5x
         var kcalPerMinute = baseKcal / 1440;                                                                // base kcal per minute
-        var activeKcal    = (kcal - (kcalPerMinute * (clockTime.hour * 60.0 + clockTime.min))).toNumber();  // active kcal
         var kcalReached   = kcal / baseKcal;
-        
+        activeKcal = (kcal - (kcalPerMinute * (clockTime.hour * 60.0 + clockTime.min))).toNumber();         // active kcal
+
         // Heart Rate Zones
         var maxBpm   = (211.0 - 0.64 * userAge).toNumber(); // calculated after a study at NTNU (http://www.ntnu.edu/cerg/hrmax-info)
         var bpmZone1 = (0.5 * maxBpm).toNumber();
@@ -653,13 +654,20 @@ class Digital5View extends Ui.WatchFace {
             
             dc.fillPolygon([[63, 221], [75, 221], [68, 215]]);    // upIcon
             dc.fillPolygon([[170, 216], [180, 216], [175, 221]]); // downIcon
-        } else {
+        } else if (bottomField == METERS) {
             var metersClimbed     = actinfo.metersClimbed.format("%0d");
             var metersDescended   = actinfo.metersDescended.format("%0d");
             bottomFieldText       = metersClimbed.toString() + "/" + metersDescended.toString();
             
             dc.fillPolygon([[63, 221], [75, 221], [68, 215]]);    // upIcon
             dc.fillPolygon([[170, 216], [180, 216], [175, 221]]); // downIcon
+        } else {
+            bottomFieldText = getActKcalAvg(activeKcal);
+            //dc.setPenWidth(1);
+
+            dc.setPenWidth(2);
+            dc.drawCircle(69, 220, 4);
+            dc.drawLine(65, 224, 74, 215);            
         }
         
         if (lcdFontDataFields) {
@@ -717,7 +725,7 @@ class Digital5View extends Ui.WatchFace {
         if (secondsAlwaysOn) { drawSeconds(dc); }
         var clockTime = Sys.getClockTime();
         if (clockTime.hour == 23 && clockTime.min == 59 && clockTime.sec == 59) {
-            addCaloriesToAverage(kcal); 
+            addActKcalToAverage(activeKcal); 
         }
     }
 
@@ -746,21 +754,23 @@ class Digital5View extends Ui.WatchFace {
         return dow;
     }
     
-    function getCaloriesAverage(kcal) {                
-        var calAvg = App.getApp().getProperty("CalAvg");
-        var sum = kcal;
+    function getActKcalAvg(actKcal) {
+        var actKcalAvg = App.getApp().getProperty("ActKcalAvg");
+        var sum   = actKcal < 0 ? 0 : actKcal;
+        var count = 1.0;
         for (var i = 0 ; i < 6 ; i++) {
-            sum += calAvg[i];
-        }        
-        return (sum / 7.0).toNumber();
+            sum += actKcalAvg[i];
+            count = count + actKcalAvg[i] > 0 ? 1.0 : 0.0;
+        }
+        return (sum / count).toNumber();
     }
     
-    function addCaloriesToAverage(kcal) {        
-        var calAvg = App.getApp().getProperty("CalAvg");
+    function addActKcalToAverage(actKcal) {
+        var actKcalAvg = App.getApp().getProperty("ActKcalAvg");
         for (var i = 0 ; i < 5 ; i++) {
-            calAvg[i] = calAvg[i+1];
-        }       
-        calAvg[5] = kcal;
-        App.getApp().setProperty("CalAvg", calAvg);
+            actKcalAvg[i] = actKcalAvg[i+1];
+        }
+        actKcalAvg[5] = actKcal < 0 ? 0 : actKcal;
+        App.getApp().setProperty("ActKcalAvg", actKcalAvg);
     }
 }
