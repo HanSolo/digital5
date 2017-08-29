@@ -663,8 +663,6 @@ class Digital5View extends Ui.WatchFace {
             dc.fillPolygon([[170, 216], [180, 216], [175, 221]]); // downIcon
         } else {
             bottomFieldText = getActKcalAvg(activeKcal);
-            //dc.setPenWidth(1);
-
             dc.setPenWidth(2);
             dc.drawCircle(69, 220, 4);
             dc.drawLine(65, 224, 74, 215);            
