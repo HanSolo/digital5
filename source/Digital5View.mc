@@ -759,10 +759,8 @@ class Digital5View extends Ui.WatchFace {
         var count = 1.0;
         for (var i = 0 ; i < 6 ; i++) {
             sum += actKcalAvg[i];
-            if (actKcalAvg[i] > 0) { count++; }            
-            System.println(actKcal + "   " + actKcalAvg[i] + "   " + sum + "   " + count);
+            if (actKcalAvg[i] > 0) { count++; }
         }
-        System.println((sum / count).toNumber());
         return (sum / count).toNumber();
     }
     
