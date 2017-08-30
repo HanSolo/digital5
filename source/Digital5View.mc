@@ -753,7 +753,7 @@ class Digital5View extends Ui.WatchFace {
     }
     
     function getActKcalAvg(actKcal) {
-        var actKcalAvg = App.getApp().getProperty("ActKcalAvg");        
+        var actKcalAvg = App.getApp().getProperty("ActKcalAvg");
         var sum   = 0.0;
         var count = 0.0;
         for (var i = 0 ; i < 6 ; i++) {
