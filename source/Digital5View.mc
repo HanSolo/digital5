@@ -661,7 +661,7 @@ class Digital5View extends Ui.WatchFace {
             dc.fillPolygon([[63, 221], [75, 221], [68, 215]]);    // upIcon
             dc.fillPolygon([[170, 216], [180, 216], [175, 221]]); // downIcon
         } else {
-            bottomFieldText = getActKcalAvg();
+            bottomFieldText = getActKcalAvg(activeKcal);
             dc.setPenWidth(2);
             dc.drawCircle(69, 220, 4);
             dc.drawLine(65, 224, 74, 215);            
@@ -752,7 +752,7 @@ class Digital5View extends Ui.WatchFace {
         return dow;
     }
     
-    function getActKcalAvg() {
+    function getActKcalAvg(actKcal) {
         var actKcalAvg = App.getApp().getProperty("ActKcalAvg");        
         var sum   = 0.0;
         var count = 0.0;
@@ -760,7 +760,11 @@ class Digital5View extends Ui.WatchFace {
             sum += actKcalAvg[i];
             if (actKcalAvg[i] > 0) { count++; }
         }
-        return (sum / count).toNumber();
+        if (count > 0) {
+            return (sum / count).toNumber();
+        } else {
+            return actKcal;
+        }
     }
     
     function addActKcalToAverage(actKcal) {
