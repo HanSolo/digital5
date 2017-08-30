@@ -754,12 +754,15 @@ class Digital5View extends Ui.WatchFace {
     
     function getActKcalAvg(actKcal) {
         var actKcalAvg = App.getApp().getProperty("ActKcalAvg");
+        actKcalAvg[5] = 993;
         var sum   = actKcal < 0 ? 0 : actKcal;
         var count = 1.0;
         for (var i = 0 ; i < 6 ; i++) {
             sum += actKcalAvg[i];
-            count = count + actKcalAvg[i] > 0 ? 1.0 : 0.0;
+            if (actKcalAvg[i] > 0) { count++; }            
+            System.println(actKcal + "   " + actKcalAvg[i] + "   " + sum + "   " + count);
         }
+        System.println((sum / count).toNumber());
         return (sum / count).toNumber();
     }
     
@@ -770,5 +773,6 @@ class Digital5View extends Ui.WatchFace {
         }
         actKcalAvg[5] = actKcal < 0 ? 0 : actKcal;
         App.getApp().setProperty("ActKcalAvg", actKcalAvg);
+        
     }
 }
