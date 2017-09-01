@@ -102,12 +102,8 @@
 	<string id="ShowChargePercentage">Mostrar carga en %</string>
 	<string id="ShowPercentageUnder20">Mostrar % sólo por debajo del 20%</string>
 	
-	<string id="ShowActiveKcalOnly">Mostrar sólo calorías activas</string>
-	
 	<string id="ShowLeadingZero">Mostrar ceros a la izquierda</string>
-	
-	<string id="ShowDeltaSteps">Mostrar incremento de pasos</string>
-	
+		
 	<string id="ShowStepBar">Mostrar barra de pasos</string>
 	
 	<string id="ShowCalorieBar">Mostrar barra de calorías</string>
@@ -118,7 +114,17 @@
 	
 	<string id="SecondsAlwaysOn">Segundos siempre encendidos</string>
 	
+	<string id="UpperLeftField">Campo izquierdo superior</string>
+	<string id="UpperRightField">Campo derecho superior</string>
+	<string id="LowerLeftField">Campo izquierdo inferior</string>
+	<string id="LowerRightField">Campo derecho inferior</string>
 	<string id="BottomField">Campo inferior</string>
+	
+	<string id="Steps">Pasos</string>
+    <string id="Calories">Caloría</string>
+    <string id="ActiveCalories">Activo caloría</string>
+    <string id="HeartRate">Frecuencia cardíaca</string>
+    <string id="Distance">Distanciamiento</string>	
 	<string id="Altitude">Altitud</string>
     <string id="Pressure">Presión</string>
     <string id="ActiveTimeDay">Tiempo activo diario</string>
@@ -126,6 +132,7 @@
     <string id="Floors">Pisos arriba/abajo</string>
     <string id="Meters">Metros arriba/abajo</string>
     <string id="ActKcalAvg">Act. Kcal media</string>
+    <string id="DeltaSteps">Incremento de pasos</string>
     
     <string id="DarkUpperBackground">Área de fondo superior oscura</string>
 

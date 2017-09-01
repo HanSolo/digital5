@@ -101,13 +101,9 @@
 
 	<string id="ShowChargePercentage">Afficher la charge en %</string>
 	<string id="ShowPercentageUnder20">Afficher % seulement en dessous de 20%</string>
-
-	<string id="ShowActiveKcalOnly">Afficher uniquement les calories actives</string>
 	
 	<string id="ShowLeadingZero">Afficher les zéros de tête</string>
-	
-	<string id="ShowDeltaSteps">Afficher la différence á la destination du jour (étapes)</string>
-	
+		
 	<string id="ShowStepBar">Afficher la barre Pas</string>
 	
 	<string id="ShowCalorieBar">Afficher la barre Calories</string>
@@ -118,14 +114,25 @@
 	
 	<string id="SecondsAlwaysOn">Toujours montrer secondes</string>
 	
+	<string id="UpperLeftField">Paneau supérieure gauche</string>
+	<string id="UpperRightField">Paneau supérieure à droite</string>
+	<string id="LowerLeftField">Panneau inférieur gauche</string>
+	<string id="LowerRightField">Paneau inférieur à droite</string>
 	<string id="BottomField">Panneau inférieur</string>
-	<string id="Altitude">Altitude</string>
+	
+	<string id="Steps">Les pas</string>
+    <string id="Calories">Les calories</string>
+    <string id="ActiveCalories">Les calories actives</string>
+    <string id="HeartRate">Fréquence cardiaque</string>
+    <string id="Distance">La distance</string>
+	<string id="Altitude">L'altitude</string>
     <string id="Pressure">Pression atmosphérique</string>
     <string id="ActiveTimeDay">Aujourd'hui Active Time</string>
     <string id="ActiveTimeWeek">Active Time Cette semaine</string>
     <string id="Floors">L'étage haut/en bas</string>
     <string id="Meters">Hauteur grimpée/descendue</string>
     <string id="ActKcalAvg">Act. Kcal l'intersection</string>
+    <string id="DeltaSteps">La différence á la destination du jour (étapes)</string>
     
     <string id="DarkUpperBackground">Fond sombre pour la zone supérieure</string>
     

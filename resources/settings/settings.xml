@@ -114,18 +114,10 @@
         <settingConfig type="boolean" />
     </setting>
     
-    <setting propertyKey="@Properties.ShowActiveKcalOnly" title="@Strings.ShowActiveKcalOnly">
-        <settingConfig type="boolean" />
-    </setting>
-    
     <setting propertyKey="@Properties.ShowLeadingZero" title="@Strings.ShowLeadingZero">
         <settingConfig type="boolean" />
     </setting>
-     
-    <setting propertyKey="@Properties.ShowDeltaSteps" title="@Strings.ShowDeltaSteps">
-        <settingConfig type="boolean" />
-    </setting>
-    
+
     <setting propertyKey="@Properties.ShowStepBar" title="@Strings.ShowStepBar">
     	<settingConfig type="boolean" />
     </setting>
@@ -145,19 +137,75 @@
     <setting propertyKey="@Properties.SecondsAlwaysOn" title="@Strings.SecondsAlwaysOn">
     	<settingConfig type="boolean" />
     </setting>
+        
+    <setting propertyKey="@Properties.UpperLeftField" title="@Strings.UpperLeftField">
+    	<settingConfig type="list">
+    		<listEntry value="0">@Strings.Steps</listEntry>
+    		<listEntry value="1">@Strings.Calories</listEntry>
+    		<listEntry value="2">@Strings.ActiveCalories</listEntry>
+    		<listEntry value="3">@Strings.HeartRate</listEntry>
+    		<listEntry value="4">@Strings.Distance</listEntry>
+    		<listEntry value="5">@Strings.Altitude</listEntry>
+    		<listEntry value="6">@Strings.Pressure</listEntry>
+    		<listEntry value="7">@Strings.ActiveTimeDay</listEntry>
+    		<listEntry value="8">@Strings.ActiveTimeWeek</listEntry>
+    		<listEntry value="9">@Strings.Floors</listEntry>
+    		<listEntry value="10">@Strings.Meters</listEntry>
+    		<listEntry value="11">@Strings.ActKcalAvg</listEntry>
+    		<listEntry value="12">@Strings.DeltaSteps</listEntry>
+    	</settingConfig>
+    </setting>
+    
+    <setting propertyKey="@Properties.UpperRightField" title="@Strings.UpperRightField">
+    	<settingConfig type="list">
+    		<listEntry value="0">@Strings.Steps</listEntry>
+    		<listEntry value="1">@Strings.Calories</listEntry>
+    		<listEntry value="2">@Strings.ActiveCalories</listEntry>
+    		<listEntry value="3">@Strings.HeartRate</listEntry>
+    		<listEntry value="4">@Strings.Distance</listEntry>
+    		<listEntry value="5">@Strings.Altitude</listEntry>
+    		<listEntry value="6">@Strings.Pressure</listEntry>
+    		<listEntry value="7">@Strings.ActiveTimeDay</listEntry>
+    		<listEntry value="8">@Strings.ActiveTimeWeek</listEntry>
+    		<listEntry value="9">@Strings.Floors</listEntry>
+    		<listEntry value="10">@Strings.Meters</listEntry>
+    		<listEntry value="11">@Strings.ActKcalAvg</listEntry>
+    		<listEntry value="12">@Strings.DeltaSteps</listEntry>
+    	</settingConfig>
+    </setting>
+    
+    <setting propertyKey="@Properties.LowerLeftField" title="@Strings.LowerLeftField">
+    	<settingConfig type="list">    		
+    		<listEntry value="3">@Strings.HeartRate</listEntry>
+    		<listEntry value="4">@Strings.Distance</listEntry>
+    		<listEntry value="7">@Strings.ActiveTimeDay</listEntry>
+    		<listEntry value="8">@Strings.ActiveTimeWeek</listEntry>
+    		<listEntry value="9">@Strings.Floors</listEntry>
+    	</settingConfig>
+    </setting>
+    
+    <setting propertyKey="@Properties.LowerRightField" title="@Strings.LowerRightField">
+    	<settingConfig type="list">
+    		<listEntry value="3">@Strings.HeartRate</listEntry>
+    		<listEntry value="4">@Strings.Distance</listEntry>
+    		<listEntry value="7">@Strings.ActiveTimeDay</listEntry>
+    		<listEntry value="8">@Strings.ActiveTimeWeek</listEntry>
+    		<listEntry value="9">@Strings.Floors</listEntry>
+    	</settingConfig>
+    </setting>
     
     <setting propertyKey="@Properties.BottomField" title="@Strings.BottomField">
         <settingConfig type="list">
-            <listEntry value="0">@Strings.Altitude</listEntry>
-            <listEntry value="1">@Strings.Pressure</listEntry>
-            <listEntry value="2">@Strings.ActiveTimeDay</listEntry>
-            <listEntry value="3">@Strings.ActiveTimeWeek</listEntry>
-            <listEntry value="4">@Strings.Floors</listEntry>
-            <listEntry value="5">@Strings.Meters</listEntry>
-            <listEntry value="6">@Strings.ActKcalAvg</listEntry>
+            <listEntry value="5">@Strings.Altitude</listEntry>
+    		<listEntry value="6">@Strings.Pressure</listEntry>
+    		<listEntry value="7">@Strings.ActiveTimeDay</listEntry>
+    		<listEntry value="8">@Strings.ActiveTimeWeek</listEntry>
+    		<listEntry value="9">@Strings.Floors</listEntry>
+    		<listEntry value="10">@Strings.Meters</listEntry>
+    		<listEntry value="11">@Strings.ActKcalAvg</listEntry>
         </settingConfig>
     </setting>
-    
+     
     <setting propertyKey="@Properties.DarkUpperBackground" title="@Strings.DarkUpperBackground">
     	<settingConfig type="boolean" />
     </setting>

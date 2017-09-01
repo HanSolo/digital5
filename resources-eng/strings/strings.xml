@@ -101,13 +101,9 @@
 
 	<string id="ShowChargePercentage">Show charge in %</string>
 	<string id="ShowPercentageUnder20">Show % only below 20%</string>
-
-	<string id="ShowActiveKcalOnly">Show active calories only</string>
 	
 	<string id="ShowLeadingZero">Show leading zeroes</string>
-		
-	<string id="ShowDeltaSteps">Show delta to Step goal</string>
-	
+
 	<string id="ShowStepBar">Show Steps bar</string>
 	
 	<string id="ShowCalorieBar">Show Calories bar</string>
@@ -118,7 +114,17 @@
 	
 	<string id="SecondsAlwaysOn">Seconds always on</string>
 	
+	<string id="UpperLeftField">Upper Left Field</string>
+	<string id="UpperRightField">Upper Right Field</string>
+	<string id="LowerLeftField">Lower Left Field</string>
+	<string id="LowerRightField">Lower Right Field</string>
 	<string id="BottomField">Bottom Field</string>
+	
+	<string id="Steps">Steps</string>
+    <string id="Calories">Calories</string>
+    <string id="ActiveCalories">ActiveCalories</string>
+    <string id="HeartRate">HeartRate</string>
+    <string id="Distance">Distance</string>	
 	<string id="Altitude">Altitude</string>
     <string id="Pressure">Pressure</string>
     <string id="ActiveTimeDay">Active time today</string>
@@ -126,6 +132,7 @@
     <string id="Floors">Floors up/down</string>
     <string id="Meters">Meters up/down</string>
     <string id="ActKcalAvg">Act. Kcal Avg</string>
+    <string id="DeltaSteps">Delta Steps</string>
     
     <string id="DarkUpperBackground">Dark upper area background</string>
     

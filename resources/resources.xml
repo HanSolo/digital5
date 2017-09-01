@@ -21,13 +21,13 @@
     <bitmap id="burned" 	  	  filename="drawables/burned.png" />
     <bitmap id="burnedWhite"  	  filename="drawables/burnedWhite.png" />    
     <bitmap id="steps"    	  	  filename="drawables/steps.png" />
-    <bitmap id="stepsWhite"   	  filename="drawables/stepsWhite.png" />    
+    <bitmap id="stepsWhite"   	  filename="drawables/stepsWhite.png" />
 
     <fonts>
         <font id="digitalUpright72" filename="fonts/DigitalUprightThick_72.fnt" filter="0123456789: "/>
         <font id="digitalUpright26" filename="fonts/DigitalUprightThick_26.fnt" filter="ADCDEFGHIJKLMNOPRSTUVWZ0123456789.:/ "/>
-        <font id="digitalUpright24" filename="fonts/DigitalUprightThick_24.fnt" filter="0123456789:.- "/>
+        <font id="digitalUpright24" filename="fonts/DigitalUprightThick_24.fnt" filter="0123456789:.- /"/>
         <font id="digitalUpright20" filename="fonts/DigitalUprightThick_20.fnt" filter="0123456789:. /"/>        
-        <font id="digitalUpright16" filename="fonts/DigitalUprightThick_16.fnt" filter="aikmpCKW0123456789:-/"/>
+        <font id="digitalUpright16" filename="fonts/DigitalUprightThick_16.fnt" filter="abikmpCKW0123456789:-/"/>
     </fonts>
 </resources>

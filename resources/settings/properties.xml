@@ -30,12 +30,8 @@
     <property id="ShowChargePercentage" type="boolean">false</property>
     <property id="ShowPercentageUnder20" type="boolean">false</property>
     
-    <property id="ShowActiveKcalOnly" type="boolean">false</property>
-    
     <property id="ShowLeadingZero" type="boolean">true</property>
-    
-    <property id="ShowDeltaSteps" type="boolean">false</property>
-    
+        
     <property id="ShowStepBar" type="boolean">true</property>
     
     <property id="ShowCalorieBar" type="boolean">true</property>
@@ -46,6 +42,10 @@
     
     <property id="SecondsAlwaysOn" type="boolean">false</property>
     
+    <property id="UpperLeftField" type="number">0</property>
+    <property id="UpperRightField" type="number">1</property>
+    <property id="LowerLeftField" type="number">3</property>
+    <property id="LowerRightField" type="number">4</property>
     <property id="BottomField" type="number">4</property>
     
     <property id="DarkUpperBackground" type="boolean">true</property>

@@ -102,11 +102,7 @@
 	<string id="ShowChargePercentage">Batterieladung in % anzeigen</string>
 	<string id="ShowPercentageUnder20">% nur unter 20% anzeigen</string>
 	
-	<string id="ShowActiveKcalOnly">Nur Aktiv-Kalorien anzeigen</string>
-	
 	<string id="ShowLeadingZero">Führende Nullen anzeigen</string>
-	
-	<string id="ShowDeltaSteps">Differenz zum Tagesziel (Schritte) anzeigen</string>
 	
 	<string id="ShowStepBar">Steps Bar anzeigen</string>
 	
@@ -118,7 +114,17 @@
 	
 	<string id="SecondsAlwaysOn">Immer Sekunden anzeigen</string>
 	
+	<string id="UpperLeftField">Oberes Linkes Feld</string>
+	<string id="UpperRightField">Oberes Rechtes Feld</string>
+	<string id="LowerLeftField">Unteres Linkes Feld</string>
+	<string id="LowerRightField">Unteres Rechtes Feld</string>
 	<string id="BottomField">Unterstes Feld</string>
+	
+	<string id="Steps">Schritte</string>
+    <string id="Calories">Kalorien</string>
+    <string id="ActiveCalories">Aktivkalorien</string>
+    <string id="HeartRate">Herzfrequenz</string>
+    <string id="Distance">Distanz</string>
 	<string id="Altitude">Höhe</string>
     <string id="Pressure">Luftdruck</string>
     <string id="ActiveTimeDay">Aktive Zeit Heute</string>
@@ -126,6 +132,7 @@
     <string id="Floors">Stockwerke rauf/runter</string>
     <string id="Meters">Meter rauf/runter</string>
     <string id="ActKcalAvg">Akt. Kcal Durchschnitt</string>
+    <string id="DeltaSteps">Differenz Schritte (Tagesziel)</string>
     
     <string id="DarkUpperBackground">Dunkler Hintergrund für oberen Bereich</string>
     

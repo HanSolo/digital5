@@ -25,7 +25,8 @@ var activeKcal;
 
 class Digital5View extends Ui.WatchFace {
     enum { WOMAN, MEN }
-    enum { ALTITUDE, PRESSURE, ACTIVE_TIME_TODAY, ACTIVE_TIME_WEEK, FLOORS, METERS, AVG_KCAL_AVG }
+    enum { UPPER_LEFT, UPPER_RIGHT, LOWER_LEFT, LOWER_RIGHT }
+    enum { STEPS, CALORIES, ACTIVE_CALORIES, HEART_RATE, DISTANCE, ALTITUDE, PRESSURE, ACTIVE_TIME_TODAY, ACTIVE_TIME_WEEK, FLOORS, METERS, AVG_KCAL_AVG, DELTA_STEPS }    
     const DARK_RED      = 0x550000;
     const BRIGHT_BLUE   = 0x0055ff;
     const BRIGHT_GREEN  = 0x55ff00;
@@ -46,56 +47,91 @@ class Digital5View extends Ui.WatchFace {
     var alertIcon, alertIconBlack;
     var bpmIcon, bpmIconWhite, burnedIcon, burnedIconWhite, stepsIcon, stepsIconWhite;
     var bpm1Icon, bpm2Icon, bpm3Icon, bpm4Icon, bpm5Icon, bpmMaxRedIcon, bpmMaxBlackIcon, bpmMaxWhiteIcon;
+     
+    var width;
+    var height;
+    var centerX;
+    var centerY;        
+    var midnightInfo;
+    var nowinfo;
+    var actinfo;
+    var systemStats;        
+    var hrHistory;
+    var hr;
+    var steps;
+    var stepGoal;
+    var deltaSteps;
+    var stepsReached;
+    var kcal;
+    var bpm;
+    var showBpmZones;     
+    var distanceUnit;
+    var distance;            
+    var colorizeStepText;
+    var colorizeCalorieText;
+    var upperLeftField;
+    var upperRightField;
+    var lowerLeftField;
+    var lowerRightField;
+    var bottomField;        
+    var darkFieldBackground;
+    var fieldBackgroundColor;
+    var fieldForegroundColor;
+    var bottomFieldText;    
+    var bpmZoneIcons;
+    var maxBpm;
+    var currentZone;
+     
       
     function initialize() {
         WatchFace.initialize();
     }
 
     function onLayout(dc) {
-        digitalUpright72   = Ui.loadResource(Rez.Fonts.digitalUpright72);
-        digitalUpright26   = Ui.loadResource(Rez.Fonts.digitalUpright26);
-        digitalUpright24   = Ui.loadResource(Rez.Fonts.digitalUpright24);
-        digitalUpright20   = Ui.loadResource(Rez.Fonts.digitalUpright20);
-        digitalUpright16   = Ui.loadResource(Rez.Fonts.digitalUpright16);
-        alarmIcon          = Ui.loadResource(Rez.Drawables.alarm);
-        alarmIconBlack     = Ui.loadResource(Rez.Drawables.alarmBlack);
-        alertIcon          = Ui.loadResource(Rez.Drawables.alert);
-        alertIconBlack     = Ui.loadResource(Rez.Drawables.alertBlack);
-        mailIcon           = Ui.loadResource(Rez.Drawables.mail);
-        mailIconBlack      = Ui.loadResource(Rez.Drawables.mailBlack);
-        bpmIconWhite       = Ui.loadResource(Rez.Drawables.bpmWhite);
-        bpmIcon            = Ui.loadResource(Rez.Drawables.bpm);
-        bpm1Icon           = Ui.loadResource(Rez.Drawables.bpm1);
-        bpm2Icon           = Ui.loadResource(Rez.Drawables.bpm2);
-        bpm3Icon           = Ui.loadResource(Rez.Drawables.bpm3);
-        bpm4Icon           = Ui.loadResource(Rez.Drawables.bpm4);
-        bpm5Icon           = Ui.loadResource(Rez.Drawables.bpm5);
-        bpmMaxRedIcon      = Ui.loadResource(Rez.Drawables.bpmMaxRed);
-        bpmMaxBlackIcon    = Ui.loadResource(Rez.Drawables.bpmMaxBlack);
-        bpmMaxWhiteIcon    = Ui.loadResource(Rez.Drawables.bpmMaxWhite);
-        burnedIcon         = Ui.loadResource(Rez.Drawables.burned);
-        burnedIconWhite    = Ui.loadResource(Rez.Drawables.burnedWhite);
-        stepsIcon          = Ui.loadResource(Rez.Drawables.steps);
-        stepsIconWhite     = Ui.loadResource(Rez.Drawables.stepsWhite);        
-        weekdays[0]        = Ui.loadResource(Rez.Strings.Sun);
-        weekdays[1]        = Ui.loadResource(Rez.Strings.Mon);
-        weekdays[2]        = Ui.loadResource(Rez.Strings.Tue);
-        weekdays[3]        = Ui.loadResource(Rez.Strings.Wed);
-        weekdays[4]        = Ui.loadResource(Rez.Strings.Thu);
-        weekdays[5]        = Ui.loadResource(Rez.Strings.Fri);
-        weekdays[6]        = Ui.loadResource(Rez.Strings.Sat);
-        months[0]          = Ui.loadResource(Rez.Strings.Jan);
-        months[1]          = Ui.loadResource(Rez.Strings.Feb);
-        months[2]          = Ui.loadResource(Rez.Strings.Mar);
-        months[3]          = Ui.loadResource(Rez.Strings.Apr);
-        months[4]          = Ui.loadResource(Rez.Strings.May);
-        months[5]          = Ui.loadResource(Rez.Strings.Jun);
-        months[6]          = Ui.loadResource(Rez.Strings.Jul);
-        months[7]          = Ui.loadResource(Rez.Strings.Aug);
-        months[8]          = Ui.loadResource(Rez.Strings.Sep);
-        months[9]          = Ui.loadResource(Rez.Strings.Oct);
-        months[10]         = Ui.loadResource(Rez.Strings.Nov);
-        months[11]         = Ui.loadResource(Rez.Strings.Dec);
+        digitalUpright72 = Ui.loadResource(Rez.Fonts.digitalUpright72);
+        digitalUpright26 = Ui.loadResource(Rez.Fonts.digitalUpright26);
+        digitalUpright24 = Ui.loadResource(Rez.Fonts.digitalUpright24);
+        digitalUpright20 = Ui.loadResource(Rez.Fonts.digitalUpright20);
+        digitalUpright16 = Ui.loadResource(Rez.Fonts.digitalUpright16);
+        alarmIcon        = Ui.loadResource(Rez.Drawables.alarm);
+        alarmIconBlack   = Ui.loadResource(Rez.Drawables.alarmBlack);
+        alertIcon        = Ui.loadResource(Rez.Drawables.alert);
+        alertIconBlack   = Ui.loadResource(Rez.Drawables.alertBlack);
+        mailIcon         = Ui.loadResource(Rez.Drawables.mail);
+        mailIconBlack    = Ui.loadResource(Rez.Drawables.mailBlack);
+        bpmIconWhite     = Ui.loadResource(Rez.Drawables.bpmWhite);
+        bpmIcon          = Ui.loadResource(Rez.Drawables.bpm);
+        bpm1Icon         = Ui.loadResource(Rez.Drawables.bpm1);
+        bpm2Icon         = Ui.loadResource(Rez.Drawables.bpm2);
+        bpm3Icon         = Ui.loadResource(Rez.Drawables.bpm3);
+        bpm4Icon         = Ui.loadResource(Rez.Drawables.bpm4);
+        bpm5Icon         = Ui.loadResource(Rez.Drawables.bpm5);
+        bpmMaxRedIcon    = Ui.loadResource(Rez.Drawables.bpmMaxRed);
+        bpmMaxBlackIcon  = Ui.loadResource(Rez.Drawables.bpmMaxBlack);
+        bpmMaxWhiteIcon  = Ui.loadResource(Rez.Drawables.bpmMaxWhite);
+        burnedIcon       = Ui.loadResource(Rez.Drawables.burned);
+        burnedIconWhite  = Ui.loadResource(Rez.Drawables.burnedWhite);
+        stepsIcon        = Ui.loadResource(Rez.Drawables.steps);
+        stepsIconWhite   = Ui.loadResource(Rez.Drawables.stepsWhite);        
+        weekdays[0]      = Ui.loadResource(Rez.Strings.Sun);
+        weekdays[1]      = Ui.loadResource(Rez.Strings.Mon);
+        weekdays[2]      = Ui.loadResource(Rez.Strings.Tue);
+        weekdays[3]      = Ui.loadResource(Rez.Strings.Wed);
+        weekdays[4]      = Ui.loadResource(Rez.Strings.Thu);
+        weekdays[5]      = Ui.loadResource(Rez.Strings.Fri);
+        weekdays[6]      = Ui.loadResource(Rez.Strings.Sat);
+        months[0]        = Ui.loadResource(Rez.Strings.Jan);
+        months[1]        = Ui.loadResource(Rez.Strings.Feb);
+        months[2]        = Ui.loadResource(Rez.Strings.Mar);
+        months[3]        = Ui.loadResource(Rez.Strings.Apr);
+        months[4]        = Ui.loadResource(Rez.Strings.May);
+        months[5]        = Ui.loadResource(Rez.Strings.Jun);
+        months[6]        = Ui.loadResource(Rez.Strings.Jul);
+        months[7]        = Ui.loadResource(Rez.Strings.Aug);
+        months[8]        = Ui.loadResource(Rez.Strings.Sep);
+        months[9]        = Ui.loadResource(Rez.Strings.Oct);
+        months[10]       = Ui.loadResource(Rez.Strings.Nov);
+        months[11]       = Ui.loadResource(Rez.Strings.Dec);
     }
 
     function onUpdate(dc) {
@@ -111,27 +147,26 @@ class Digital5View extends Ui.WatchFace {
         
         clockTime                 = Sys.getClockTime();
         
-        var bpmZoneIcons          = [ bpm1Icon, bpm2Icon, bpm3Icon, bpm4Icon, bpm5Icon ];
+        bpmZoneIcons              = [ bpm1Icon, bpm2Icon, bpm3Icon, bpm4Icon, bpm5Icon ];
  
         // General
-        var width                 = dc.getWidth();
-        var height                = dc.getHeight();
-        var centerX               = width * 0.5;
-        var centerY               = height * 0.5;        
-        var midnightInfo          = Greg.info(Time.today(), Time.FORMAT_SHORT);
-        var nowinfo               = Greg.info(Time.now(), Time.FORMAT_SHORT);
-        var actinfo               = Act.getInfo();
-        var systemStats           = Sys.getSystemStats();        
-        var hrHistory             = Act.getHeartRateHistory(null, true);
-        var hr                    = hrHistory.next();
-        var steps                 = actinfo.steps;
-        var stepGoal              = actinfo.stepGoal;
-        var deltaSteps            = stepGoal - steps;
-        var stepsReached          = steps.toDouble() / stepGoal;
-        var kcal                  = actinfo.calories;
-        var showActiveKcalOnly    = App.getApp().getProperty("ShowActiveKcalOnly");
-        var bpm                   = (hr.heartRate != Act.INVALID_HR_SAMPLE && hr.heartRate > 0) ? hr.heartRate : 0;
-        var showBpmZones          = App.getApp().getProperty("BpmZones"); 
+        width                 = dc.getWidth();
+        height                = dc.getHeight();
+        centerX               = width * 0.5;
+        centerY               = height * 0.5;        
+        midnightInfo          = Greg.info(Time.today(), Time.FORMAT_SHORT);
+        nowinfo               = Greg.info(Time.now(), Time.FORMAT_SHORT);
+        actinfo               = Act.getInfo();
+        systemStats           = Sys.getSystemStats();        
+        hrHistory             = Act.getHeartRateHistory(null, true);
+        hr                    = hrHistory.next();
+        steps                 = actinfo.steps;
+        stepGoal              = actinfo.stepGoal;
+        deltaSteps            = stepGoal - steps;
+        stepsReached          = steps.toDouble() / stepGoal;
+        kcal                  = actinfo.calories;
+        bpm                   = (hr.heartRate != Act.INVALID_HR_SAMPLE && hr.heartRate > 0) ? hr.heartRate : 0;
+        showBpmZones          = App.getApp().getProperty("BpmZones"); 
         var charge                = systemStats.battery;
         var showChargePercentage  = App.getApp().getProperty("ShowChargePercentage");
         var showPercentageUnder20 = App.getApp().getProperty("ShowPercentageUnder20");
@@ -146,28 +181,31 @@ class Digital5View extends Ui.WatchFace {
         var showHomeTimezone      = App.getApp().getProperty("ShowHomeTimezone");
         var homeTimezoneOffset    = dst ? App.getApp().getProperty("HomeTimezoneOffset") + 3600 : App.getApp().getProperty("HomeTimezoneOffset");
         var onTravel              = timezoneOffset != homeTimezoneOffset;        
-        var distanceUnit          = Sys.getDeviceSettings().distanceUnits;
-        var distance              = distanceUnit == 0 ? actinfo.distance * 0.00001 : actinfo.distance * 0.00001 * 0.621371;        
+        distanceUnit          = Sys.getDeviceSettings().distanceUnits;
+        distance              = distanceUnit == 0 ? actinfo.distance * 0.00001 : actinfo.distance * 0.00001 * 0.621371;        
         var dayMonth              = App.getApp().getProperty("DateFormat") == 0;
         var dateFormat            = dayMonth ? "$1$.$2$" : "$2$/$1$";
         var monthAsText           = App.getApp().getProperty("MonthAsText");
         var showCalendarWeek      = App.getApp().getProperty("ShowCalendarWeek");
         var calendarWeekText      = Ui.loadResource(Rez.Strings.CalendarWeek);
-        var showMoveBar           = App.getApp().getProperty("ShowMoveBar");
-        var showDeltaSteps        = App.getApp().getProperty("ShowDeltaSteps");
+        var showMoveBar           = App.getApp().getProperty("ShowMoveBar");        
         var moveBarLevel          = actinfo.moveBarLevel;
         var showStepBar           = App.getApp().getProperty("ShowStepBar");
         var showCalorieBar        = App.getApp().getProperty("ShowCalorieBar");
-        var colorizeStepText      = App.getApp().getProperty("ColorizeStepText");
-        var colorizeCalorieText   = App.getApp().getProperty("ColorizeCalorieText");
-        var bottomField           = App.getApp().getProperty("BottomField");
+        colorizeStepText      = App.getApp().getProperty("ColorizeStepText");
+        colorizeCalorieText   = App.getApp().getProperty("ColorizeCalorieText");
+        upperLeftField        = App.getApp().getProperty("UpperLeftField");
+        upperRightField       = App.getApp().getProperty("UpperRightField");
+        lowerLeftField        = App.getApp().getProperty("LowerLeftField");
+        lowerRightField       = App.getApp().getProperty("LowerRightField");
+        bottomField           = App.getApp().getProperty("BottomField");
         var darkUpperBackground   = App.getApp().getProperty("DarkUpperBackground");
-        upperBackgroundColor      = darkUpperBackground ? Gfx.COLOR_BLACK : Gfx.COLOR_WHITE;
-        upperForegroundColor      = darkUpperBackground ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK;
-        var darkFieldBackground   = App.getApp().getProperty("DarkFieldBackground");
-        var fieldBackgroundColor  = darkFieldBackground ? Gfx.COLOR_BLACK : Gfx.COLOR_WHITE;
-        var fieldForegroundColor  = darkFieldBackground ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK;
-        var bottomFieldText       = "";
+        upperBackgroundColor  = darkUpperBackground ? Gfx.COLOR_BLACK : Gfx.COLOR_WHITE;
+        upperForegroundColor  = darkUpperBackground ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK;
+        darkFieldBackground   = App.getApp().getProperty("DarkFieldBackground");
+        fieldBackgroundColor  = darkFieldBackground ? Gfx.COLOR_BLACK : Gfx.COLOR_WHITE;
+        fieldForegroundColor  = darkFieldBackground ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK;
+        bottomFieldText       = "";
         var showSunriseSunset     = App.getApp().getProperty("SunriseSunset");
         var gender;
         var userWeight;
@@ -195,14 +233,13 @@ class Digital5View extends Ui.WatchFace {
         activeKcal = (kcal - (kcalPerMinute * (clockTime.hour * 60.0 + clockTime.min))).toNumber();         // active kcal
 
         // Heart Rate Zones
-        var maxBpm   = (211.0 - 0.64 * userAge).toNumber(); // calculated after a study at NTNU (http://www.ntnu.edu/cerg/hrmax-info)
+        maxBpm   = (211.0 - 0.64 * userAge).toNumber(); // calculated after a study at NTNU (http://www.ntnu.edu/cerg/hrmax-info)
         var bpmZone1 = (0.5 * maxBpm).toNumber();
         var bpmZone2 = (0.6 * maxBpm).toNumber();
         var bpmZone3 = (0.7 * maxBpm).toNumber();
         var bpmZone4 = (0.8 * maxBpm).toNumber();
         var bpmZone5 = (0.9 * maxBpm).toNumber();
-        
-        var currentZone;
+                
         if (bpm >= bpmZone5) {
             currentZone = 5;
         } else if (bpm >= bpmZone4) {
@@ -528,82 +565,66 @@ class Digital5View extends Ui.WatchFace {
 
         // ******************** DATA FIELDS ***********************************
        
-        // Steps
-        dc.drawBitmap(21, 157, darkFieldBackground ? stepsIconWhite : stepsIcon);
-        if (showDeltaSteps) {
-            if (deltaSteps > 0) {
-                dc.setColor(BRIGHT_RED, Gfx.COLOR_TRANSPARENT);
-            } else {
-                dc.setColor(Gfx.COLOR_BLACK, Gfx.COLOR_TRANSPARENT);
-            }
-        } else {
-            if (colorizeStepText) {
-                stepsReached = stepsReached > 1.0 ? 1.0 : stepsReached;
-                var endIndex = (10.0 * stepsReached).toNumber();
-                dc.setColor(endIndex > 0 ? STEP_COLORS[endIndex - 1] : Gfx.COLOR_BLACK, Gfx.COLOR_TRANSPARENT);
-            } else {
-                dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
-            }
+        // UpperLeft
+        switch(upperLeftField) {
+            case 0: drawSteps(getXYPositions(UPPER_LEFT), dc, false); break;
+            case 1: drawCalories(getXYPositions(UPPER_LEFT), dc, false); break;
+            case 2: drawCalories(getXYPositions(UPPER_LEFT), dc, true); break;
+            case 3: drawHeartRate(getXYPositions(UPPER_LEFT), dc); break;
+            case 4: drawDistance(getXYPositions(UPPER_LEFT), dc); break;
+            case 5: drawWithUnit(getXYPositions(UPPER_LEFT), dc, ALTITUDE); break;
+            case 6: drawWithUnit(getXYPositions(UPPER_LEFT), dc, PRESSURE); break;
+            case 7: drawActiveTime(getXYPositions(UPPER_LEFT), dc, true, UPPER_LEFT); break;
+            case 8: drawActiveTime(getXYPositions(UPPER_LEFT), dc, false, UPPER_LEFT); break;
+            case 9: drawFloors(getXYPositions(UPPER_LEFT), dc, UPPER_LEFT); break;
+            case 10: drawMeters(getXYPositions(UPPER_LEFT), dc, UPPER_LEFT); break;
+            case 11: drawActKcalAvg(getXYPositions(UPPER_LEFT), dc); break;
+            case 12: drawSteps(getXYPositions(UPPER_LEFT), dc, true); break;
         }
-        if (lcdFontDataFields) {
-            dc.drawText(115, 154, digitalUpright24, (showDeltaSteps ? deltaSteps * -1 : steps), Gfx.TEXT_JUSTIFY_RIGHT);
-        } else {
-            dc.drawText(115, 153, Graphics.FONT_TINY, (showDeltaSteps ? deltaSteps * -1 : steps), Gfx.TEXT_JUSTIFY_RIGHT);
+       
+        // UpperRight
+        switch(upperRightField) {
+            case 0: drawSteps(getXYPositions(UPPER_RIGHT), dc, false); break;
+            case 1: drawCalories(getXYPositions(UPPER_RIGHT), dc, false); break;
+            case 2: drawCalories(getXYPositions(UPPER_RIGHT), dc, true); break;
+            case 3: drawHeartRate(getXYPositions(UPPER_RIGHT), dc); break;
+            case 4: drawDistance(getXYPositions(UPPER_RIGHT), dc); break;
+            case 5: drawWithUnit(getXYPositions(UPPER_RIGHT), dc, ALTITUDE); break;
+            case 6: drawWithUnit(getXYPositions(UPPER_RIGHT), dc, PRESSURE); break;
+            case 7: drawActiveTime(getXYPositions(UPPER_RIGHT), dc, true, UPPER_RIGHT); break;
+            case 8: drawActiveTime(getXYPositions(UPPER_RIGHT), dc, false, UPPER_RIGHT); break;
+            case 9: drawFloors(getXYPositions(UPPER_RIGHT), dc, UPPER_RIGHT); break;
+            case 10: drawMeters(getXYPositions(UPPER_RIGHT), dc, UPPER_RIGHT); break;
+            case 11: drawActKcalAvg(getXYPositions(UPPER_RIGHT), dc); break;
+            case 12: drawSteps(getXYPositions(UPPER_RIGHT), dc, true); break;
         }
-            
-        // KCal
-        dc.drawBitmap(206, 157, darkFieldBackground ? burnedIconWhite : burnedIcon);
-        if (colorizeCalorieText) {
-            if (kcalReached > 3.0) {
-                dc.setColor(Gfx.COLOR_PINK, Gfx.COLOR_TRANSPARENT);
-            } else if (kcalReached > 2.0) {
-                dc.setColor(Gfx.COLOR_GREEN, Gfx.COLOR_TRANSPARENT);
-            } else if (kcalReached > 1.0) {
-                dc.setColor(BRIGHT_BLUE, Gfx.COLOR_TRANSPARENT);
-            } else {
-                dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
-            }
-        } else {
-            dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
+       
+        // LowerLeft
+        switch(lowerLeftField) {
+            case 0: drawSteps(getXYPositions(LOWER_LEFT), dc, false); break;
+            case 1: drawCalories(getXYPositions(LOWER_LEFT), dc, false); break;
+            case 2: drawCalories(getXYPositions(LOWER_LEFT), dc, true); break;
+            case 3: drawHeartRate(getXYPositions(LOWER_LEFT), dc); break;
+            case 4: drawDistance(getXYPositions(LOWER_LEFT), dc); break;
+            case 7: drawActiveTime(getXYPositions(LOWER_LEFT), dc, true, LOWER_LEFT); break;
+            case 8: drawActiveTime(getXYPositions(LOWER_LEFT), dc, false, LOWER_LEFT); break;
+            case 9: drawFloors(getXYPositions(LOWER_LEFT), dc, LOWER_LEFT); break;
+            case 12: drawSteps(getXYPositions(LOWER_LEFT), dc, true); break;
         }
-        if (showActiveKcalOnly) {            
-            if (lcdFontDataFields) {
-                dc.drawText(202, 154, digitalUpright24, activeKcal < 0 ? 0 : activeKcal.toString(), Gfx.TEXT_JUSTIFY_RIGHT);
-            } else {
-                dc.drawText(202, 153, Graphics.FONT_TINY, activeKcal < 0 ? 0 : activeKcal.toString(), Gfx.TEXT_JUSTIFY_RIGHT);
-            }
-        } else {
-            if (lcdFontDataFields) {
-                dc.drawText(202, 154, digitalUpright24, kcal.toString(), Gfx.TEXT_JUSTIFY_RIGHT);
-            } else {
-                dc.drawText(202, 153, Graphics.FONT_TINY, kcal.toString(), Gfx.TEXT_JUSTIFY_RIGHT);
-            }
-        }
-
-        // BPM        
-        if (bpm >= maxBpm) {
-            dc.drawBitmap(43, 187, showBpmZones ? bpmMaxRedIcon : darkFieldBackground ? bpmMaxWhiteIcon : bpmMaxBlackIcon);
-        } else {
-            dc.drawBitmap(43, 187, showBpmZones ? bpmZoneIcons[currentZone - 1] : darkFieldBackground ? bpmIconWhite : bpmIcon);
-        }        
-        
-        dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);        
-        
-        if (lcdFontDataFields) {
-            dc.drawText(115, 184, digitalUpright24, (bpm > 0 ? bpm.toString() : ""), Gfx.TEXT_JUSTIFY_RIGHT);
-        } else {
-            dc.drawText(115, 183, Graphics.FONT_TINY, (bpm > 0 ? bpm.toString() : ""), Gfx.TEXT_JUSTIFY_RIGHT);
+       
+        // LowerRight
+        switch(lowerRightField) {
+            case 0: drawSteps(getXYPositions(LOWER_RIGHT), dc, false); break;
+            case 1: drawCalories(getXYPositions(LOWER_RIGHT), dc, false); break;
+            case 2: drawCalories(getXYPositions(LOWER_RIGHT), dc, true); break;
+            case 3: drawHeartRate(getXYPositions(LOWER_RIGHT), dc); break;
+            case 4: drawDistance(getXYPositions(LOWER_RIGHT), dc); break;
+            case 7: drawActiveTime(getXYPositions(LOWER_RIGHT), dc, true, LOWER_RIGHT); break;
+            case 8: drawActiveTime(getXYPositions(LOWER_RIGHT), dc, false, LOWER_RIGHT); break;
+            case 9: drawFloors(getXYPositions(LOWER_RIGHT), dc, LOWER_RIGHT); break;
+            case 12: drawSteps(getXYPositions(LOWER_RIGHT), dc, true); break;
         }
 
-        // Distance
-        if (lcdFontDataFields) {
-            dc.drawText(181, 184, digitalUpright24, distance > 99.99 ? distance.format("%0.0f") : distance.format("%0.1f"), Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawText(184, 191, digitalUpright16, distanceUnit == 0 ? "km" : "mi", Gfx.TEXT_JUSTIFY_LEFT);
-        } else {
-            dc.drawText(175, 183, Graphics.FONT_TINY, distance > 99.99 ? distance.format("%0.0f") : distance.format("%0.1f"), Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawText(178, 183, Graphics.FONT_TINY, distanceUnit == 0 ? "km" : "mi", Gfx.TEXT_JUSTIFY_LEFT);
-        }
-                
         // Bottom field
         dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
         if (bottomField == ALTITUDE) {
@@ -636,16 +657,10 @@ class Digital5View extends Ui.WatchFace {
                 dc.drawLine(174, 218, 177, 218);
                 dc.drawLine(174, 222, 177, 222);
             }
-        } else if (bottomField == ACTIVE_TIME_TODAY) {
-            var actMinutes        = actinfo.activeMinutesDay.total;
-            var activeHours       = (actMinutes / 60.0).toNumber();
-            var activeMinutes     = (actMinutes % 60).toNumber();
-            bottomFieldText       = Lang.format("$1$:$2$", [activeHours.format(showLeadingZero ? "%02d" : "%01d"), activeMinutes.format("%02d")]);
+        } else if (bottomField == ACTIVE_TIME_TODAY) {            
+            bottomFieldText       = getActiveTimeText(true);
         } else if (bottomField == ACTIVE_TIME_WEEK) {
-            var actMinutes        = actinfo.activeMinutesWeek.total;
-            var activeHours       = (actMinutes / 60.0).toNumber();
-            var activeMinutes     = (actMinutes % 60).toNumber();
-            bottomFieldText       = Lang.format("$1$:$2$", [activeHours.format(showLeadingZero ? "%02d" : "%01d"), activeMinutes.format("%02d")]);
+            bottomFieldText       = getActiveTimeText(false);
         } else if (bottomField == FLOORS) {
             var floorsClimbed     = actinfo.floorsClimbed;
             var floorsDescended   = actinfo.floorsDescended;
@@ -725,6 +740,258 @@ class Digital5View extends Ui.WatchFace {
         if (clockTime.hour == 23 && clockTime.min == 59 && clockTime.sec == 59) {
             addActKcalToAverage(activeKcal); 
         }
+    }
+
+    function drawSteps(xyPositions, dc, showDeltaSteps) {       
+        var bmpX  = xyPositions[0];
+        var bmpY  = xyPositions[1];
+        var textX = xyPositions[2];
+        var textY = xyPositions[3];
+        
+        dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? stepsIconWhite : stepsIcon);
+        if (showDeltaSteps) {
+            if (deltaSteps > 0) {
+                dc.setColor(BRIGHT_RED, Gfx.COLOR_TRANSPARENT);
+            } else {
+                dc.setColor(Gfx.COLOR_BLACK, Gfx.COLOR_TRANSPARENT);
+            }
+        } else {
+            if (colorizeStepText) {
+                stepsReached = stepsReached > 1.0 ? 1.0 : stepsReached;
+                var endIndex = (10.0 * stepsReached).toNumber();
+                dc.setColor(endIndex > 0 ? STEP_COLORS[endIndex - 1] : Gfx.COLOR_BLACK, Gfx.COLOR_TRANSPARENT);
+            } else {
+                dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
+            }
+        }
+        if (lcdFontDataFields) {
+            dc.drawText(textX, textY, digitalUpright24, (showDeltaSteps ? deltaSteps * -1 : steps), Gfx.TEXT_JUSTIFY_RIGHT);
+        } else {
+            dc.drawText(textX, textY, Graphics.FONT_TINY, (showDeltaSteps ? deltaSteps * -1 : steps), Gfx.TEXT_JUSTIFY_RIGHT);
+        }
+    }
+    function drawCalories(xyPositions, dc, isActiveKcal) {
+        var bmpX      = xyPositions[0];
+        var bmpY      = xyPositions[1];
+        var textX     = xyPositions[2];
+        var textY     = xyPositions[3];
+        var fieldText = isActiveKcal ? (activeKcal < 0 ? "0" : activeKcal.toString()) : kcal.toString();
+        dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? burnedIconWhite : burnedIcon);
+        if (isActiveKcal) {
+            dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
+        } else {
+            if (colorizeCalorieText) {
+                if (kcalReached > 3.0) {
+                    dc.setColor(Gfx.COLOR_PINK, Gfx.COLOR_TRANSPARENT);
+                } else if (kcalReached > 2.0) {
+                    dc.setColor(Gfx.COLOR_GREEN, Gfx.COLOR_TRANSPARENT);
+                } else if (kcalReached > 1.0) {
+                    dc.setColor(BRIGHT_BLUE, Gfx.COLOR_TRANSPARENT);
+                } else {
+                    dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
+                }
+            } else {
+                dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
+            }
+        }
+
+        if (lcdFontDataFields) {
+            dc.drawText(textX, textY, digitalUpright24, fieldText, Gfx.TEXT_JUSTIFY_RIGHT);
+        } else {
+            dc.drawText(textX, textY, Graphics.FONT_TINY, fieldText, Gfx.TEXT_JUSTIFY_RIGHT);
+        }
+    }
+    function drawHeartRate(xyPositions, dc) {       
+        var bmpX  = xyPositions[0];
+        var bmpY  = xyPositions[1];
+        var textX = xyPositions[2];
+        var textY = xyPositions[3];
+        if (bpm >= maxBpm) {
+            dc.drawBitmap(bmpX, bmpY, showBpmZones ? bpmMaxRedIcon : darkFieldBackground ? bpmMaxWhiteIcon : bpmMaxBlackIcon);
+        } else {
+            dc.drawBitmap(bmpX, bmpY, showBpmZones ? bpmZoneIcons[currentZone - 1] : darkFieldBackground ? bpmIconWhite : bpmIcon);
+        }
+        dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
+        if (lcdFontDataFields) {
+            dc.drawText(textX, textY, digitalUpright24, (bpm > 0 ? bpm.toString() : ""), Gfx.TEXT_JUSTIFY_RIGHT);
+        } else {
+            dc.drawText(textX, textY, Graphics.FONT_TINY, (bpm > 0 ? bpm.toString() : ""), Gfx.TEXT_JUSTIFY_RIGHT);
+        }
+    }
+    function drawDistance(xyPositions, dc) {        
+        var bmpX     = xyPositions[0];
+        var bmpY     = xyPositions[1];
+        var textX    = xyPositions[2];
+        var textY    = xyPositions[3];
+        var unitLcdX = xyPositions[4];
+        var unitLcdY = xyPositions[5];
+        var unitX    = xyPositions[6];
+        var unitY    = xyPositions[7];
+        dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
+        if (lcdFontDataFields) {
+            dc.drawText(textX, textY, digitalUpright24, distance > 99.99 ? distance.format("%0.0f") : distance.format("%0.1f"), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(unitLcdX, unitLcdY, digitalUpright16, distanceUnit == 0 ? "km" : "mi", Gfx.TEXT_JUSTIFY_LEFT);
+        } else {
+            dc.drawText(textX, textY, Graphics.FONT_TINY, distance > 99.99 ? distance.format("%0.0f") : distance.format("%0.1f"), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(unitX, unitY, Graphics.FONT_TINY, distanceUnit == 0 ? "km" : "mi", Gfx.TEXT_JUSTIFY_LEFT);
+        }
+    }
+    function drawWithUnit(xyPositions, dc, sensor) {        
+        var textX      = xyPositions[2];
+        var textY      = xyPositions[3];
+        var unitLcdX   = xyPositions[4];
+        var unitLcdY   = xyPositions[5];
+        var unitX      = xyPositions[6];
+        var unitY      = xyPositions[7];
+        var fieldText;
+        var unitText;
+        switch(sensor) {
+            case ALTITUDE:
+                var altHistory = Sensor.getElevationHistory(null);        
+                var altitude   = altHistory.next();
+                fieldText = null == altitude ? "-" : altitude.data.format("%0.0f");
+                unitText  = "m";
+                break;
+            case PRESSURE:
+                var pressureHistory = Sensor.getPressureHistory(null);
+                var pressure        = pressureHistory.next();
+                fieldText = null == pressure ? "-" : (pressure.data.toDouble() / 100.0).format("%0.2f");
+                unitText = "mb";
+                break;
+        }
+        dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
+        if (lcdFontDataFields) {
+            dc.drawText(textX, textY, digitalUpright24, fieldText, Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(unitLcdX, unitLcdY, digitalUpright16, unitText, Gfx.TEXT_JUSTIFY_LEFT);
+        } else {
+            dc.drawText(textX, textY, Graphics.FONT_TINY, fieldText, Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(unitX, unitY, Graphics.FONT_TINY, unitText, Gfx.TEXT_JUSTIFY_LEFT);
+        }
+    }
+    function drawActiveTime(xyPositions, dc, isDay, field) {
+        var textX    = xyPositions[2];
+        var textY    = xyPositions[3];
+        var horAlign = Gfx.TEXT_JUSTIFY_RIGHT;
+        switch (field) {
+            case 0: textX += 5; break;
+            case 1: textX -= lcdFontDataFields ? 76 : 72; horAlign = Gfx.TEXT_JUSTIFY_LEFT; break;
+            case 2: break;
+            case 3: textX -= lcdFontDataFields ? 55 : 51; horAlign = Gfx.TEXT_JUSTIFY_LEFT; break;
+        }        
+        var activeTimeText = getActiveTimeText(isDay);        
+        dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
+        if (lcdFontDataFields) {
+            dc.drawText(textX, textY, digitalUpright24, activeTimeText, horAlign);
+        } else {
+            dc.drawText(textX, textY, Graphics.FONT_TINY, activeTimeText, horAlign);
+        }  
+    }    
+    function drawFloors(xyPositions, dc, field) {
+        var bmpX     = xyPositions[0];
+        var bmpY     = xyPositions[1];
+        var textX    = xyPositions[2];
+        var textY    = xyPositions[3];
+        var horAlign = Gfx.TEXT_JUSTIFY_RIGHT;
+        switch (field) {
+            case 0: textX -= 5; break;
+            case 1: textX -= 5; horAlign = Gfx.TEXT_JUSTIFY_LEFT; break;
+            case 2: break;
+            case 3: textX -= lcdFontDataFields ? 55 : 51; horAlign = Gfx.TEXT_JUSTIFY_LEFT; break;
+        }
+        var floorsClimbed   = actinfo.floorsClimbed;
+        var floorsDescended = actinfo.floorsDescended;
+        dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
+        if (lcdFontDataFields) {
+            dc.drawText(textX, textY, digitalUpright24, (floorsClimbed.toString() + "/" + floorsDescended.toString()), horAlign);
+        } else {
+            dc.drawText(textX, textY, Graphics.FONT_TINY, (floorsClimbed.toString() + "/" + floorsDescended.toString()), horAlign);
+        }
+    }
+    function drawMeters(xyPositions, dc, field) {
+        var textX           = xyPositions[2];
+        var textY           = xyPositions[3];
+        var unitLcdX        = xyPositions[4];
+        var unitLcdY        = xyPositions[5];
+        var unitX           = xyPositions[6];
+        var unitY           = xyPositions[7];
+        var metersClimbed   = actinfo.metersClimbed.format("%0d");
+        var metersDescended = actinfo.metersDescended.format("%0d");
+        dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
+        if (lcdFontDataFields) {
+            dc.drawText(textX, textY, digitalUpright24, metersClimbed.toString() + "/" + metersDescended.toString(), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(unitLcdX, unitLcdY, digitalUpright16, "m", Gfx.TEXT_JUSTIFY_LEFT);
+        } else {
+            dc.drawText(textX, textY, Graphics.FONT_TINY, metersClimbed.toString() + " / " + metersDescended.toString(), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(unitX, unitY, Graphics.FONT_TINY, "m", Gfx.TEXT_JUSTIFY_LEFT);
+        }
+    }
+    function drawActKcalAvg(xyPositions, dc) {
+        var bmpX  = xyPositions[0];
+        var bmpY  = xyPositions[1];
+        var textX = xyPositions[2];
+        var textY = xyPositions[3];
+        
+        dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? burnedIconWhite : burnedIcon);
+        dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
+        if (lcdFontDataFields) {
+            dc.drawText(textX, textY, digitalUpright24, getActKcalAvg(activeKcal), Gfx.TEXT_JUSTIFY_RIGHT);
+        } else {
+            dc.drawText(textX, textY, Graphics.FONT_TINY, getActKcalAvg(activeKcal), Gfx.TEXT_JUSTIFY_RIGHT);
+        }
+    }
+
+    function getXYPositions(field) {
+        var bmpX, bmpY, textX, textY, unitLcdX, unitLcdY, unitX, unitY;
+        switch(field) {
+            case 0: // UPPER LEFT
+                bmpX     = 16;
+                bmpY     = 157;
+                textX    = 115;
+                textY    = lcdFontDataFields ? 153 : 152;
+                unitLcdX = 16;
+                unitLcdY = 160;
+                unitX    = 16;
+                unitY    = 152;
+                break;
+            case 1: // UPPER RIGHT
+                bmpX     = 207; 
+                bmpY     = 157;
+                textX    = lcdFontDataFields ? 202 : 196;
+                textY    = lcdFontDataFields ? 153 : 152;
+                unitLcdX = 207;
+                unitLcdY = 160;
+                unitX    = 200;
+                unitY    = 152;
+                break;
+            case 2: // LOWER LEFT
+                bmpX     = 36; 
+                bmpY     = 187;
+                textX    = 115;
+                textY    = lcdFontDataFields ? 184 : 183;
+                unitLcdX = 36;
+                unitLcdY = 190;
+                unitX    = 36;
+                unitY    = 183;
+                break;
+            case 3: // LOWER RIGHT
+                bmpX     = 187; 
+                bmpY     = 187;
+                textX    = lcdFontDataFields ? 181 : 175;
+                textY    = lcdFontDataFields ? 184 : 183;
+                unitLcdX = 187;
+                unitLcdY = 190;
+                unitX    = 180;
+                unitY    = 183;
+                break;
+        }
+        return [ bmpX, bmpY, textX, textY, unitLcdX, unitLcdY, unitX, unitY ];
+    }
+
+    function getActiveTimeText(isDay) {
+        var actMinutes     = isDay ? actinfo.activeMinutesDay.total : actinfo.activeMinutesWeek.total;
+        var activeHours    = (actMinutes / 60.0).toNumber();
+        var activeMinutes  = (actMinutes % 60).toNumber();
+        return Lang.format("$1$:$2$", [activeHours.format(showLeadingZero ? "%02d" : "%01d"), activeMinutes.format("%02d")]);
     }
 
     function getWeekOfYear(nowinfo) {
