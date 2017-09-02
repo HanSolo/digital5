@@ -764,7 +764,6 @@ class Digital5View extends Ui.WatchFace {
         var textX     = xyPositions[2];
         var textY     = xyPositions[3];
         var fieldText = isActiveKcal ? (activeKcal < 0 ? "0" : activeKcal.toString()) : kcal.toString();
-        fieldText = 4500;
         dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? burnedIconWhite : burnedIcon);
         if (isActiveKcal) {
             dc.setColor(fieldForegroundColor, fieldBackgroundColor);
