@@ -18,8 +18,6 @@ var lcdFont;
 var lcdFontDataFields;
 var showLeadingZero;
 var clockTime;
-var upperBackgroundColor;
-var upperForegroundColor;
 var activeKcal;
 
 
@@ -73,7 +71,10 @@ class Digital5View extends Ui.WatchFace {
     var upperRightField;
     var lowerLeftField;
     var lowerRightField;
-    var bottomField;        
+    var bottomField;
+    var darkUpperBackground;
+    var upperBackgroundColor;
+    var upperForegroundColor;
     var darkFieldBackground;
     var fieldBackgroundColor;
     var fieldForegroundColor;
@@ -199,7 +200,7 @@ class Digital5View extends Ui.WatchFace {
         lowerLeftField        = App.getApp().getProperty("LowerLeftField");
         lowerRightField       = App.getApp().getProperty("LowerRightField");
         bottomField           = App.getApp().getProperty("BottomField");
-        var darkUpperBackground   = App.getApp().getProperty("DarkUpperBackground");
+        darkUpperBackground   = App.getApp().getProperty("DarkUpperBackground");
         upperBackgroundColor  = darkUpperBackground ? Gfx.COLOR_BLACK : Gfx.COLOR_WHITE;
         upperForegroundColor  = darkUpperBackground ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK;
         darkFieldBackground   = App.getApp().getProperty("DarkFieldBackground");
@@ -303,7 +304,7 @@ class Digital5View extends Ui.WatchFace {
         
         // BLE
         if (connected) {
-            dc.setColor(upperForegroundColor, Gfx.COLOR_TRANSPARENT);
+            dc.setColor(upperForegroundColor, upperBackgroundColor);
             dc.drawLine(86, 18, 93, 25);
             dc.drawLine(93, 25, 89, 29);
             dc.drawLine(89, 29, 89, 16);
@@ -312,18 +313,18 @@ class Digital5View extends Ui.WatchFace {
         }
         
         // Battery
-        dc.setColor(upperForegroundColor, Gfx.COLOR_TRANSPARENT);        
+        dc.setColor(upperForegroundColor, upperBackgroundColor);        
         dc.drawRectangle(106, 18, 28, 11);
         dc.fillRectangle(134, 21, 2, 5);
-        dc.setColor(charge < 20 ? BRIGHT_RED : upperForegroundColor, Gfx.COLOR_TRANSPARENT);
+        dc.setColor(charge < 20 ? BRIGHT_RED : upperForegroundColor, upperBackgroundColor);
         dc.fillRectangle(108, 20 , 24.0 * charge / 100.0, 7);        
         if (showChargePercentage) {
             if (showPercentageUnder20) {
                 if (charge <= 20) {
-                    dc.setColor(upperForegroundColor, Gfx.COLOR_TRANSPARENT);
+                    dc.setColor(upperForegroundColor, upperBackgroundColor);
                 }
             } else {
-                dc.setColor(upperForegroundColor, Gfx.COLOR_TRANSPARENT);
+                dc.setColor(upperForegroundColor, upperBackgroundColor);
             }
             dc.drawText(128, 2, digitalUpright16, charge.toNumber(), Gfx.TEXT_JUSTIFY_RIGHT);
             dc.drawLine(129, 15, 135, 5);
@@ -333,7 +334,7 @@ class Digital5View extends Ui.WatchFace {
         
         // Do not disturb
         if (System.getDeviceSettings().doNotDisturb) { 
-            dc.setColor(upperForegroundColor, Gfx.COLOR_TRANSPARENT);
+            dc.setColor(upperForegroundColor, upperBackgroundColor);
             dc.drawCircle(153, 23, 7);
             dc.fillRectangle(150, 22, 7, 3);
         }
@@ -354,7 +355,7 @@ class Digital5View extends Ui.WatchFace {
                 sunriseText = null == sunriseHH ? "--:--" : (sunriseHH + ":" + sunriseMM);
                 sunsetText  = null == sunsetHH ? "--:--" : (sunsetHH + ":" + sunsetMM);
             }
-            dc.setColor(upperForegroundColor, Gfx.COLOR_TRANSPARENT);
+            dc.setColor(upperForegroundColor, upperBackgroundColor);
             dc.fillPolygon([[45, 50], [57, 50], [50, 44]]);    // upIcon
             dc.fillPolygon([[184, 44], [194, 44], [188, 49]]); // downIcon
             if (lcdFont) {
@@ -369,7 +370,7 @@ class Digital5View extends Ui.WatchFace {
         // Step Bar background
         if (showStepBar) {
             dc.setPenWidth(8);           
-            dc.setColor(darkUpperBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);
+            dc.setColor(darkUpperBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, upperBackgroundColor);
             for(var i = 0; i < 10 ; i++) {            
                 var startAngleLeft  = 130 + (i * 6);
                 dc.drawArc(centerX, centerY, 117, 0, startAngleLeft, startAngleLeft + 5);
@@ -380,7 +381,7 @@ class Digital5View extends Ui.WatchFace {
             var endIndex      = (10.0 * stepsReached).toNumber();
             var stopAngleLeft = (184.0 - 59.0 * stepsReached).toNumber();
             stopAngleLeft     = stopAngleLeft < 130.0 ? 130.0 : stopAngleLeft;        
-            dc.setColor(endIndex > 0 ? STEP_COLORS[endIndex - 1] : Gfx.COLOR_TRANSPARENT, Gfx.COLOR_TRANSPARENT);
+            dc.setColor(endIndex > 0 ? STEP_COLORS[endIndex - 1] : Gfx.COLOR_TRANSPARENT, upperBackgroundColor);
             for(var i = 0; i < endIndex ; i++) {            
                 var startAngleLeft  = 184 - (i * 6);
                 dc.drawArc(centerX, centerY, 117, 0, startAngleLeft, startAngleLeft + 5);
@@ -390,13 +391,13 @@ class Digital5View extends Ui.WatchFace {
         // KCal Goal Bar Background
         if (showCalorieBar) {
             if (kcalReached > 3.0) {
-                dc.setColor(Gfx.COLOR_PINK, Gfx.COLOR_TRANSPARENT);
+                dc.setColor(Gfx.COLOR_PINK, upperBackgroundColor);
             } else if (kcalReached > 2.0) {
-                dc.setColor(Gfx.COLOR_GREEN, Gfx.COLOR_TRANSPARENT);
+                dc.setColor(Gfx.COLOR_GREEN, upperBackgroundColor);
             } else if (kcalReached > 1.0) {
-                dc.setColor(BRIGHT_BLUE, Gfx.COLOR_TRANSPARENT);
+                dc.setColor(BRIGHT_BLUE, upperBackgroundColor);
             } else {
-                dc.setColor(darkUpperBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);
+                dc.setColor(darkUpperBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, upperBackgroundColor);
             }
             for(var i = 0; i < 10 ; i++) {            
                 var startAngleRight = -10 + (i * 6);         
@@ -405,16 +406,16 @@ class Digital5View extends Ui.WatchFace {
                     
             // KCal Goal Bar
             if (kcalReached > 3.0) {
-                dc.setColor(Gfx.COLOR_YELLOW, Gfx.COLOR_TRANSPARENT);
+                dc.setColor(Gfx.COLOR_YELLOW, upperBackgroundColor);
                 kcalReached -= 3.0;
             } else if (kcalReached > 2.0) {
-                dc.setColor(Gfx.COLOR_PINK, Gfx.COLOR_TRANSPARENT);
+                dc.setColor(Gfx.COLOR_PINK, upperBackgroundColor);
                 kcalReached -= 2.0;
             } else if (kcalReached > 1.0) {
-                dc.setColor(Gfx.COLOR_GREEN, Gfx.COLOR_TRANSPARENT);
+                dc.setColor(Gfx.COLOR_GREEN, upperBackgroundColor);
                 kcalReached -= 1.0;
             } else {
-                dc.setColor(BRIGHT_BLUE, Gfx.COLOR_TRANSPARENT);
+                dc.setColor(BRIGHT_BLUE, upperBackgroundColor);
             }
             var stopAngleRight = (-10.0 + 59.0 * kcalReached).toNumber();
             stopAngleRight = stopAngleRight > 59.0 ? 59.0 : stopAngleRight;
@@ -426,19 +427,19 @@ class Digital5View extends Ui.WatchFace {
 
         // Move Bar
         if (showMoveBar) {
-            dc.setColor(darkUpperBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);
+            dc.setColor(darkUpperBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, upperBackgroundColor);
             for (var i = 0 ; i < 5 ; i++) { dc.fillRectangle(54 + (i * 27), 143, 25, 4); }
-            if (moveBarLevel > Act.MOVE_BAR_LEVEL_MIN) { dc.setColor(LEVEL_COLORS[moveBarLevel - 1], Gfx.COLOR_TRANSPARENT); }
+            if (moveBarLevel > Act.MOVE_BAR_LEVEL_MIN) { dc.setColor(LEVEL_COLORS[moveBarLevel - 1], upperBackgroundColor); }
             for (var i = 0 ; i < moveBarLevel ; i++) { dc.fillRectangle(54 + (i * 27), 143, 25, 4); }
             if (moveBarLevel == 5) { dc.drawBitmap(190, 141, darkUpperBackground ? alertIcon : alertIconBlack); }
         }
         
         
-        // ******************** TIME ******************************************
-
+        // ******************** TIME ******************************************        
+        
         // Time        
         if (lcdBackgroundVisible && lcdFont) {
-            dc.setColor(darkUpperBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);
+            dc.setColor(darkUpperBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, upperBackgroundColor);
             if (showLeadingZero) {
                 dc.drawText(centerX, 51, digitalUpright72, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
             } else {
@@ -457,7 +458,7 @@ class Digital5View extends Ui.WatchFace {
                 }
             }            
         }
-        dc.setColor(upperForegroundColor, Gfx.COLOR_TRANSPARENT);
+        dc.setColor(upperForegroundColor, upperBackgroundColor);
         if (is24Hour) {
             if (lcdFont) {
                 dc.drawText(centerX, 51, digitalUpright72, Lang.format("$1$:$2$", [clockTime.hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
@@ -487,14 +488,14 @@ class Digital5View extends Ui.WatchFace {
         
         // ******************** DATE ******************************************
         
-        // 
+        // KW
         if (showCalendarWeek) {
             dc.drawText((lcdFont ? 45 : 50), (lcdFont ? 75 : 66), lcdFont ? digitalUpright16 : Graphics.FONT_TINY, (calendarWeekText), Gfx.TEXT_JUSTIFY_RIGHT);
             dc.drawText((lcdFont ? 45 : 50), (lcdFont ? 97 : 87), lcdFont ? digitalUpright16 : Graphics.FONT_TINY, (getWeekOfYear(nowinfo)), Gfx.TEXT_JUSTIFY_RIGHT);            
         }
     
         // Date and home timezone
-        dc.setColor(upperForegroundColor, Gfx.COLOR_TRANSPARENT);
+        dc.setColor(upperForegroundColor, upperBackgroundColor);
         var dateYPosition = showMoveBar ? 116 : 119;
         dateYPosition = lcdFont ? dateYPosition : dateYPosition - 2;
         if (onTravel && showHomeTimezone) {
@@ -693,7 +694,7 @@ class Digital5View extends Ui.WatchFace {
     
     function drawSeconds(dc) {
         var clockTime = Sys.getClockTime();
-        dc.setColor(upperBackgroundColor, Gfx.COLOR_TRANSPARENT);
+        dc.setColor(upperBackgroundColor, upperBackgroundColor);
         if (is24Hour) {
             if (lcdFont) {
                 dc.fillRectangle(199, 99, 16, 12);
@@ -702,7 +703,7 @@ class Digital5View extends Ui.WatchFace {
                 dc.fillRectangle(191, 93, 21, 17);
                 dc.setClip(191, 93, 21, 17);
             }
-            dc.setColor(upperForegroundColor, Gfx.COLOR_TRANSPARENT);
+            dc.setColor(upperForegroundColor, upperBackgroundColor);
             dc.drawText((lcdFont ? 199 : 191), (lcdFont ? 97 : 87), lcdFont ? digitalUpright16 : Graphics.FONT_TINY, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
         } else {
             if (lcdFont) {
@@ -712,7 +713,7 @@ class Digital5View extends Ui.WatchFace {
                 dc.fillRectangle(191, 74, 21, 17);
                 dc.setClip(191, 74, 21, 17);
             }
-            dc.setColor(upperForegroundColor, Gfx.COLOR_TRANSPARENT);
+            dc.setColor(upperForegroundColor, upperBackgroundColor);
             dc.drawText((lcdFont ? 199 : 191), (lcdFont ? 75 : 68), lcdFont ? digitalUpright16 : Graphics.FONT_TINY, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
         }
         //dc.clearClip(); // does not work here, instead clear clip at the beginning on onUpdate()
@@ -751,15 +752,15 @@ class Digital5View extends Ui.WatchFace {
         dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? stepsIconWhite : stepsIcon);
         if (showDeltaSteps) {
             if (deltaSteps > 0) {
-                dc.setColor(BRIGHT_RED, Gfx.COLOR_TRANSPARENT);
+                dc.setColor(BRIGHT_RED, fieldBackgroundColor);
             } else {
-                dc.setColor(Gfx.COLOR_BLACK, Gfx.COLOR_TRANSPARENT);
+                dc.setColor(Gfx.COLOR_BLACK, fieldBackgroundColor);
             }
         } else {
             if (colorizeStepText) {
                 stepsReached = stepsReached > 1.0 ? 1.0 : stepsReached;
                 var endIndex = (10.0 * stepsReached).toNumber();
-                dc.setColor(endIndex > 0 ? STEP_COLORS[endIndex - 1] : Gfx.COLOR_BLACK, Gfx.COLOR_TRANSPARENT);
+                dc.setColor(endIndex > 0 ? STEP_COLORS[endIndex - 1] : Gfx.COLOR_BLACK, fieldBackgroundColor);
             } else {
                 dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
             }
@@ -778,20 +779,20 @@ class Digital5View extends Ui.WatchFace {
         var fieldText = isActiveKcal ? (activeKcal < 0 ? "0" : activeKcal.toString()) : kcal.toString();
         dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? burnedIconWhite : burnedIcon);
         if (isActiveKcal) {
-            dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
+            dc.setColor(fieldForegroundColor, fieldBackgroundColor);
         } else {
             if (colorizeCalorieText) {
                 if (kcalReached > 3.0) {
-                    dc.setColor(Gfx.COLOR_PINK, Gfx.COLOR_TRANSPARENT);
+                    dc.setColor(Gfx.COLOR_PINK, fieldBackgroundColor);
                 } else if (kcalReached > 2.0) {
-                    dc.setColor(Gfx.COLOR_GREEN, Gfx.COLOR_TRANSPARENT);
+                    dc.setColor(Gfx.COLOR_GREEN, fieldBackgroundColor);
                 } else if (kcalReached > 1.0) {
-                    dc.setColor(BRIGHT_BLUE, Gfx.COLOR_TRANSPARENT);
+                    dc.setColor(BRIGHT_BLUE, fieldBackgroundColor);
                 } else {
-                    dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
+                    dc.setColor(fieldForegroundColor, fieldBackgroundColor);
                 }
             } else {
-                dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
+                dc.setColor(fieldForegroundColor, fieldBackgroundColor);
             }
         }
 
@@ -811,7 +812,7 @@ class Digital5View extends Ui.WatchFace {
         } else {
             dc.drawBitmap(bmpX, bmpY, showBpmZones ? bpmZoneIcons[currentZone - 1] : darkFieldBackground ? bpmIconWhite : bpmIcon);
         }
-        dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
+        dc.setColor(fieldForegroundColor, fieldBackgroundColor);
         if (lcdFontDataFields) {
             dc.drawText(textX, textY, digitalUpright24, (bpm > 0 ? bpm.toString() : ""), Gfx.TEXT_JUSTIFY_RIGHT);
         } else {
@@ -827,7 +828,7 @@ class Digital5View extends Ui.WatchFace {
         var unitLcdY = xyPositions[5];
         var unitX    = xyPositions[6];
         var unitY    = xyPositions[7];
-        dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
+        dc.setColor(fieldForegroundColor, fieldBackgroundColor);
         if (lcdFontDataFields) {
             dc.drawText(textX, textY, digitalUpright24, distance > 99.99 ? distance.format("%0.0f") : distance.format("%0.1f"), Gfx.TEXT_JUSTIFY_RIGHT);
             dc.drawText(unitLcdX, unitLcdY, digitalUpright16, distanceUnit == 0 ? "km" : "mi", Gfx.TEXT_JUSTIFY_LEFT);
@@ -859,7 +860,7 @@ class Digital5View extends Ui.WatchFace {
                 unitText = "mb";
                 break;
         }
-        dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
+        dc.setColor(fieldForegroundColor, fieldBackgroundColor);
         if (lcdFontDataFields) {
             dc.drawText(textX, textY, digitalUpright24, fieldText, Gfx.TEXT_JUSTIFY_RIGHT);
             dc.drawText(unitLcdX, unitLcdY, digitalUpright16, unitText, Gfx.TEXT_JUSTIFY_LEFT);
@@ -879,7 +880,7 @@ class Digital5View extends Ui.WatchFace {
             case 3: textX -= lcdFontDataFields ? 55 : 51; horAlign = Gfx.TEXT_JUSTIFY_LEFT; break;
         }        
         var activeTimeText = getActiveTimeText(isDay);        
-        dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
+        dc.setColor(fieldForegroundColor, fieldBackgroundColor);
         if (lcdFontDataFields) {
             dc.drawText(textX, textY, digitalUpright24, activeTimeText, horAlign);
         } else {
@@ -900,7 +901,7 @@ class Digital5View extends Ui.WatchFace {
         }
         var floorsClimbed   = actinfo.floorsClimbed;
         var floorsDescended = actinfo.floorsDescended;
-        dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
+        dc.setColor(fieldForegroundColor, fieldBackgroundColor);
         if (lcdFontDataFields) {
             dc.drawText(textX, textY, digitalUpright24, (floorsClimbed.toString() + "/" + floorsDescended.toString()), horAlign);
         } else {
@@ -916,7 +917,7 @@ class Digital5View extends Ui.WatchFace {
         var unitY           = xyPositions[7];
         var metersClimbed   = actinfo.metersClimbed.format("%0d");
         var metersDescended = actinfo.metersDescended.format("%0d");
-        dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
+        dc.setColor(fieldForegroundColor, fieldBackgroundColor);
         if (lcdFontDataFields) {
             dc.drawText(textX, textY, digitalUpright24, metersClimbed.toString() + "/" + metersDescended.toString(), Gfx.TEXT_JUSTIFY_RIGHT);
             dc.drawText(unitLcdX, unitLcdY, digitalUpright16, "m", Gfx.TEXT_JUSTIFY_LEFT);
@@ -932,7 +933,7 @@ class Digital5View extends Ui.WatchFace {
         var textY = xyPositions[3];
         
         dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? burnedIconWhite : burnedIcon);
-        dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
+        dc.setColor(fieldForegroundColor, fieldBackgroundColor);
         if (lcdFontDataFields) {
             dc.drawText(textX, textY, digitalUpright24, getActKcalAvg(activeKcal), Gfx.TEXT_JUSTIFY_RIGHT);
         } else {
