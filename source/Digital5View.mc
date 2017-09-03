@@ -18,7 +18,6 @@ var lcdFont;
 var lcdFontDataFields;
 var showLeadingZero;
 var clockTime;
-var activeKcal;
 
 
 class Digital5View extends Ui.WatchFace {
@@ -82,6 +81,8 @@ class Digital5View extends Ui.WatchFace {
     var bpmZoneIcons;
     var maxBpm;
     var currentZone;
+    var activeKcal;
+    var kcalReached;
      
       
     function initialize() {
@@ -230,8 +231,8 @@ class Digital5View extends Ui.WatchFace {
         var baseKcalWoman = (9.99 * userWeight) + (6.25 * userHeight) - (4.92 * userAge) - 161.0;           // base kcal woman
         var baseKcal      = (gender == MEN ? baseKcalMen : baseKcalWoman) * 1.21385;                        // base kcal related to gender incl. correction factor for fenix 5x
         var kcalPerMinute = baseKcal / 1440;                                                                // base kcal per minute
-        var kcalReached   = kcal / baseKcal;
-        activeKcal = (kcal - (kcalPerMinute * (clockTime.hour * 60.0 + clockTime.min))).toNumber();         // active kcal
+        kcalReached       = kcal / baseKcal;
+        activeKcal        = (kcal - (kcalPerMinute * (clockTime.hour * 60.0 + clockTime.min))).toNumber();         // active kcal
 
         // Heart Rate Zones
         maxBpm = (211.0 - 0.64 * userAge).toNumber(); // calculated after a study at NTNU (http://www.ntnu.edu/cerg/hrmax-info)
@@ -698,11 +699,7 @@ class Digital5View extends Ui.WatchFace {
         
         dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? stepsIconWhite : stepsIcon);
         if (showDeltaSteps) {
-            if (deltaSteps > 0) {
-                dc.setColor(BRIGHT_RED, fieldBackgroundColor);
-            } else {
-                dc.setColor(Gfx.COLOR_BLACK, fieldBackgroundColor);
-            }
+            dc.setColor(deltaSteps > 0 ? BRIGHT_RED : Gfx.COLOR_BLACK, fieldBackgroundColor);
         } else {
             if (colorizeStepText) {
                 stepsReached = stepsReached > 1.0 ? 1.0 : stepsReached;
@@ -712,11 +709,7 @@ class Digital5View extends Ui.WatchFace {
                 dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
             }
         }
-        if (lcdFontDataFields) {
-            dc.drawText(textX, textY, digitalUpright24, (showDeltaSteps ? deltaSteps * -1 : steps), Gfx.TEXT_JUSTIFY_RIGHT);
-        } else {
-            dc.drawText(textX, textY, Graphics.FONT_TINY, (showDeltaSteps ? deltaSteps * -1 : steps), Gfx.TEXT_JUSTIFY_RIGHT);
-        }
+        dc.drawText(textX, textY, lcdFontDataFields ? digitalUpright24 : Graphics.FONT_TINY, (showDeltaSteps ? deltaSteps * -1 : steps), Gfx.TEXT_JUSTIFY_RIGHT);
     }
     function drawCalories(xyPositions, dc, isActiveKcal, field) {
         var bmpX      = xyPositions[0];
