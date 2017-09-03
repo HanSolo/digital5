@@ -114,6 +114,22 @@
 	
 	<string id="SecondsAlwaysOn">Toujours montrer secondes</string>
 	
+	<string id="HourColor">La couleur des heures</string>
+	<string id="MinuteColor">La couleur des minutes</string>
+	
+	<string id="White">Blanc</string>
+    <string id="Black">Noir</string>
+    <string id="Red">Rouge</string>
+    <string id="DarkRed">Cramoisi</string>
+    <string id="Orange">Orange</string>
+    <string id="Yellow">Jaune</string>
+    <string id="Green">Vert</string>
+    <string id="DarkGreen">Vert foncé</string>
+    <string id="Blue">Bleu</string>
+    <string id="DarkBlue">Bleu foncé</string>
+    <string id="Purple">Lilas</string>
+    <string id="Pink">Rose vif</string>
+	
 	<string id="UpperLeftField">Paneau supérieure gauche</string>
 	<string id="UpperRightField">Paneau supérieure à droite</string>
 	<string id="LowerLeftField">Panneau inférieur gauche</string>

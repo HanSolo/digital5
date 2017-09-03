@@ -42,6 +42,9 @@
     
     <property id="SecondsAlwaysOn" type="boolean">false</property>
     
+    <property id="HourColor" type="number">0</property>
+    <property id="MinuteColor" type="number">0</property>
+    
     <property id="UpperLeftField" type="number">0</property>
     <property id="UpperRightField" type="number">1</property>
     <property id="LowerLeftField" type="number">3</property>

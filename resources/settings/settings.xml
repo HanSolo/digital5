@@ -19,6 +19,48 @@
         <settingConfig type="numeric" />
     </setting>
     
+    <setting propertyKey="@Properties.DarkUpperBackground" title="@Strings.DarkUpperBackground">
+    	<settingConfig type="boolean" />
+    </setting>
+    
+    <setting propertyKey="@Properties.DarkFieldBackground" title="@Strings.DarkFieldBackground">
+    	<settingConfig type="boolean" />
+    </setting>
+    
+    <setting propertyKey="@Properties.HourColor" title="@Strings.HourColor">
+    	<settingConfig type="list">
+    		<listEntry value="0">@Strings.White</listEntry>
+    		<listEntry value="1">@Strings.Black</listEntry>
+    		<listEntry value="2">@Strings.Red</listEntry>
+    		<listEntry value="3">@Strings.DarkRed</listEntry>
+    		<listEntry value="4">@Strings.Orange</listEntry>
+    		<listEntry value="5">@Strings.Yellow</listEntry>
+    		<listEntry value="6">@Strings.Green</listEntry>
+    		<listEntry value="7">@Strings.DarkGreen</listEntry>
+    		<listEntry value="8">@Strings.Blue</listEntry>
+    		<listEntry value="9">@Strings.DarkBlue</listEntry>
+    		<listEntry value="10">@Strings.Purple</listEntry>
+    		<listEntry value="11">@Strings.Pink</listEntry>
+    	</settingConfig>
+    </setting>
+    
+    <setting propertyKey="@Properties.MinuteColor" title="@Strings.MinuteColor">
+    	<settingConfig type="list">
+    		<listEntry value="0">@Strings.White</listEntry>
+    		<listEntry value="1">@Strings.Black</listEntry>
+    		<listEntry value="2">@Strings.Red</listEntry>
+    		<listEntry value="3">@Strings.DarkRed</listEntry>
+    		<listEntry value="4">@Strings.Orange</listEntry>
+    		<listEntry value="5">@Strings.Yellow</listEntry>
+    		<listEntry value="6">@Strings.Green</listEntry>
+    		<listEntry value="7">@Strings.DarkGreen</listEntry>
+    		<listEntry value="8">@Strings.Blue</listEntry>
+    		<listEntry value="9">@Strings.DarkBlue</listEntry>
+    		<listEntry value="10">@Strings.Purple</listEntry>
+    		<listEntry value="11">@Strings.Pink</listEntry>
+    	</settingConfig>
+    </setting>
+    
     <setting propertyKey="@Properties.LcdBackground" title="@Strings.LcdBackground">
         <settingConfig type="boolean" />
     </setting>
@@ -212,15 +254,7 @@
     		<listEntry value="11">@Strings.ActKcalAvg</listEntry>
         </settingConfig>
     </setting>
-     
-    <setting propertyKey="@Properties.DarkUpperBackground" title="@Strings.DarkUpperBackground">
-    	<settingConfig type="boolean" />
-    </setting>
-    
-    <setting propertyKey="@Properties.DarkFieldBackground" title="@Strings.DarkFieldBackground">
-    	<settingConfig type="boolean" />
-    </setting>
-    
+         
     <setting propertyKey="@Properties.UserLat" title="@Strings.UserLat">
     	<settingConfig type="numeric" required="true" />
     </setting>

@@ -114,6 +114,22 @@
 	
 	<string id="SecondsAlwaysOn">Seconds always on</string>
 	
+	<string id="HourColor">Hour color</string>
+	<string id="MinuteColor">Minute color</string>
+	
+	<string id="White">White</string>
+    <string id="Black">Black</string>
+    <string id="Red">Red</string>
+    <string id="DarkRed">Dark red</string>
+    <string id="Orange">Orange</string>
+    <string id="Yellow">Yellow</string>
+    <string id="Green">Green</string>
+    <string id="DarkGreen">Dark green</string>
+    <string id="Blue">Blue</string>
+    <string id="DarkBlue">Dark blue</string>
+    <string id="Purple">Purple</string>
+    <string id="Pink">Pink</string>
+	
 	<string id="UpperLeftField">Upper Left Field</string>
 	<string id="UpperRightField">Upper Right Field</string>
 	<string id="LowerLeftField">Lower Left Field</string>

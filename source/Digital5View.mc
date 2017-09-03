@@ -191,6 +191,8 @@ class Digital5View extends Ui.WatchFace {
         var showMoveBar           = App.getApp().getProperty("ShowMoveBar");
         var showStepBar           = App.getApp().getProperty("ShowStepBar");
         var showCalorieBar        = App.getApp().getProperty("ShowCalorieBar");
+        var hourColor             = getColor(App.getApp().getProperty("HourColor"));
+        var minuteColor           = getColor(App.getApp().getProperty("MinuteColor"));
         colorizeStepText          = App.getApp().getProperty("ColorizeStepText");
         colorizeCalorieText       = App.getApp().getProperty("ColorizeCalorieText");
         upperLeftField            = App.getApp().getProperty("UpperLeftField");
@@ -434,8 +436,8 @@ class Digital5View extends Ui.WatchFace {
         }
         
         
-        // ******************** TIME ******************************************        
-        
+        // ******************** TIME ******************************************                
+
         // Time        
         if (lcdBackgroundVisible && lcdFont) {
             dc.setColor(darkUpperBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, upperBackgroundColor);
@@ -443,27 +445,14 @@ class Digital5View extends Ui.WatchFace {
                 dc.drawText(centerX, 51, digitalUpright72, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
             } else {
                 if (is24Hour) {
-                    if (clockTime.hour < 10) {
-                        dc.drawText(centerX, 51, digitalUpright72, "8:88", Gfx.TEXT_JUSTIFY_CENTER);
-                    } else {
-                        dc.drawText(centerX, 51, digitalUpright72, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
-                    }
+                    dc.drawText(centerX, 51, digitalUpright72, clockTime.hour < 10 ? "8:88" : "88:88", Gfx.TEXT_JUSTIFY_CENTER);
                 } else {
-                    if (clockTime.hour < 10 || clockTime.hour > 12) {
-                        dc.drawText(centerX, 51, digitalUpright72, "8:88", Gfx.TEXT_JUSTIFY_CENTER);
-                    } else {
-                        dc.drawText(centerX, 51, digitalUpright72, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
-                    }
+                    dc.drawText(centerX, 51, digitalUpright72, (clockTime.hour < 10 || clockTime.hour > 12) ? "8:88" : "88:88", Gfx.TEXT_JUSTIFY_CENTER);
                 }
             }            
         }
-        dc.setColor(upperForegroundColor, Gfx.COLOR_TRANSPARENT);
         if (is24Hour) {
-            if (lcdFont) {
-                dc.drawText(centerX, 51, digitalUpright72, Lang.format("$1$:$2$", [clockTime.hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
-            } else {
-                dc.drawText(centerX, 56, Graphics.FONT_NUMBER_HOT, Lang.format("$1$:$2$", [clockTime.hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
-            }
+            drawTime(hourColor, minuteColor, lcdFont ? digitalUpright72 : Graphics.FONT_NUMBER_HOT, dc);
         } else {
             var hour = clockTime.hour;
             var amPm = "am";
@@ -476,10 +465,10 @@ class Digital5View extends Ui.WatchFace {
                 amPm = "pm";
             }         
             if (lcdFont) {   
-                dc.drawText(centerX, 51, digitalUpright72, Lang.format("$1$:$2$", [hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
+                drawTime(hourColor, minuteColor, digitalUpright72, dc);
                 dc.drawText(199, 97, digitalUpright16, amPm, Gfx.TEXT_JUSTIFY_LEFT);
             } else {
-                dc.drawText(centerX, 56, Graphics.FONT_NUMBER_HOT, Lang.format("$1$:$2$", [hour.format(showLeadingZero ? "%02d" : "%01d"), clockTime.min.format("%02d")]), Gfx.TEXT_JUSTIFY_CENTER);
+                drawTime(hourColor, minuteColor, Graphics.FONT_NUMBER_HOT, dc);
                 dc.drawText(191, 87, Graphics.FONT_TINY, amPm, Gfx.TEXT_JUSTIFY_LEFT);
             }
         }     
@@ -525,42 +514,13 @@ class Digital5View extends Ui.WatchFace {
             var dateText       = dayMonth ?  nowinfo.day.format(showLeadingZero ? "%02d" : "%01d") + " " + months[homeMonth - 1] : months[homeMonth - 1] + " " + nowinfo.day.format(showLeadingZero ? "%02d" : "%01d");
             var dateNumberText = Lang.format(dateFormat, [homeDay.format(showLeadingZero ? "%02d" : "%01d"), homeMonth.format(showLeadingZero ? "%02d" : "%01d")]);
             var timeText       = Lang.format("$1$:$2$", [homeHour.format(showLeadingZero ? "%02d" : "%01d"), homeMinute.format("%02d")]);            
-            
-            if (lcdFont) {
-                if (monthAsText) {
-                    dc.drawText(28, dateYPosition, digitalUpright26, weekdayText + dateText, Gfx.TEXT_JUSTIFY_LEFT);
-                    dc.drawText(216, dateYPosition, digitalUpright26, timeText, Gfx.TEXT_JUSTIFY_RIGHT);
-                 } else {
-                    dc.drawText(28, dateYPosition, digitalUpright26, weekdayText + dateNumberText, Gfx.TEXT_JUSTIFY_LEFT);                
-                    dc.drawText(216, dateYPosition, digitalUpright26, timeText, Gfx.TEXT_JUSTIFY_RIGHT);
-                 }                                
-            } else {
-                if (monthAsText) {
-                    dc.drawText(28, dateYPosition, Graphics.FONT_TINY, weekdayText + dateText, Gfx.TEXT_JUSTIFY_LEFT);                    
-                    dc.drawText(216, dateYPosition, Graphics.FONT_TINY, timeText, Gfx.TEXT_JUSTIFY_RIGHT); 
-                } else {
-                    dc.drawText(28, dateYPosition, Graphics.FONT_TINY, weekdayText + dateNumberText, Gfx.TEXT_JUSTIFY_LEFT);
-                    dc.drawText(216, dateYPosition, Graphics.FONT_TINY, timeText, Gfx.TEXT_JUSTIFY_RIGHT);
-                }
-            }   
+            dc.drawText(28, dateYPosition, lcdFont ? digitalUpright26 : Graphics.FONT_TINY, weekdayText + (monthAsText ? dateText : dateNumberText), Gfx.TEXT_JUSTIFY_LEFT);
+            dc.drawText(216, dateYPosition, lcdFont ? digitalUpright26 : Graphics.FONT_TINY, timeText, Gfx.TEXT_JUSTIFY_RIGHT);
         } else {
             var weekdayText    = weekdays[dayOfWeek - 1];            
             var dateText       = dayMonth ?  nowinfo.day.format(showLeadingZero ? "%02d" : "%01d") + " " + months[nowinfo.month - 1] : months[nowinfo.month - 1] + " " + nowinfo.day.format(showLeadingZero ? "%02d" : "%01d");
             var dateNumberText = Lang.format(dateFormat, [nowinfo.day.format(showLeadingZero ? "%02d" : "%01d"), nowinfo.month.format(showLeadingZero ? "%02d" : "%01d")]);
-            
-            if (lcdFont) {
-                if (monthAsText) {
-                    dc.drawText(centerX, dateYPosition, digitalUpright26, weekdayText + dateText, Gfx.TEXT_JUSTIFY_CENTER);
-                } else {
-                    dc.drawText(centerX, dateYPosition, digitalUpright26, weekdayText + dateNumberText, Gfx.TEXT_JUSTIFY_CENTER); 
-                }                
-            } else {
-                if (monthAsText) {
-                    dc.drawText(centerX, dateYPosition, Graphics.FONT_TINY, weekdayText + dateText, Gfx.TEXT_JUSTIFY_CENTER);
-                } else {
-                    dc.drawText(centerX, dateYPosition, Graphics.FONT_TINY, weekdayText + dateNumberText, Gfx.TEXT_JUSTIFY_CENTER);
-                }
-            }
+            dc.drawText(centerX, dateYPosition, lcdFont ? digitalUpright26 : Graphics.FONT_TINY, weekdayText + (monthAsText ? dateText : dateNumberText), Gfx.TEXT_JUSTIFY_CENTER);
         }
                 
 
@@ -942,6 +902,16 @@ class Digital5View extends Ui.WatchFace {
         }
     }
 
+    function drawTime(hourColor, minuteColor, font, dc) {
+        dc.setColor(hourColor, Gfx.COLOR_TRANSPARENT);
+        dc.drawText(centerX - 6, lcdFont ? 51 : 56, font, clockTime.hour.format(showLeadingZero ? "%02d" : "%01d"), Gfx.TEXT_JUSTIFY_RIGHT);
+        dc.setColor(upperForegroundColor, Gfx.COLOR_TRANSPARENT);
+        dc.drawText(centerX, lcdFont ? 51 : 56, font, ":", Gfx.TEXT_JUSTIFY_CENTER);
+        dc.setColor(minuteColor, Gfx.COLOR_TRANSPARENT);
+        dc.drawText(centerX + 6, lcdFont ? 51 : 56, font, clockTime.min.format("%02d"), Gfx.TEXT_JUSTIFY_LEFT);
+        dc.setColor(upperForegroundColor, Gfx.COLOR_TRANSPARENT);
+    }
+
     function getXYPositions(field) {
         var bmpX, bmpY, textX, textY, unitLcdX, unitLcdY, unitX, unitY;
         switch(field) {
@@ -1004,6 +974,24 @@ class Digital5View extends Ui.WatchFace {
         var activeHours    = (actMinutes / 60.0).toNumber();
         var activeMinutes  = (actMinutes % 60).toNumber();
         return Lang.format("$1$:$2$", [activeHours.format(showLeadingZero ? "%02d" : "%01d"), activeMinutes.format("%02d")]);
+    }
+
+    function getColor(index) {      
+        switch(index) {
+            case 0: return Gfx.COLOR_WHITE;
+            case 1: return Gfx.COLOR_BLACK;
+            case 2: return Gfx.COLOR_RED;
+            case 3: return Gfx.COLOR_DK_RED;
+            case 4: return Gfx.COLOR_ORANGE;
+            case 5: return Gfx.COLOR_YELLOW;
+            case 6: return Gfx.COLOR_GREEN;
+            case 7: return Gfx.COLOR_DK_GREEN;
+            case 8: return Gfx.COLOR_BLUE;
+            case 9: return Gfx.COLOR_DK_BLUE;
+            case 10: return Gfx.COLOR_PURPLE;
+            case 11: return Gfx.COLOR_PINK; 
+        }
+        return Gfx.COLOR_WHITE;
     }
 
     function getWeekOfYear(nowinfo) {
