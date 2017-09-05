@@ -168,6 +168,10 @@
     	<settingConfig type="boolean" />
     </setting>
     
+    <setting propertyKey="@Properties.ColoredBattery" title="@Strings.ColoredBattery">
+    	<settingConfig type="boolean" />
+    </setting>
+    
     <setting propertyKey="@Properties.ColorizeStepText" title="@Strings.ColorizeStepText">
     	<settingConfig type="boolean" />
     </setting>

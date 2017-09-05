@@ -108,6 +108,8 @@
 	
 	<string id="ShowCalorieBar">Afficher la barre Calories</string>
 	
+	<string id="ColoredBattery">Batterie colorée</string>
+	
 	<string id="ColorizeStepText">Coloriser le texte Pas</string>
 	
 	<string id="ColorizeCalorieText">Coloriser le texte Calories</string>

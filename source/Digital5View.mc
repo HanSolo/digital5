@@ -194,6 +194,7 @@ class Digital5View extends Ui.WatchFace {
         var showCalorieBar        = App.getApp().getProperty("ShowCalorieBar");
         var hourColor             = getColor(App.getApp().getProperty("HourColor"));
         var minuteColor           = getColor(App.getApp().getProperty("MinuteColor"));
+        var coloredBattery        = App.getApp().getProperty("ColoredBattery");
         colorizeStepText          = App.getApp().getProperty("ColorizeStepText");
         colorizeCalorieText       = App.getApp().getProperty("ColorizeCalorieText");
         upperLeftField            = App.getApp().getProperty("UpperLeftField");
@@ -317,7 +318,21 @@ class Digital5View extends Ui.WatchFace {
         dc.setColor(upperForegroundColor, upperBackgroundColor);        
         dc.drawRectangle(106, 18, 28, 11);
         dc.fillRectangle(134, 21, 2, 5);
-        dc.setColor(charge < 20 ? BRIGHT_RED : upperForegroundColor, upperBackgroundColor);
+        if (coloredBattery) {
+            if (charge > 80) {
+                dc.setColor(Gfx.COLOR_DK_GREEN, upperBackgroundColor);
+            } else if (charge > 50) {
+                dc.setColor(Gfx.COLOR_GREEN, upperBackgroundColor);
+            } else if (charge > 30) {
+                dc.setColor(YELLOW, upperBackgroundColor);
+            } else if (charge > 20) {
+                dc.setColor(Gfx.COLOR_ORANGE, upperBackgroundColor);
+            } else {
+                dc.setColor(BRIGHT_RED, upperBackgroundColor);
+            }
+        } else {
+            dc.setColor(charge < 20 ? BRIGHT_RED : upperForegroundColor, upperBackgroundColor); 
+        }
         dc.fillRectangle(108, 20 , 24.0 * charge / 100.0, 7);        
         if (showChargePercentage) {
             if (showPercentageUnder20) {
