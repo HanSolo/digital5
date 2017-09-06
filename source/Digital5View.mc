@@ -460,7 +460,7 @@ class Digital5View extends Ui.WatchFace {
             }         
             if (lcdFont) {   
                 drawTime(hourColor, minuteColor, digitalUpright72, dc);
-                dc.drawText(199, 97, digitalUpright16, amPm, Gfx.TEXT_JUSTIFY_LEFT);
+                dc.drawText(195, 93, digitalUpright20, amPm, Gfx.TEXT_JUSTIFY_LEFT);
             } else {
                 drawTime(hourColor, minuteColor, Graphics.FONT_NUMBER_HOT, dc);
                 dc.drawText(191, 87, Graphics.FONT_TINY, amPm, Gfx.TEXT_JUSTIFY_LEFT);
@@ -473,8 +473,8 @@ class Digital5View extends Ui.WatchFace {
         // KW
         if (showCalendarWeek) {
             var calendarWeekText = Ui.loadResource(Rez.Strings.CalendarWeek);
-            dc.drawText((lcdFont ? 45 : 50), (lcdFont ? 75 : 66), lcdFont ? digitalUpright16 : Graphics.FONT_TINY, (calendarWeekText), Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawText((lcdFont ? 45 : 50), (lcdFont ? 97 : 87), lcdFont ? digitalUpright16 : Graphics.FONT_TINY, (getWeekOfYear(nowinfo)), Gfx.TEXT_JUSTIFY_RIGHT);            
+            dc.drawText((lcdFont ? 43 : 50), (lcdFont ? 71 : 66), lcdFont ? digitalUpright20 : Graphics.FONT_TINY, (calendarWeekText), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText((lcdFont ? 43 : 50), (lcdFont ? 93 : 87), lcdFont ? digitalUpright20 : Graphics.FONT_TINY, (getWeekOfYear(nowinfo)), Gfx.TEXT_JUSTIFY_RIGHT);            
         }
     
         // Date and home timezone
@@ -637,25 +637,25 @@ class Digital5View extends Ui.WatchFace {
         var clockTime = Sys.getClockTime();
         dc.setColor(upperBackgroundColor, upperBackgroundColor);
         if (is24Hour) {
-            if (lcdFont) {
-                dc.fillRectangle(199, 99, 16, 12);
-                dc.setClip(199, 99, 16, 12);
+            if (lcdFont) {                
+                dc.fillRectangle(195, 96, 25, 15);
+                dc.setClip(195, 96, 25, 15);
             } else {
                 dc.fillRectangle(191, 93, 21, 17);
                 dc.setClip(191, 93, 21, 17);
             }
             dc.setColor(upperForegroundColor, upperBackgroundColor);
-            dc.drawText((lcdFont ? 199 : 191), (lcdFont ? 97 : 87), lcdFont ? digitalUpright16 : Graphics.FONT_TINY, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
+            dc.drawText((lcdFont ? 195 : 191), (lcdFont ? 93 : 87), lcdFont ? digitalUpright20 : Graphics.FONT_TINY, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
         } else {
-            if (lcdFont) {
-                dc.fillRectangle(199, 78, 16, 12);
-                dc.setClip(199, 78, 16, 12);
+            if (lcdFont) {                
+                dc.fillRectangle(195, 75, 25, 15);
+                dc.setClip(195, 75, 25, 15);
             } else {
                 dc.fillRectangle(191, 74, 21, 17);
                 dc.setClip(191, 74, 21, 17);
             }
             dc.setColor(upperForegroundColor, upperBackgroundColor);
-            dc.drawText((lcdFont ? 199 : 191), (lcdFont ? 75 : 68), lcdFont ? digitalUpright16 : Graphics.FONT_TINY, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
+            dc.drawText((lcdFont ? 195 : 191), (lcdFont ? 71 : 68), lcdFont ? digitalUpright20 : Graphics.FONT_TINY, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
         }
         //dc.clearClip(); // does not work here, instead clear clip at the beginning on onUpdate()
     }
