@@ -12,15 +12,16 @@ using Toybox.UserProfile as UserProfile;
 using Toybox.Ant as Ant;
 using Toybox.SensorHistory as Sensor;
 
-var is24Hour;
-var secondsAlwaysOn;
-var lcdFont;
-var lcdFontDataFields;
-var showLeadingZero;
-var clockTime;
 
 
 class Digital5View extends Ui.WatchFace {
+    var is24Hour;
+    var secondsAlwaysOn;
+    var lcdFont;
+    var lcdFontDataFields;
+    var showLeadingZero;
+    var clockTime;
+
     enum { WOMAN, MEN }
     enum { UPPER_LEFT, UPPER_RIGHT, LOWER_LEFT, LOWER_RIGHT, BOTTOM_FIELD }
     enum { STEPS, CALORIES, ACTIVE_CALORIES, HEART_RATE, DISTANCE, ALTITUDE, PRESSURE, ACTIVE_TIME_TODAY, ACTIVE_TIME_WEEK, FLOORS, METERS, AVG_KCAL_AVG, DELTA_STEPS }    
@@ -45,45 +46,23 @@ class Digital5View extends Ui.WatchFace {
     var bpmIcon, bpmIconWhite, burnedIcon, burnedIconWhite, stepsIcon, stepsIconWhite;
     var bpm1Icon, bpm2Icon, bpm3Icon, bpm4Icon, bpm5Icon, bpmMaxRedIcon, bpmMaxBlackIcon, bpmMaxWhiteIcon;
      
-    var width;
-    var height;
-    var centerX;
-    var centerY;        
+    var width, height;
+    var centerX, centerY;        
     var midnightInfo;
     var nowinfo;
     var actinfo;
     var systemStats;        
-    var hrHistory;
-    var hr;
-    var steps;
-    var stepGoal;
-    var deltaSteps;
-    var stepsReached;
+    var hrHistory, hr;
+    var steps, stepGoal, deltaSteps, stepsReached;
     var kcal;
-    var bpm;
-    var showBpmZones;     
-    var distanceUnit;
-    var distance;            
+    var bpm, showBpmZones, bpmZoneIcons, maxBpm, currentZone;
+    var distanceUnit, distance;            
     var colorizeStepText;
     var colorizeCalorieText;
-    var upperLeftField;
-    var upperRightField;
-    var lowerLeftField;
-    var lowerRightField;
-    var bottomField;
-    var darkUpperBackground;
-    var upperBackgroundColor;
-    var upperForegroundColor;
-    var darkFieldBackground;
-    var fieldBackgroundColor;
-    var fieldForegroundColor;
-    var bottomFieldText;    
-    var bpmZoneIcons;
-    var maxBpm;
-    var currentZone;
-    var activeKcal;
-    var kcalReached;
-     
+    var upperLeftField, upperRightField, lowerLeftField, lowerRightField, bottomField;
+    var darkUpperBackground, upperBackgroundColor, upperForegroundColor;
+    var darkFieldBackground, fieldBackgroundColor, fieldForegroundColor;
+    var activeKcal, kcalReached;
       
     function initialize() {
         WatchFace.initialize();
@@ -208,7 +187,6 @@ class Digital5View extends Ui.WatchFace {
         darkFieldBackground       = App.getApp().getProperty("DarkFieldBackground");
         fieldBackgroundColor      = darkFieldBackground ? Gfx.COLOR_BLACK : Gfx.COLOR_WHITE;
         fieldForegroundColor      = darkFieldBackground ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK;
-        bottomFieldText           = "";
         var showSunriseSunset     = App.getApp().getProperty("SunriseSunset");
         var gender;
         var userWeight;
@@ -632,8 +610,8 @@ class Digital5View extends Ui.WatchFace {
                 dc.drawLine(174, 218, 177, 218);
                 dc.drawLine(174, 222, 177, 222);
                 break;
-            case 7: bottomFieldText = getActiveTimeText(true); break;
-            case 8: bottomFieldText = getActiveTimeText(false); break;
+            case 7: dc.drawText(120, 213, lcdFontDataFields ? digitalUpright20 : Graphics.FONT_TINY, getActiveTimeText(true), Gfx.TEXT_JUSTIFY_CENTER); break;
+            case 8: dc.drawText(120, 213, lcdFontDataFields ? digitalUpright20 : Graphics.FONT_TINY, getActiveTimeText(false), Gfx.TEXT_JUSTIFY_CENTER); break;
             case 9:
                 drawFloors(getXYPositions(BOTTOM_FIELD), dc, BOTTOM_FIELD);
                 dc.fillPolygon([[63, 221], [75, 221], [68, 215]]);    // upIcon
