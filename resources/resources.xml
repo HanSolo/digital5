@@ -28,6 +28,6 @@
         <font id="digitalUpright26" filename="fonts/DigitalUprightThick_26.fnt" filter="ADCDEFGHIJKLMNOPRSTUVWZ0123456789.:/ "/>
         <font id="digitalUpright24" filename="fonts/DigitalUprightThick_24.fnt" filter="0123456789:.- /"/>
         <font id="digitalUpright20" filename="fonts/DigitalUprightThick_20.fnt" filter="apmCDKW0123456789:.- /"/>        
-        <font id="digitalUpright16" filename="fonts/DigitalUprightThick_16.fnt" filter="bikmDW"/>
+        <font id="digitalUpright16" filename="fonts/DigitalUprightThick_16.fnt" filter="bikmDW0123456789:-. "/>
     </fonts>
 </resources>
