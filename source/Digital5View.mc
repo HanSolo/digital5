@@ -433,8 +433,10 @@ class Digital5View extends Ui.WatchFace {
         // ******************** TIME ******************************************                
 
         // Time        
+        
         if (lcdBackgroundVisible && lcdFont) {
             dc.setColor(darkUpperBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, upperBackgroundColor);
+            
             if (showLeadingZero) {
                 dc.drawText(centerX, 51, digitalUpright72, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
             } else {
@@ -889,8 +891,9 @@ class Digital5View extends Ui.WatchFace {
     }
 
     function drawTime(hourColor, minuteColor, font, dc) {
+        var hour = is24Hour ? clockTime.hour : clockTime.hour % 12;
         dc.setColor(hourColor, Gfx.COLOR_TRANSPARENT);
-        dc.drawText(centerX - 6, lcdFont ? 51 : 56, font, clockTime.hour.format(showLeadingZero ? "%02d" : "%01d"), Gfx.TEXT_JUSTIFY_RIGHT);
+        dc.drawText(centerX - 6, lcdFont ? 51 : 56, font, hour.format(showLeadingZero ? "%02d" : "%01d"), Gfx.TEXT_JUSTIFY_RIGHT);
         dc.setColor(upperForegroundColor, Gfx.COLOR_TRANSPARENT);
         dc.drawText(centerX, lcdFont ? 51 : 56, font, ":", Gfx.TEXT_JUSTIFY_CENTER);
         dc.setColor(minuteColor, Gfx.COLOR_TRANSPARENT);
