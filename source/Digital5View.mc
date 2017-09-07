@@ -338,16 +338,27 @@ class Digital5View extends Ui.WatchFace {
                             
         // Sunrise/Sunset
         if (showSunriseSunset) {
-            var sunriseHH = App.getApp().getProperty("sunriseHH");
-            var sunriseMM = App.getApp().getProperty("sunriseMM");
-            var sunsetHH  = App.getApp().getProperty("sunsetHH");
-            var sunsetMM  = App.getApp().getProperty("sunsetMM");
-            if (showLeadingZero) {
-                sunriseText = null == sunriseHH ? "--:--" : (sunriseHH.format("%02d") + ":" + sunriseMM.format("%02d"));
-                sunsetText  = null == sunsetHH ? "--:--" : (sunsetHH.format("%02d") + ":" + sunsetMM.format("%02d"));
+            var sunriseHH   = App.getApp().getProperty("sunriseHH");
+            var sunriseMM   = App.getApp().getProperty("sunriseMM");
+            var sunriseAmPm;
+            var sunsetHH    = App.getApp().getProperty("sunsetHH");
+            var sunsetMM    = App.getApp().getProperty("sunsetMM");
+            var sunsetAmPm;
+            if (is24Hour) {
+                sunriseAmPm = "";
+                sunsetAmPm  = "";
             } else {
-                sunriseText = null == sunriseHH ? "--:--" : (sunriseHH + ":" + sunriseMM);
-                sunsetText  = null == sunsetHH ? "--:--" : (sunsetHH + ":" + sunsetMM);
+                sunriseAmPm = sunriseHH < 12 ? "A" : "P";
+                sunsetAmPm  = sunsetHH < 12 ? "A" : "P";
+                sunriseHH   = sunriseHH % 12;
+                sunsetHH    = sunsetHH % 12;
+            }
+            if (showLeadingZero) {
+                sunriseText = null == sunriseHH ? "--:--" : (sunriseHH.format("%02d") + ":" + sunriseMM.format("%02d") + sunriseAmPm);
+                sunsetText  = null == sunsetHH ? "--:--" : (sunsetHH.format("%02d") + ":" + sunsetMM.format("%02d") + sunsetAmPm);
+            } else {
+                sunriseText = null == sunriseHH ? "--:--" : (sunriseHH + ":" + sunriseMM + sunriseAmPm);
+                sunsetText  = null == sunsetHH ? "--:--" : (sunsetHH + ":" + sunsetMM + sunsetAmPm);
             }
             dc.setColor(upperForegroundColor, upperBackgroundColor);
             dc.fillPolygon([[45, 50], [57, 50], [50, 44]]);    // upIcon
@@ -450,16 +461,7 @@ class Digital5View extends Ui.WatchFace {
         if (is24Hour) {
             drawTime(hourColor, minuteColor, lcdFont ? digitalUpright72 : Graphics.FONT_NUMBER_HOT, dc);
         } else {
-            var hour = clockTime.hour;
-            var amPm = "am";
-            if (hour > 12) {
-                hour = clockTime.hour - 12;
-                amPm = "pm";
-            } else if (hour == 0) {
-                hour = 12;              
-            } else if (hour == 12) {                
-                amPm = "pm";
-            }         
+            var amPm = clockTime.hour < 12 ? "am" : "pm";
             if (lcdFont) {   
                 drawTime(hourColor, minuteColor, digitalUpright72, dc);
                 dc.drawText(195, 93, digitalUpright20, amPm, Gfx.TEXT_JUSTIFY_LEFT);
@@ -505,11 +507,12 @@ class Digital5View extends Ui.WatchFace {
                 if (homeDayOfWeek < 0) { homeDayOfWeek = 6; }
             }
             if (homeMinute < 0) { homeMinute += 60; }
-                        
+            var ampm = is24Hour ? "" : homeHour < 12 ? "A" : "P";
+            homeHour = is24Hour ? homeHour : homeHour % 12;            
             var weekdayText    = weekdays[homeDayOfWeek];
             var dateText       = dayMonth ?  nowinfo.day.format(showLeadingZero ? "%02d" : "%01d") + " " + months[homeMonth - 1] : months[homeMonth - 1] + " " + nowinfo.day.format(showLeadingZero ? "%02d" : "%01d");
             var dateNumberText = Lang.format(dateFormat, [homeDay.format(showLeadingZero ? "%02d" : "%01d"), homeMonth.format(showLeadingZero ? "%02d" : "%01d")]);
-            var timeText       = Lang.format("$1$:$2$", [homeHour.format(showLeadingZero ? "%02d" : "%01d"), homeMinute.format("%02d")]);            
+            var timeText       = Lang.format("$1$:$2$", [homeHour.format(showLeadingZero ? "%02d" : "%01d"), homeMinute.format("%02d")]) + ampm;            
             dc.drawText(28, dateYPosition, lcdFont ? digitalUpright26 : Graphics.FONT_TINY, weekdayText + (monthAsText ? dateText : dateNumberText), Gfx.TEXT_JUSTIFY_LEFT);
             dc.drawText(216, dateYPosition, lcdFont ? digitalUpright26 : Graphics.FONT_TINY, timeText, Gfx.TEXT_JUSTIFY_RIGHT);
         } else {
