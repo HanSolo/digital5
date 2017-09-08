@@ -367,8 +367,8 @@ class Digital5View extends Ui.WatchFace {
                 dc.drawText(59, 36, digitalUpright16, sunriseText, Gfx.TEXT_JUSTIFY_LEFT);
                 dc.drawText(181, 36, digitalUpright16, sunsetText, Gfx.TEXT_JUSTIFY_RIGHT);
             } else {
-                dc.drawText(57, 28, Graphics.FONT_TINY, sunriseText, Gfx.TEXT_JUSTIFY_LEFT);
-                dc.drawText(182, 28, Graphics.FONT_TINY, sunsetText, Gfx.TEXT_JUSTIFY_RIGHT);
+                dc.drawText(57, 28, Graphics.FONT_XTINY, sunriseText, Gfx.TEXT_JUSTIFY_LEFT);
+                dc.drawText(182, 28, Graphics.FONT_XTINY, sunsetText, Gfx.TEXT_JUSTIFY_RIGHT);
             }
         }
                                
@@ -467,7 +467,7 @@ class Digital5View extends Ui.WatchFace {
                 dc.drawText(195, 93, digitalUpright20, amPm, Gfx.TEXT_JUSTIFY_LEFT);
             } else {
                 drawTime(hourColor, minuteColor, Graphics.FONT_NUMBER_HOT, dc);
-                dc.drawText(191, 87, Graphics.FONT_TINY, amPm, Gfx.TEXT_JUSTIFY_LEFT);
+                dc.drawText(191, 87, Graphics.FONT_XTINY, amPm, Gfx.TEXT_JUSTIFY_LEFT);
             }
         }     
         
@@ -477,8 +477,8 @@ class Digital5View extends Ui.WatchFace {
         // KW
         if (showCalendarWeek) {
             var calendarWeekText = Ui.loadResource(Rez.Strings.CalendarWeek);
-            dc.drawText((lcdFont ? 43 : 50), (lcdFont ? 71 : 66), lcdFont ? digitalUpright20 : Graphics.FONT_TINY, (calendarWeekText), Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawText((lcdFont ? 43 : 50), (lcdFont ? 93 : 87), lcdFont ? digitalUpright20 : Graphics.FONT_TINY, (getWeekOfYear(nowinfo)), Gfx.TEXT_JUSTIFY_RIGHT);            
+            dc.drawText((lcdFont ? 43 : 50), (lcdFont ? 71 : 66), lcdFont ? digitalUpright20 : Graphics.FONT_XTINY, (calendarWeekText), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText((lcdFont ? 43 : 50), (lcdFont ? 93 : 87), lcdFont ? digitalUpright20 : Graphics.FONT_XTINY, (getWeekOfYear(nowinfo)), Gfx.TEXT_JUSTIFY_RIGHT);            
         }
     
         // Date and home timezone
@@ -513,13 +513,13 @@ class Digital5View extends Ui.WatchFace {
             var dateText       = dayMonth ?  nowinfo.day.format(showLeadingZero ? "%02d" : "%01d") + " " + months[homeMonth - 1] : months[homeMonth - 1] + " " + nowinfo.day.format(showLeadingZero ? "%02d" : "%01d");
             var dateNumberText = Lang.format(dateFormat, [homeDay.format(showLeadingZero ? "%02d" : "%01d"), homeMonth.format(showLeadingZero ? "%02d" : "%01d")]);
             var timeText       = Lang.format("$1$:$2$", [homeHour.format(showLeadingZero ? "%02d" : "%01d"), homeMinute.format("%02d")]) + ampm;            
-            dc.drawText(28, dateYPosition, lcdFont ? digitalUpright26 : Graphics.FONT_TINY, weekdayText + (monthAsText ? dateText : dateNumberText), Gfx.TEXT_JUSTIFY_LEFT);
-            dc.drawText(216, dateYPosition, lcdFont ? digitalUpright26 : Graphics.FONT_TINY, timeText, Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(28, dateYPosition, lcdFont ? digitalUpright26 : Graphics.FONT_XTINY, weekdayText + (monthAsText ? dateText : dateNumberText), Gfx.TEXT_JUSTIFY_LEFT);
+            dc.drawText(216, dateYPosition, lcdFont ? digitalUpright26 : Graphics.FONT_XTINY, timeText, Gfx.TEXT_JUSTIFY_RIGHT);
         } else {
             var weekdayText    = weekdays[dayOfWeek - 1];            
             var dateText       = dayMonth ?  nowinfo.day.format(showLeadingZero ? "%02d" : "%01d") + " " + months[nowinfo.month - 1] : months[nowinfo.month - 1] + " " + nowinfo.day.format(showLeadingZero ? "%02d" : "%01d");
             var dateNumberText = Lang.format(dateFormat, [nowinfo.day.format(showLeadingZero ? "%02d" : "%01d"), nowinfo.month.format(showLeadingZero ? "%02d" : "%01d")]);
-            dc.drawText(centerX, dateYPosition, lcdFont ? digitalUpright26 : Graphics.FONT_TINY, weekdayText + (monthAsText ? dateText : dateNumberText), Gfx.TEXT_JUSTIFY_CENTER);
+            dc.drawText(centerX, dateYPosition, lcdFont ? digitalUpright26 : Graphics.FONT_XTINY, weekdayText + (monthAsText ? dateText : dateNumberText), Gfx.TEXT_JUSTIFY_CENTER);
         }
                 
 
@@ -613,8 +613,8 @@ class Digital5View extends Ui.WatchFace {
                 dc.drawLine(174, 218, 177, 218);
                 dc.drawLine(174, 222, 177, 222);
                 break;
-            case 7: dc.drawText(120, 213, lcdFontDataFields ? digitalUpright20 : Graphics.FONT_TINY, getActiveTimeText(true), Gfx.TEXT_JUSTIFY_CENTER); break;
-            case 8: dc.drawText(120, 213, lcdFontDataFields ? digitalUpright20 : Graphics.FONT_TINY, getActiveTimeText(false), Gfx.TEXT_JUSTIFY_CENTER); break;
+            case 7: dc.drawText(120, 213, lcdFontDataFields ? digitalUpright20 : Graphics.FONT_XTINY, getActiveTimeText(true), Gfx.TEXT_JUSTIFY_CENTER); break;
+            case 8: dc.drawText(120, 213, lcdFontDataFields ? digitalUpright20 : Graphics.FONT_XTINY, getActiveTimeText(false), Gfx.TEXT_JUSTIFY_CENTER); break;
             case 9:
                 drawFloors(getXYPositions(BOTTOM_FIELD), dc, BOTTOM_FIELD);
                 dc.fillPolygon([[63, 221], [75, 221], [68, 215]]);    // upIcon
@@ -648,7 +648,7 @@ class Digital5View extends Ui.WatchFace {
                 dc.setClip(191, 93, 21, 17);
             }
             dc.setColor(upperForegroundColor, upperBackgroundColor);
-            dc.drawText((lcdFont ? 195 : 191), (lcdFont ? 93 : 87), lcdFont ? digitalUpright20 : Graphics.FONT_TINY, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
+            dc.drawText((lcdFont ? 195 : 191), (lcdFont ? 93 : 87), lcdFont ? digitalUpright20 : Graphics.FONT_XTINY, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
         } else {
             if (lcdFont) {                
                 dc.fillRectangle(195, 75, 25, 15);
@@ -658,7 +658,7 @@ class Digital5View extends Ui.WatchFace {
                 dc.setClip(191, 74, 21, 17);
             }
             dc.setColor(upperForegroundColor, upperBackgroundColor);
-            dc.drawText((lcdFont ? 195 : 191), (lcdFont ? 71 : 68), lcdFont ? digitalUpright20 : Graphics.FONT_TINY, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
+            dc.drawText((lcdFont ? 195 : 191), (lcdFont ? 71 : 68), lcdFont ? digitalUpright20 : Graphics.FONT_XTINY, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
         }
         //dc.clearClip(); // does not work here, instead clear clip at the beginning on onUpdate()
     }
@@ -705,7 +705,7 @@ class Digital5View extends Ui.WatchFace {
                 dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
             }
         }
-        dc.drawText(textX, textY, lcdFontDataFields ? digitalUpright24 : Graphics.FONT_TINY, (showDeltaSteps ? deltaSteps * -1 : steps), Gfx.TEXT_JUSTIFY_RIGHT);
+        dc.drawText(textX, textY, lcdFontDataFields ? digitalUpright24 : Graphics.FONT_XTINY, (showDeltaSteps ? deltaSteps * -1 : steps), Gfx.TEXT_JUSTIFY_RIGHT);
     }
     function drawCalories(xyPositions, dc, isActiveKcal, field) {
         var bmpX      = xyPositions[0];
@@ -735,7 +735,7 @@ class Digital5View extends Ui.WatchFace {
         if (lcdFontDataFields) {
             dc.drawText(textX, textY, field < 4 ? digitalUpright24 : digitalUpright20, fieldText, Gfx.TEXT_JUSTIFY_RIGHT);
         } else {
-            dc.drawText(textX, textY, Graphics.FONT_TINY, fieldText, Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(textX, textY, Graphics.FONT_XTINY, fieldText, Gfx.TEXT_JUSTIFY_RIGHT);
         }
     }
     function drawHeartRate(xyPositions, dc, field) {       
@@ -752,7 +752,7 @@ class Digital5View extends Ui.WatchFace {
         if (lcdFontDataFields) {
             dc.drawText(textX, textY, field < 4 ? digitalUpright24 : digitalUpright20, (bpm > 0 ? bpm.toString() : ""), Gfx.TEXT_JUSTIFY_RIGHT);
         } else {
-            dc.drawText(textX, textY, Graphics.FONT_TINY, (bpm > 0 ? bpm.toString() : ""), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(textX, textY, Graphics.FONT_XTINY, (bpm > 0 ? bpm.toString() : ""), Gfx.TEXT_JUSTIFY_RIGHT);
         }
     }
     function drawDistance(xyPositions, dc) {        
@@ -769,8 +769,8 @@ class Digital5View extends Ui.WatchFace {
             dc.drawText(textX, textY, digitalUpright24, distance > 99.99 ? distance.format("%0.0f") : distance.format("%0.1f"), Gfx.TEXT_JUSTIFY_RIGHT);
             dc.drawText(unitLcdX, unitLcdY, digitalUpright16, distanceUnit == 0 ? "km" : "mi", Gfx.TEXT_JUSTIFY_LEFT);
         } else {
-            dc.drawText(textX, textY, Graphics.FONT_TINY, distance > 99.99 ? distance.format("%0.0f") : distance.format("%0.1f"), Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawText(unitX, unitY, Graphics.FONT_TINY, distanceUnit == 0 ? "km" : "mi", Gfx.TEXT_JUSTIFY_LEFT);
+            dc.drawText(textX, textY, Graphics.FONT_XTINY, distance > 99.99 ? distance.format("%0.0f") : distance.format("%0.1f"), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(unitX, unitY, Graphics.FONT_XTINY, distanceUnit == 0 ? "km" : "mi", Gfx.TEXT_JUSTIFY_LEFT);
         }
     }
     function drawWithUnit(xyPositions, dc, sensor, field) {        
@@ -801,8 +801,8 @@ class Digital5View extends Ui.WatchFace {
             dc.drawText(textX, textY, field < 4 ? digitalUpright24 : digitalUpright20, fieldText, Gfx.TEXT_JUSTIFY_RIGHT);
             dc.drawText(unitLcdX, unitLcdY, digitalUpright16, unitText, Gfx.TEXT_JUSTIFY_LEFT);
         } else {
-            dc.drawText(textX, textY, Graphics.FONT_TINY, fieldText, Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawText(unitX, unitY, Graphics.FONT_TINY, unitText, Gfx.TEXT_JUSTIFY_LEFT);
+            dc.drawText(textX, textY, Graphics.FONT_XTINY, fieldText, Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(unitX, unitY, Graphics.FONT_XTINY, unitText, Gfx.TEXT_JUSTIFY_LEFT);
         }
     }
     function drawActiveTime(xyPositions, dc, isDay, field) {
@@ -825,8 +825,8 @@ class Digital5View extends Ui.WatchFace {
             dc.drawText(textX, textY, digitalUpright24, activeTimeText, horAlign);
             dc.drawText(unitLcdX, unitLcdY, digitalUpright16, isDay ? "D" : "W", Gfx.TEXT_JUSTIFY_LEFT);
         } else {
-            dc.drawText(textX, textY, Graphics.FONT_TINY, activeTimeText, horAlign);
-            dc.drawText(unitX, unitY, Graphics.FONT_TINY, isDay ? "D" : "W", Gfx.TEXT_JUSTIFY_LEFT);
+            dc.drawText(textX, textY, Graphics.FONT_XTINY, activeTimeText, horAlign);
+            dc.drawText(unitX, unitY, Graphics.FONT_XTINY, isDay ? "D" : "W", Gfx.TEXT_JUSTIFY_LEFT);
         }  
     }    
     function drawFloors(xyPositions, dc, field) {
@@ -848,7 +848,7 @@ class Digital5View extends Ui.WatchFace {
         if (lcdFontDataFields) {
             dc.drawText(textX, textY, field < 4 ? digitalUpright24 : digitalUpright20, (floorsClimbed.toString() + "/" + floorsDescended.toString()), horAlign);
         } else {
-            dc.drawText(textX, textY, Graphics.FONT_TINY, (floorsClimbed.toString() + "/" + floorsDescended.toString()), horAlign);
+            dc.drawText(textX, textY, Graphics.FONT_XTINY, (floorsClimbed.toString() + "/" + floorsDescended.toString()), horAlign);
         }
     }
     function drawMeters(xyPositions, dc, field) {
@@ -867,8 +867,8 @@ class Digital5View extends Ui.WatchFace {
             dc.drawText(textX, textY, field < 4 ? digitalUpright24 : digitalUpright20, metersClimbed.toString() + "/" + metersDescended.toString(), horAlign);
             if (field < 4) { dc.drawText(unitLcdX, unitLcdY, digitalUpright16, "m", Gfx.TEXT_JUSTIFY_LEFT); }
         } else {
-            dc.drawText(textX, textY, Graphics.FONT_TINY, metersClimbed.toString() + " / " + metersDescended.toString(), horAlign);
-            if (field < 4) { dc.drawText(unitX, unitY, Graphics.FONT_TINY, "m", Gfx.TEXT_JUSTIFY_LEFT); }
+            dc.drawText(textX, textY, Graphics.FONT_XTINY, metersClimbed.toString() + " / " + metersDescended.toString(), horAlign);
+            if (field < 4) { dc.drawText(unitX, unitY, Graphics.FONT_XTINY, "m", Gfx.TEXT_JUSTIFY_LEFT); }
         }
     }
     function drawActKcalAvg(xyPositions, dc, field) {
@@ -887,7 +887,7 @@ class Digital5View extends Ui.WatchFace {
         if (lcdFontDataFields) {
             dc.drawText(textX, textY, field < 4 ? digitalUpright24 : digitalUpright20, getActKcalAvg(activeKcal), horAlign);
         } else {
-            dc.drawText(textX, textY, Graphics.FONT_TINY, getActKcalAvg(activeKcal), horAlign);
+            dc.drawText(textX, textY, Graphics.FONT_XTINY, getActKcalAvg(activeKcal), horAlign);
         }
     }
 
