@@ -152,7 +152,7 @@ class Digital5View extends Ui.WatchFace {
         var showChargePercentage  = App.getApp().getProperty("ShowChargePercentage");
         var showPercentageUnder20 = App.getApp().getProperty("ShowPercentageUnder20");
         var dayOfWeek             = nowinfo.day_of_week;
-        var lcdBackgroundVisible  = App.getApp().getProperty("LcdBackground");         
+        var lcdBackgroundVisible  = App.getApp().getProperty("LcdBackground");
         var connected             = Sys.getDeviceSettings().phoneConnected;        
         var profile               = UserProfile.getProfile();
         var notificationCount     = Sys.getDeviceSettings().notificationCount;
@@ -171,16 +171,16 @@ class Digital5View extends Ui.WatchFace {
         var showMoveBar           = App.getApp().getProperty("ShowMoveBar");
         var showStepBar           = App.getApp().getProperty("ShowStepBar");
         var showCalorieBar        = App.getApp().getProperty("ShowCalorieBar");
-        var hourColor             = getColor(App.getApp().getProperty("HourColor"));
-        var minuteColor           = getColor(App.getApp().getProperty("MinuteColor"));
+        var hourColor             = getColor(App.getApp().getProperty("HourColor").toNumber());
+        var minuteColor           = getColor(App.getApp().getProperty("MinuteColor").toNumber());
         var coloredBattery        = App.getApp().getProperty("ColoredBattery");
         colorizeStepText          = App.getApp().getProperty("ColorizeStepText");
         colorizeCalorieText       = App.getApp().getProperty("ColorizeCalorieText");
-        upperLeftField            = App.getApp().getProperty("UpperLeftField");
-        upperRightField           = App.getApp().getProperty("UpperRightField");
-        lowerLeftField            = App.getApp().getProperty("LowerLeftField");
-        lowerRightField           = App.getApp().getProperty("LowerRightField");
-        bottomField               = App.getApp().getProperty("BottomField");
+        upperLeftField            = App.getApp().getProperty("UpperLeftField").toNumber();
+        upperRightField           = App.getApp().getProperty("UpperRightField").toNumber();
+        lowerLeftField            = App.getApp().getProperty("LowerLeftField").toNumber();
+        lowerRightField           = App.getApp().getProperty("LowerRightField").toNumber();
+        bottomField               = App.getApp().getProperty("BottomField").toNumber();
         darkUpperBackground       = App.getApp().getProperty("DarkUpperBackground");
         upperBackgroundColor      = darkUpperBackground ? Gfx.COLOR_BLACK : Gfx.COLOR_WHITE;
         upperForegroundColor      = darkUpperBackground ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK;
@@ -569,7 +569,6 @@ class Digital5View extends Ui.WatchFace {
             case 7: drawActiveTime(getXYPositions(LOWER_LEFT), dc, true, LOWER_LEFT); break;
             case 8: drawActiveTime(getXYPositions(LOWER_LEFT), dc, false, LOWER_LEFT); break;
             case 9: drawFloors(getXYPositions(LOWER_LEFT), dc, LOWER_LEFT); break;
-            case 12: drawSteps(getXYPositions(LOWER_LEFT), dc, true); break;
         }
        
         // LowerRight
@@ -582,7 +581,6 @@ class Digital5View extends Ui.WatchFace {
             case 7: drawActiveTime(getXYPositions(LOWER_RIGHT), dc, true, LOWER_RIGHT); break;
             case 8: drawActiveTime(getXYPositions(LOWER_RIGHT), dc, false, LOWER_RIGHT); break;
             case 9: drawFloors(getXYPositions(LOWER_RIGHT), dc, LOWER_RIGHT); break;
-            case 12: drawSteps(getXYPositions(LOWER_RIGHT), dc, true); break;
         }
 
         // Bottom field
