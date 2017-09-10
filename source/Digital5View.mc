@@ -171,8 +171,8 @@ class Digital5View extends Ui.WatchFace {
         var showMoveBar           = App.getApp().getProperty("ShowMoveBar");
         var showStepBar           = App.getApp().getProperty("ShowStepBar");
         var showCalorieBar        = App.getApp().getProperty("ShowCalorieBar");
-        var hourColor             = getColor(App.getApp().getProperty("HourColor").toNumber());
-        var minuteColor           = getColor(App.getApp().getProperty("MinuteColor").toNumber());
+        var hourColor             = App.getApp().getProperty("HourColor").toNumber();
+        var minuteColor           = App.getApp().getProperty("MinuteColor").toNumber();
         var coloredBattery        = App.getApp().getProperty("ColoredBattery");
         colorizeStepText          = App.getApp().getProperty("ColorizeStepText");
         colorizeCalorieText       = App.getApp().getProperty("ColorizeCalorieText");
@@ -340,18 +340,17 @@ class Digital5View extends Ui.WatchFace {
         if (showSunriseSunset) {
             var sunriseHH   = App.getApp().getProperty("sunriseHH");
             var sunriseMM   = App.getApp().getProperty("sunriseMM");
-            var sunriseAmPm;
+            var sunriseAmPm = "";
             var sunsetHH    = App.getApp().getProperty("sunsetHH");
             var sunsetMM    = App.getApp().getProperty("sunsetMM");
-            var sunsetAmPm;
-            if (is24Hour) {
-                sunriseAmPm = "";
-                sunsetAmPm  = "";
-            } else {
-                sunriseAmPm = sunriseHH < 12 ? "A" : "P";
-                sunsetAmPm  = sunsetHH < 12 ? "A" : "P";
-                sunriseHH   = sunriseHH % 12;
-                sunsetHH    = sunsetHH % 12;
+            var sunsetAmPm  = "";
+            if (!is24Hour) {
+                if (sunriseHH != null && sunsetHH != null) {
+                    sunriseAmPm = sunriseHH < 12 ? "A" : "P";
+                    sunsetAmPm  = sunsetHH < 12 ? "A" : "P";
+                    sunriseHH   = sunriseHH == 0 ? sunriseHH : sunriseHH % 12;
+                    sunsetHH    = sunsetHH == 0 ? sunsetHH : sunsetHH % 12;
+                }
             }
             if (showLeadingZero) {
                 sunriseText = null == sunriseHH ? "--:--" : (sunriseHH.format("%02d") + ":" + sunriseMM.format("%02d") + sunriseAmPm);
@@ -964,24 +963,6 @@ class Digital5View extends Ui.WatchFace {
         var activeHours    = (actMinutes / 60.0).toNumber();
         var activeMinutes  = (actMinutes % 60).toNumber();
         return Lang.format("$1$:$2$", [activeHours.format(showLeadingZero ? "%02d" : "%01d"), activeMinutes.format("%02d")]);
-    }
-
-    function getColor(index) {      
-        switch(index) {
-            case 0: return Gfx.COLOR_WHITE;
-            case 1: return Gfx.COLOR_BLACK;
-            case 2: return Gfx.COLOR_RED;
-            case 3: return Gfx.COLOR_DK_RED;
-            case 4: return Gfx.COLOR_ORANGE;
-            case 5: return Gfx.COLOR_YELLOW;
-            case 6: return Gfx.COLOR_GREEN;
-            case 7: return Gfx.COLOR_DK_GREEN;
-            case 8: return Gfx.COLOR_BLUE;
-            case 9: return Gfx.COLOR_DK_BLUE;
-            case 10: return Gfx.COLOR_PURPLE;
-            case 11: return Gfx.COLOR_PINK; 
-        }
-        return Gfx.COLOR_WHITE;
     }
 
     function getWeekOfYear(nowinfo) {
