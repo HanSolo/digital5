@@ -1,0 +1,6 @@
+<build>
+	<exclude file="../source/fenix5.mc"/>
+  	<exclude file="../source/fenix5x.mc"/>
+  	<exclude file="../source/fr935.mc"/>
+  	<exclude file="../source/d2charlie.mc"/>
+</build>

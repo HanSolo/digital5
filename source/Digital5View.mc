@@ -63,6 +63,7 @@ class Digital5View extends Ui.WatchFace {
     var darkUpperBackground, upperBackgroundColor, upperForegroundColor;
     var darkFieldBackground, fieldBackgroundColor, fieldForegroundColor;
     var activeKcal, kcalReached;
+    var deviceName;
       
     function initialize() {
         WatchFace.initialize();
@@ -113,6 +114,7 @@ class Digital5View extends Ui.WatchFace {
         months[9]        = Ui.loadResource(Rez.Strings.Oct);
         months[10]       = Ui.loadResource(Rez.Strings.Nov);
         months[11]       = Ui.loadResource(Rez.Strings.Dec);
+        deviceName       = Ui.loadResource(Rez.Strings.deviceName);
     }
 
     function onUpdate(dc) {
@@ -366,8 +368,9 @@ class Digital5View extends Ui.WatchFace {
                 dc.drawText(59, 36, digitalUpright16, sunriseText, Gfx.TEXT_JUSTIFY_LEFT);
                 dc.drawText(181, 36, digitalUpright16, sunsetText, Gfx.TEXT_JUSTIFY_RIGHT);
             } else {
-                dc.drawText(57, 28, Graphics.FONT_XTINY, sunriseText, Gfx.TEXT_JUSTIFY_LEFT);
-                dc.drawText(182, 28, Graphics.FONT_XTINY, sunsetText, Gfx.TEXT_JUSTIFY_RIGHT);
+                var y = deviceName.equals("vivoactive3") ? 32 : 28;
+                dc.drawText(57, y, Graphics.FONT_XTINY, sunriseText, Gfx.TEXT_JUSTIFY_LEFT);
+                dc.drawText(182, y, Graphics.FONT_XTINY, sunsetText, Gfx.TEXT_JUSTIFY_RIGHT);
             }
         }
                                
@@ -440,10 +443,7 @@ class Digital5View extends Ui.WatchFace {
         }
         
         
-        // ******************** TIME ******************************************                
-
-        // Time        
-        
+        // ******************** TIME ******************************************
         if (lcdBackgroundVisible && lcdFont) {
             dc.setColor(darkUpperBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, upperBackgroundColor);
             
@@ -507,7 +507,7 @@ class Digital5View extends Ui.WatchFace {
             }
             if (homeMinute < 0) { homeMinute += 60; }
             var ampm = is24Hour ? "" : homeHour < 12 ? "A" : "P";
-            homeHour = is24Hour ? homeHour : homeHour % 12;            
+            homeHour = is24Hour ? homeHour : (homeHour == 12) ? homeHour : (homeHour % 12);
             var weekdayText    = weekdays[homeDayOfWeek];
             var dateText       = dayMonth ?  nowinfo.day.format(showLeadingZero ? "%02d" : "%01d") + " " + months[homeMonth - 1] : months[homeMonth - 1] + " " + nowinfo.day.format(showLeadingZero ? "%02d" : "%01d");
             var dateNumberText = Lang.format(dateFormat, [homeDay.format(showLeadingZero ? "%02d" : "%01d"), homeMonth.format(showLeadingZero ? "%02d" : "%01d")]);
@@ -891,13 +891,15 @@ class Digital5View extends Ui.WatchFace {
     }
 
     function drawTime(hourColor, minuteColor, font, dc) {
-        var hour = is24Hour ? clockTime.hour : clockTime.hour % 12;
+        var hh   = clockTime.hour;
+        var hour = is24Hour ? hh : (hh == 12) ? hh : (hh % 12);
+        var y = deviceName.equals("vivoactive3") ? 44 : 56;
         dc.setColor(hourColor, Gfx.COLOR_TRANSPARENT);
-        dc.drawText(centerX - 6, lcdFont ? 51 : 56, font, hour.format(showLeadingZero ? "%02d" : "%01d"), Gfx.TEXT_JUSTIFY_RIGHT);
+        dc.drawText(centerX - 6, lcdFont ? 51 : y, font, hour.format(showLeadingZero ? "%02d" : "%01d"), Gfx.TEXT_JUSTIFY_RIGHT);
         dc.setColor(upperForegroundColor, Gfx.COLOR_TRANSPARENT);
-        dc.drawText(centerX, lcdFont ? 51 : 56, font, ":", Gfx.TEXT_JUSTIFY_CENTER);
+        dc.drawText(centerX, lcdFont ? 51 : y, font, ":", Gfx.TEXT_JUSTIFY_CENTER);
         dc.setColor(minuteColor, Gfx.COLOR_TRANSPARENT);
-        dc.drawText(centerX + 6, lcdFont ? 51 : 56, font, clockTime.min.format("%02d"), Gfx.TEXT_JUSTIFY_LEFT);
+        dc.drawText(centerX + 6, lcdFont ? 51 : y, font, clockTime.min.format("%02d"), Gfx.TEXT_JUSTIFY_LEFT);
         dc.setColor(upperForegroundColor, Gfx.COLOR_TRANSPARENT);
     }
 

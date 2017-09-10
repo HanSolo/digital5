@@ -3,6 +3,9 @@
         <iq:products>
             <iq:product id="fenix5x"/>
             <iq:product id="fenix5"/>
+            <iq:product id="vivoactive3"/>
+            <iq:product id="d2charlie"/>
+            <iq:product id="fr935"/>
         </iq:products>
         <iq:permissions>
             <iq:uses-permission id="Background"/>
