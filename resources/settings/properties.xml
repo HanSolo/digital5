@@ -44,8 +44,8 @@
     
     <property id="SecondsAlwaysOn" type="boolean">false</property>
     
-    <property id="HourColor" type="number">0</property>
-    <property id="MinuteColor" type="number">0</property>
+    <property id="HourColor" type="number">0xFFFFFF</property>
+    <property id="MinuteColor" type="number">0xFFFFFF</property>
     
     <property id="UpperLeftField" type="number">0</property>
     <property id="UpperRightField" type="number">1</property>

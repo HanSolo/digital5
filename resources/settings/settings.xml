@@ -29,35 +29,35 @@
     
     <setting propertyKey="@Properties.HourColor" title="@Strings.HourColor">
     	<settingConfig type="list">
-    		<listEntry value="0">@Strings.White</listEntry>
-    		<listEntry value="1">@Strings.Black</listEntry>
-    		<listEntry value="2">@Strings.Red</listEntry>
-    		<listEntry value="3">@Strings.DarkRed</listEntry>
-    		<listEntry value="4">@Strings.Orange</listEntry>
-    		<listEntry value="5">@Strings.Yellow</listEntry>
-    		<listEntry value="6">@Strings.Green</listEntry>
-    		<listEntry value="7">@Strings.DarkGreen</listEntry>
-    		<listEntry value="8">@Strings.Blue</listEntry>
-    		<listEntry value="9">@Strings.DarkBlue</listEntry>
-    		<listEntry value="10">@Strings.Purple</listEntry>
-    		<listEntry value="11">@Strings.Pink</listEntry>
+    		<listEntry value="0xFFFFFF">@Strings.White</listEntry>
+    		<listEntry value="0x000000">@Strings.Black</listEntry>
+    		<listEntry value="0xFF0055">@Strings.Red</listEntry>
+    		<listEntry value="0xAA0000">@Strings.DarkRed</listEntry>
+    		<listEntry value="0xFFAA00">@Strings.Orange</listEntry>
+    		<listEntry value="0xFFFF55">@Strings.Yellow</listEntry>
+    		<listEntry value="0x00FF55">@Strings.Green</listEntry>
+    		<listEntry value="0x00AA00">@Strings.DarkGreen</listEntry>
+    		<listEntry value="0x00AAFF">@Strings.Blue</listEntry>
+    		<listEntry value="0x0000FF">@Strings.DarkBlue</listEntry>
+    		<listEntry value="0xAA55FF">@Strings.Purple</listEntry>
+    		<listEntry value="0xFF00FF">@Strings.Pink</listEntry>
     	</settingConfig>
     </setting>
     
     <setting propertyKey="@Properties.MinuteColor" title="@Strings.MinuteColor">
     	<settingConfig type="list">
-    		<listEntry value="0">@Strings.White</listEntry>
-    		<listEntry value="1">@Strings.Black</listEntry>
-    		<listEntry value="2">@Strings.Red</listEntry>
-    		<listEntry value="3">@Strings.DarkRed</listEntry>
-    		<listEntry value="4">@Strings.Orange</listEntry>
-    		<listEntry value="5">@Strings.Yellow</listEntry>
-    		<listEntry value="6">@Strings.Green</listEntry>
-    		<listEntry value="7">@Strings.DarkGreen</listEntry>
-    		<listEntry value="8">@Strings.Blue</listEntry>
-    		<listEntry value="9">@Strings.DarkBlue</listEntry>
-    		<listEntry value="10">@Strings.Purple</listEntry>
-    		<listEntry value="11">@Strings.Pink</listEntry>
+    		<listEntry value="0xFFFFFF">@Strings.White</listEntry>
+    		<listEntry value="0x000000">@Strings.Black</listEntry>
+    		<listEntry value="0xFF0055">@Strings.Red</listEntry>
+    		<listEntry value="0xAA0000">@Strings.DarkRed</listEntry>
+    		<listEntry value="0xFFAA00">@Strings.Orange</listEntry>
+    		<listEntry value="0xFFFF55">@Strings.Yellow</listEntry>
+    		<listEntry value="0x00FF55">@Strings.Green</listEntry>
+    		<listEntry value="0x00AA00">@Strings.DarkGreen</listEntry>
+    		<listEntry value="0x00AAFF">@Strings.Blue</listEntry>
+    		<listEntry value="0x0000FF">@Strings.DarkBlue</listEntry>
+    		<listEntry value="0xAA55FF">@Strings.Purple</listEntry>
+    		<listEntry value="0xFF00FF">@Strings.Pink</listEntry>
     	</settingConfig>
     </setting>
     
