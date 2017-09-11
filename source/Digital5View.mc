@@ -793,14 +793,23 @@ class Digital5View extends Ui.WatchFace {
                 unitText = "mb";
                 break;
             case 13: // Weather
-                if (status.equals("OK") && apiKey.length() > 0) {
-                    var minTemp = distanceUnit == 0 ? App.getApp().getProperty("tempMin") : App.getApp().getProperty("tempMin") * 1.8 + 32;
-                    var maxTemp = distanceUnit == 0 ? App.getApp().getProperty("tempMax") : App.getApp().getProperty("tempMax") * 1.8 + 32;
-                    var icon    = App.getApp().getProperty("icon");
-                    var bmpX    = xyPositions[0];
-                    var bmpY    = xyPositions[1];
-                    fieldText = minTemp.format("%.0f") + "/" + maxTemp.format("%.0f");
-                    drawWeatherSymbol(field, icon, dc);
+                if (apiKey.length() > 0) {
+                    var minTemp = App.getApp().getProperty("tempMin");
+                    var maxTemp = App.getApp().getProperty("tempMax");
+                    if (null == minTemp || null == maxTemp) {
+                        fieldText = "--/--";
+                        unitText  = "E";
+                    } else {
+                        if (distanceUnit == 1) {
+                            minTemp = minTemp * 1.8 + 32;
+                            maxTemp = maxTemp * 1.8 + 32;
+                        }
+                        var icon  = App.getApp().getProperty("icon");
+                        var bmpX  = xyPositions[0];
+                        var bmpY  = xyPositions[1];
+                        fieldText = minTemp.format("%.0f") + "/" + maxTemp.format("%.0f");
+                        drawWeatherSymbol(field, icon, dc);
+                    }
                 } else {
                     fieldText = "--/--";
                     unitText  = "E";
@@ -936,16 +945,16 @@ class Digital5View extends Ui.WatchFace {
                 break;
             case 3:
                 // Partly Cloudy
-                dc.drawCircle(x + 12, y + 9, 3);
-                dc.drawLine(x + 12, y, x + 12, y + 3);
-                dc.drawLine(x + 3, y + 9, x + 6, y + 9);
-                dc.drawLine(x + 19, y + 9, x + 22, y + 9);
-                dc.drawLine(x + 7, y + 3, x + 9, y + 5);
-                dc.drawLine(x + 18, y + 4, x + 19, y + 2);
-                dc.fillCircle(x + 8, y + 13, 5);
-                dc.fillCircle(x + 4, y + 16, 4);
-                dc.fillCircle(x + 14, y + 16, 4);
-                dc.fillRectangle(x + 3, y + 17, 10, 4);
+                dc.drawCircle(x + 12, y + 8, 3);
+                dc.drawLine(x + 12, y - 1, x + 12, y + 2);
+                dc.drawLine(x + 3, y + 8, x + 6, y + 8);
+                dc.drawLine(x + 19, y + 8, x + 22, y + 8);
+                dc.drawLine(x + 7, y + 2, x + 9, y + 4);
+                dc.drawLine(x + 18, y + 3, x + 19, y + 1);
+                dc.fillCircle(x + 8, y + 12, 5);
+                dc.fillCircle(x + 4, y + 15, 4);
+                dc.fillCircle(x + 14, y + 15, 4);
+                dc.fillRectangle(x + 3, y + 16, 10, 4);
                 break;
         }
         dc.setPenWidth(1);

@@ -24,7 +24,7 @@ class Digital5App extends App.AppBase {
     function getInitialView() {
         Background.deleteTemporalEvent();
         App.getApp().setProperty("status", "NA");
-        enableSunriseSunsetCheck(App.getApp().getProperty("SunriseSunset"));        
+        enableWebRequest(App.getApp().getProperty("SunriseSunset") || App.getApp().getProperty("DarkSkyApiKey").length() > 0);        
         if (null == App.getApp().getProperty("ActKcalAvg")) {
             var actKcalAvg = [0, 0, 0, 0, 0, 0];
             App.getApp().setProperty("ActKcalAvg", actKcalAvg);
@@ -92,11 +92,11 @@ class Digital5App extends App.AppBase {
     }
 
     function onSettingsChanged() {
-        enableSunriseSunsetCheck(App.getApp().getProperty("SunriseSunset"));
+        enableWebRequest(App.getApp().getProperty("SunriseSunset") || App.getApp().getProperty("DarkSkyApiKey").length() > 0);
         WatchUi.requestUpdate();
     }
     
-    function enableSunriseSunsetCheck(enabled) {
+    function enableWebRequest(enabled) {
         if (enabled) {
             Background.registerForTemporalEvent(FIVE_MINUTES);
         } else {
