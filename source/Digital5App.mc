@@ -6,11 +6,8 @@ using Toybox.Time;
 using Toybox.Time.Gregorian;
 
 class Digital5App extends App.AppBase {
-    hidden const FIVE_MINUTES = new Time.Duration(300);
-    hidden const HALF_DAY     = new Time.Duration(43200);
+    hidden const SIXTY_MINUTES = new Time.Duration(3600);
     hidden var   view;
-    hidden var   sunrise;
-    hidden var   sunset;
 
 
     function initialize() {
@@ -97,10 +94,15 @@ class Digital5App extends App.AppBase {
     }
     
     function enableWebRequest(enabled) {
+        Background.deleteTemporalEvent();
         if (enabled) {
-            Background.registerForTemporalEvent(FIVE_MINUTES);
-        } else {
-            Background.deleteTemporalEvent();
+            var lastTime = Background.getLastTemporalEventTime();
+            if (null == lastTime) {
+                Background.registerForTemporalEvent(Time.now());
+            } else {
+                var nextTime = lastTime.add(SIXTY_MINUTES);
+                Background.registerForTemporalEvent(nextTime);
+            }
         }
     }
     
@@ -111,10 +113,9 @@ class Digital5App extends App.AppBase {
             App.getApp().setProperty("UserLng", location.toDegrees()[1]);
         }
         var status = App.getApp().getProperty("status");
-        if (status.equals("FAIL")) {
-            Background.registerForTemporalEvent(FIVE_MINUTES);
-        } else {
-            Background.registerForTemporalEvent(HALF_DAY);
+        if (!status.equals("FAIL")) {
+            Background.deleteTemporalEvent();
+            Background.registerForTemporalEvent(SIXTY_MINUTES);
         }
     }
     
