@@ -6,7 +6,6 @@
     <bitmap id="alarmBlack"   	  filename="drawables/alarmBlack.png"><palette><color>000000</color></palette></bitmap>
     <bitmap id="alert"        	  filename="drawables/alert.png"><palette><color>FFFFFF</color></palette></bitmap>
     <bitmap id="alertBlack"   	  filename="drawables/alertBlack.png"><palette><color>000000</color></palette></bitmap>
-    <bitmap id="bpmWhite"     	  filename="drawables/bpmWhite.png"><palette><color>FFFFFF</color></palette></bitmap>
     <bitmap id="burned" 	  	  filename="drawables/burned.png"><palette><color>000000</color></palette></bitmap>
     <bitmap id="burnedWhite"  	  filename="drawables/burnedWhite.png"><palette><color>000000</color><color>FFFFFF</color></palette></bitmap>
     <bitmap id="steps"    	  	  filename="drawables/steps.png"><palette><color>000000</color></palette></bitmap>
