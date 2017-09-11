@@ -22,14 +22,6 @@
     <bitmap id="burnedWhite"  	  filename="drawables/burnedWhite.png"><palette><color>000000</color><color>FFFFFF</color></palette></bitmap>
     <bitmap id="steps"    	  	  filename="drawables/steps.png"><palette><color>000000</color></palette></bitmap>
     <bitmap id="stepsWhite"   	  filename="drawables/stepsWhite.png"><palette><color>FFFFFF</color></palette></bitmap>
-    <bitmap id="clear"    	  	  filename="drawables/clear.png"><palette><color>FFFFFF</color></palette></bitmap>
-    <bitmap id="clearBlack"   	  filename="drawables/clearBlack.png"><palette><color>000000</color></palette></bitmap>
-    <bitmap id="rain"    	  	  filename="drawables/rain.png"><palette><color>FFFFFF</color></palette></bitmap>
-    <bitmap id="rainBlack"   	  filename="drawables/rainBlack.png"><palette><color>000000</color></palette></bitmap>
-    <bitmap id="cloudy"    	  	  filename="drawables/cloudy.png"><palette><color>FFFFFF</color></palette></bitmap>
-    <bitmap id="cloudyBlack"   	  filename="drawables/cloudyBlack.png"><palette><color>000000</color></palette></bitmap>
-    <bitmap id="pCloudy"    	  filename="drawables/pCloudy.png"><palette><color>FFFFFF</color></palette></bitmap>
-    <bitmap id="pCloudyBlack"     filename="drawables/pCloudyBlack.png"><palette><color>000000</color></palette></bitmap>
 
     <fonts>
         <font id="digitalUpright72" antialias="false" filename="fonts/DigitalUprightThick_72.fnt" filter="0123456789: "/>

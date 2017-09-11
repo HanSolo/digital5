@@ -40,7 +40,6 @@ class Digital5View extends Ui.WatchFace {
     var mailIcon, mailIconBlack, alarmIcon, alarmIconBlack, alertIcon, alertIconBlack;
     var bpmIcon, bpmIconWhite, burnedIcon, burnedIconWhite, stepsIcon, stepsIconWhite;
     var bpm1Icon, bpm2Icon, bpm3Icon, bpm4Icon, bpm5Icon, bpmMaxRedIcon, bpmMaxBlackIcon, bpmMaxWhiteIcon;
-    var clearIcon, clearIconBlack, rainIcon, rainIconBlack, cloudyIcon, cloudyIconBlack, pCloudyIcon, pCloudyIconBlack;
      
     var width, height;
     var centerX, centerY;        
@@ -58,7 +57,7 @@ class Digital5View extends Ui.WatchFace {
     var upperLeftField, upperRightField, lowerLeftField, lowerRightField, bottomField;
     var darkUpperBackground, upperBackgroundColor, upperForegroundColor;
     var darkFieldBackground, fieldBackgroundColor, fieldForegroundColor;
-    var deviceName, status;
+    var deviceName, status, apiKey;
       
     function initialize() {
         WatchFace.initialize();
@@ -90,14 +89,6 @@ class Digital5View extends Ui.WatchFace {
         burnedIconWhite  = Ui.loadResource(Rez.Drawables.burnedWhite);
         stepsIcon        = Ui.loadResource(Rez.Drawables.steps);
         stepsIconWhite   = Ui.loadResource(Rez.Drawables.stepsWhite);
-        clearIcon        = Ui.loadResource(Rez.Drawables.clear);
-        clearIconBlack   = Ui.loadResource(Rez.Drawables.clearBlack);
-        rainIcon         = Ui.loadResource(Rez.Drawables.rain);
-        rainIconBlack    = Ui.loadResource(Rez.Drawables.rainBlack);
-        cloudyIcon       = Ui.loadResource(Rez.Drawables.cloudy);
-        cloudyIconBlack  = Ui.loadResource(Rez.Drawables.cloudyBlack);
-        pCloudyIcon      = Ui.loadResource(Rez.Drawables.pCloudy);
-        pCloudyIconBlack = Ui.loadResource(Rez.Drawables.pCloudyBlack);  
         weekdays[0]      = Ui.loadResource(Rez.Strings.Sun);
         weekdays[1]      = Ui.loadResource(Rez.Strings.Mon);
         weekdays[2]      = Ui.loadResource(Rez.Strings.Tue);
@@ -168,7 +159,9 @@ class Digital5View extends Ui.WatchFace {
         darkFieldBackground       = App.getApp().getProperty("DarkFieldBackground");
         fieldBackgroundColor      = darkFieldBackground ? Gfx.COLOR_BLACK : Gfx.COLOR_WHITE;
         fieldForegroundColor      = darkFieldBackground ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK;
+        apiKey                    = App.getApp().getProperty("DarkSkyApiKey");
         status                    = App.getApp().getProperty("status");
+        
         var charge                = systemStats.battery;
         var showChargePercentage  = App.getApp().getProperty("ShowChargePercentage");
         var showPercentageUnder20 = App.getApp().getProperty("ShowPercentageUnder20");
@@ -194,7 +187,6 @@ class Digital5View extends Ui.WatchFace {
         var minuteColor           = App.getApp().getProperty("MinuteColor").toNumber();
         var coloredBattery        = App.getApp().getProperty("ColoredBattery");
         var showSunriseSunset     = App.getApp().getProperty("SunriseSunset");
-        var apiKey                = App.getApp().getProperty("DarkSkyApiKey");
         var gender;
         var userWeight;
         var userHeight;
@@ -638,7 +630,6 @@ class Digital5View extends Ui.WatchFace {
                 dc.drawLine(65, 224, 74, 215);            
                 break;
         }
-
         onPartialUpdate(dc);
     }
     
@@ -809,13 +800,7 @@ class Digital5View extends Ui.WatchFace {
                     var bmpX    = xyPositions[0];
                     var bmpY    = xyPositions[1];
                     fieldText = minTemp.format("%.0f") + "/" + maxTemp.format("%.0f");
-                    switch(icon) {
-                        case 0 : dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? clearIcon : clearIconBlack); break;
-                        case 1 : dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? rainIcon : rainIconBlack); break;
-                        case 2 : dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? cloudyIcon : cloudyIconBlack); break;
-                        case 3 : dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? pCloudyIcon : pCloudyIconBlack); break;
-                        default: break;
-                    }
+                    drawWeatherSymbol(field, icon, dc);
                 } else {
                     fieldText = "--/--";
                     unitText  = "E";
@@ -913,6 +898,57 @@ class Digital5View extends Ui.WatchFace {
         } else {
             dc.drawText(textX, textY, Graphics.FONT_XTINY, getActKcalAvg(activeKcal), horAlign);
         }
+    }
+    function drawWeatherSymbol(field, icon, dc) {
+        var x = field == UPPER_LEFT ? 16  : 207;
+        var y = 157;
+        dc.setColor(fieldForegroundColor, fieldBackgroundColor);
+        dc.setPenWidth(2);
+        switch(icon) {
+            case 0:
+                // Clear
+                dc.drawCircle(x + 10, y + 10, 3);
+                dc.drawLine(x + 10, y + 1, x + 10, y + 4);
+                dc.drawLine(x + 10, y + 17, x + 10, y + 20);
+                dc.drawLine(x + 1, y + 10, x + 4, y + 10);
+                dc.drawLine(x + 17, y + 10, x + 20, y + 10);
+                dc.drawLine(x + 4, y + 16, x + 6, y + 14);
+                dc.drawLine(x + 4, y + 4, x + 6, y + 6);
+                dc.drawLine(x + 15, y + 5, x + 17, y + 3);
+                dc.drawLine(x + 15, y + 15, x + 17, y + 17);
+                break;
+            case 1:
+                // Rain
+                dc.fillCircle(x + 8, y + 5, 5);
+                dc.fillCircle(x + 4, y + 8, 4);
+                dc.fillCircle(x + 15, y + 8, 4);
+                dc.fillRectangle(x + 3, y + 8, 12, 5);
+                dc.drawLine(x + 6, y + 15, x + 5, y + 17);
+                dc.drawLine(x + 13, y + 15, x + 12, y + 17);
+                dc.drawLine(x + 9, y + 17, x + 8, y + 19);
+                break;
+            case 2:
+                // Cloudy
+                dc.fillCircle(x + 8, y + 5, 5);
+                dc.fillCircle(x + 4, y + 8, 4);
+                dc.fillCircle(x + 15, y + 8, 4);
+                dc.fillRectangle(x + 3, y + 8, 12, 5);
+                break;
+            case 3:
+                // Partly Cloudy
+                dc.drawCircle(x + 12, y + 9, 3);
+                dc.drawLine(x + 12, y, x + 12, y + 3);
+                dc.drawLine(x + 3, y + 9, x + 6, y + 9);
+                dc.drawLine(x + 19, y + 9, x + 22, y + 9);
+                dc.drawLine(x + 7, y + 3, x + 9, y + 5);
+                dc.drawLine(x + 18, y + 4, x + 19, y + 2);
+                dc.fillCircle(x + 8, y + 13, 5);
+                dc.fillCircle(x + 4, y + 16, 4);
+                dc.fillCircle(x + 14, y + 16, 4);
+                dc.fillRectangle(x + 3, y + 17, 10, 4);
+                break;
+        }
+        dc.setPenWidth(1);
     }
     
     function drawTime(hourColor, minuteColor, font, dc) {
