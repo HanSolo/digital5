@@ -37,7 +37,7 @@ class Digital5View extends Ui.WatchFace {
     var sunriseText     = "--:--";
     var sunsetText      = "--:--";
     var digitalUpright72, digitalUpright26, digitalUpright24, digitalUpright20, digitalUpright16;
-    var mailIcon, mailIconBlack, alarmIcon, alarmIconBlack, alertIcon, alertIconBlack;
+    var alarmIcon, alarmIconBlack, alertIcon, alertIconBlack;
     var bpmIcon, bpmIconWhite, burnedIcon, burnedIconWhite, stepsIcon, stepsIconWhite;
     var bpm1Icon, bpm2Icon, bpm3Icon, bpm4Icon, bpm5Icon, bpmMaxRedIcon, bpmMaxBlackIcon, bpmMaxWhiteIcon;
      
@@ -73,8 +73,6 @@ class Digital5View extends Ui.WatchFace {
         alarmIconBlack   = Ui.loadResource(Rez.Drawables.alarmBlack);
         alertIcon        = Ui.loadResource(Rez.Drawables.alert);
         alertIconBlack   = Ui.loadResource(Rez.Drawables.alertBlack);
-        mailIcon         = Ui.loadResource(Rez.Drawables.mail);
-        mailIconBlack    = Ui.loadResource(Rez.Drawables.mailBlack);
         bpmIconWhite     = Ui.loadResource(Rez.Drawables.bpmWhite);
         bpmIcon          = Ui.loadResource(Rez.Drawables.bpm);
         bpm1Icon         = Ui.loadResource(Rez.Drawables.bpm1);
@@ -279,7 +277,15 @@ class Digital5View extends Ui.WatchFace {
         }
         
         // Notification
-        if (notificationCount > 0) { dc.drawBitmap(58, 18, darkUpperBackground ? mailIcon : mailIconBlack); }    
+        if (notificationCount > 0) { 
+            dc.setColor(darkUpperBackground ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK, upperBackgroundColor);
+            dc.fillRectangle(58, 18, 18, 11);
+            dc.setColor(darkUpperBackground ? Gfx.COLOR_BLACK : Gfx.COLOR_WHITE, upperBackgroundColor);
+            dc.drawLine(59, 18, 67, 26);
+            dc.drawLine(74, 18, 66, 26);
+            dc.drawLine(58, 29, 64, 23);
+            dc.drawLine(75, 29, 69, 23);
+        }    
         
         // BLE
         if (connected) {
