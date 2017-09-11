@@ -67,6 +67,9 @@ class Digital5ServiceDelegate extends System.ServiceDelegate {
 
     function onReceive(responseCode, data) {
         if (responseCode == 200) {
+            if (data instanceof Lang.String) {
+                if (data.equals("Forbidden")) { Background.exit("WRONG KEY"); }
+            }
             if (apiKey.length() > 0) {
                 var daily = data.get("daily");
                 var days  = daily.get("data");

@@ -58,7 +58,7 @@ class Digital5View extends Ui.WatchFace {
     var upperLeftField, upperRightField, lowerLeftField, lowerRightField, bottomField;
     var darkUpperBackground, upperBackgroundColor, upperForegroundColor;
     var darkFieldBackground, fieldBackgroundColor, fieldForegroundColor;
-    var deviceName;
+    var deviceName, status;
       
     function initialize() {
         WatchFace.initialize();
@@ -152,33 +152,9 @@ class Digital5View extends Ui.WatchFace {
         stepsReached              = steps.toDouble() / stepGoal;
         kcal                      = actinfo.calories;
         bpm                       = (hr.heartRate != Act.INVALID_HR_SAMPLE && hr.heartRate > 0) ? hr.heartRate : 0;
-        showBpmZones              = App.getApp().getProperty("BpmZones"); 
-        var charge                = systemStats.battery;
-        var showChargePercentage  = App.getApp().getProperty("ShowChargePercentage");
-        var showPercentageUnder20 = App.getApp().getProperty("ShowPercentageUnder20");
-        var dayOfWeek             = nowinfo.day_of_week;
-        var lcdBackgroundVisible  = App.getApp().getProperty("LcdBackground");
-        var connected             = Sys.getDeviceSettings().phoneConnected;        
-        var profile               = UserProfile.getProfile();
-        var notificationCount     = Sys.getDeviceSettings().notificationCount;
-        var alarmCount            = Sys.getDeviceSettings().alarmCount;
-        var dst                   = App.getApp().getProperty("DST");    
-        var timezoneOffset        = clockTime.timeZoneOffset;
-        var showHomeTimezone      = App.getApp().getProperty("ShowHomeTimezone");
-        var homeTimezoneOffset    = dst ? App.getApp().getProperty("HomeTimezoneOffset") + 3600 : App.getApp().getProperty("HomeTimezoneOffset");
-        var onTravel              = timezoneOffset != homeTimezoneOffset;        
+        showBpmZones              = App.getApp().getProperty("BpmZones");
         distanceUnit              = Sys.getDeviceSettings().distanceUnits;
-        distance                  = distanceUnit == 0 ? actinfo.distance * 0.00001 : actinfo.distance * 0.00001 * 0.621371;        
-        var dayMonth              = App.getApp().getProperty("DateFormat") == 0;
-        var dateFormat            = dayMonth ? "$1$.$2$" : "$2$/$1$";
-        var monthAsText           = App.getApp().getProperty("MonthAsText");
-        var showCalendarWeek      = App.getApp().getProperty("ShowCalendarWeek");        
-        var showMoveBar           = App.getApp().getProperty("ShowMoveBar");
-        var showStepBar           = App.getApp().getProperty("ShowStepBar");
-        var showCalorieBar        = App.getApp().getProperty("ShowCalorieBar");
-        var hourColor             = App.getApp().getProperty("HourColor").toNumber();
-        var minuteColor           = App.getApp().getProperty("MinuteColor").toNumber();
-        var coloredBattery        = App.getApp().getProperty("ColoredBattery");
+        distance                  = distanceUnit == 0 ? actinfo.distance * 0.00001 : actinfo.distance * 0.00001 * 0.621371;
         colorizeStepText          = App.getApp().getProperty("ColorizeStepText");
         colorizeCalorieText       = App.getApp().getProperty("ColorizeCalorieText");
         upperLeftField            = App.getApp().getProperty("UpperLeftField").toNumber();
@@ -192,6 +168,31 @@ class Digital5View extends Ui.WatchFace {
         darkFieldBackground       = App.getApp().getProperty("DarkFieldBackground");
         fieldBackgroundColor      = darkFieldBackground ? Gfx.COLOR_BLACK : Gfx.COLOR_WHITE;
         fieldForegroundColor      = darkFieldBackground ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK;
+        status                    = App.getApp().getProperty("status");
+        var charge                = systemStats.battery;
+        var showChargePercentage  = App.getApp().getProperty("ShowChargePercentage");
+        var showPercentageUnder20 = App.getApp().getProperty("ShowPercentageUnder20");
+        var dayOfWeek             = nowinfo.day_of_week;
+        var lcdBackgroundVisible  = App.getApp().getProperty("LcdBackground");
+        var connected             = Sys.getDeviceSettings().phoneConnected;        
+        var profile               = UserProfile.getProfile();
+        var notificationCount     = Sys.getDeviceSettings().notificationCount;
+        var alarmCount            = Sys.getDeviceSettings().alarmCount;
+        var dst                   = App.getApp().getProperty("DST");    
+        var timezoneOffset        = clockTime.timeZoneOffset;
+        var showHomeTimezone      = App.getApp().getProperty("ShowHomeTimezone");
+        var homeTimezoneOffset    = dst ? App.getApp().getProperty("HomeTimezoneOffset") + 3600 : App.getApp().getProperty("HomeTimezoneOffset");
+        var onTravel              = timezoneOffset != homeTimezoneOffset;
+        var dayMonth              = App.getApp().getProperty("DateFormat") == 0;
+        var dateFormat            = dayMonth ? "$1$.$2$" : "$2$/$1$";
+        var monthAsText           = App.getApp().getProperty("MonthAsText");
+        var showCalendarWeek      = App.getApp().getProperty("ShowCalendarWeek");        
+        var showMoveBar           = App.getApp().getProperty("ShowMoveBar");
+        var showStepBar           = App.getApp().getProperty("ShowStepBar");
+        var showCalorieBar        = App.getApp().getProperty("ShowCalorieBar");
+        var hourColor             = App.getApp().getProperty("HourColor").toNumber();
+        var minuteColor           = App.getApp().getProperty("MinuteColor").toNumber();
+        var coloredBattery        = App.getApp().getProperty("ColoredBattery");
         var showSunriseSunset     = App.getApp().getProperty("SunriseSunset");
         var apiKey                = App.getApp().getProperty("DarkSkyApiKey");
         var gender;
@@ -377,19 +378,7 @@ class Digital5View extends Ui.WatchFace {
                 dc.drawText(182, y, Graphics.FONT_XTINY, sunsetText, Gfx.TEXT_JUSTIFY_RIGHT);
             }
         }
-        
-        /* Weather Icon
-        if (apiKey.length() > 0) {
-            var icon = App.getApp().getProperty("icon");
-            switch(icon) {
-                case 0 : dc.drawBitmap(111, 34, darkUpperBackground ? clearIcon : clearIconBlack); break;
-                case 1 : dc.drawBitmap(111, 34, darkUpperBackground ? rainIcon : rainIconBlack); break;
-                case 2 : dc.drawBitmap(111, 34, darkUpperBackground ? cloudyIcon : cloudyIconBlack); break;
-                case 3 : dc.drawBitmap(111, 34, darkUpperBackground ? pCloudyIcon : pCloudyIconBlack); break;
-                default: break;
-            }
-        }*/
-                               
+                    
         // Step Bar background
         if (showStepBar) {
             dc.setPenWidth(8);           
@@ -813,18 +802,23 @@ class Digital5View extends Ui.WatchFace {
                 unitText = "mb";
                 break;
             case 13: // Weather
-                var minTemp = distanceUnit == 0 ? App.getApp().getProperty("tempMin") : App.getApp().getProperty("tempMin") * 1.8 + 32;
-                var maxTemp = distanceUnit == 0 ? App.getApp().getProperty("tempMax") : App.getApp().getProperty("tempMax") * 1.8 + 32;
-                var icon    = App.getApp().getProperty("icon");
-                var bmpX    = xyPositions[0];
-                var bmpY    = xyPositions[1];
-                fieldText = minTemp.format("%.0f") + "/" + maxTemp.format("%.0f");
-                switch(icon) {
-                    case 0 : dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? clearIcon : clearIconBlack); break;
-                    case 1 : dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? rainIcon : rainIconBlack); break;
-                    case 2 : dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? cloudyIcon : cloudyIconBlack); break;
-                    case 3 : dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? pCloudyIcon : pCloudyIconBlack); break;
-                    default: break;
+                if (status.equals("OK") && apiKey.length() > 0) {
+                    var minTemp = distanceUnit == 0 ? App.getApp().getProperty("tempMin") : App.getApp().getProperty("tempMin") * 1.8 + 32;
+                    var maxTemp = distanceUnit == 0 ? App.getApp().getProperty("tempMax") : App.getApp().getProperty("tempMax") * 1.8 + 32;
+                    var icon    = App.getApp().getProperty("icon");
+                    var bmpX    = xyPositions[0];
+                    var bmpY    = xyPositions[1];
+                    fieldText = minTemp.format("%.0f") + "/" + maxTemp.format("%.0f");
+                    switch(icon) {
+                        case 0 : dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? clearIcon : clearIconBlack); break;
+                        case 1 : dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? rainIcon : rainIconBlack); break;
+                        case 2 : dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? cloudyIcon : cloudyIconBlack); break;
+                        case 3 : dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? pCloudyIcon : pCloudyIconBlack); break;
+                        default: break;
+                    }
+                } else {
+                    fieldText = "--/--";
+                    unitText  = "E";
                 }
                 break;
         }
