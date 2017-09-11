@@ -28,7 +28,7 @@ class Digital5View extends Ui.WatchFace {
     const BRIGHT_GREEN  = 0x55ff00;
     const BRIGHT_RED    = 0xff0055;
     const YELLOW        = 0xffff00;
-    
+    const BPM_COLORS    = [ 0x0000FF, 0x00AA00, 0x00FF00, 0xFFAA00, 0xFF0000 ];
     const STEP_COLORS   = [ 0x550000, Gfx.COLOR_DK_RED, Gfx.COLOR_RED, Gfx.COLOR_ORANGE, Gfx.COLOR_YELLOW, YELLOW, 0xaaff00, 0x55ff55, BRIGHT_GREEN, Gfx.COLOR_GREEN ];
     const LEVEL_COLORS  = [ Gfx.COLOR_GREEN, Gfx.COLOR_DK_GREEN, Gfx.COLOR_YELLOW, Gfx.COLOR_ORANGE, Gfx.COLOR_RED ];
     const DAY_COUNT     = [ 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 ];
@@ -38,8 +38,8 @@ class Digital5View extends Ui.WatchFace {
     var sunsetText      = "--:--";
     var digitalUpright72, digitalUpright26, digitalUpright24, digitalUpright20, digitalUpright16;
     var alarmIcon, alarmIconBlack, alertIcon, alertIconBlack;
-    var bpmIcon, bpmIconWhite, burnedIcon, burnedIconWhite, stepsIcon, stepsIconWhite;
-    var bpm1Icon, bpm2Icon, bpm3Icon, bpm4Icon, bpm5Icon, bpmMaxRedIcon, bpmMaxBlackIcon, bpmMaxWhiteIcon;
+    var burnedIcon, burnedIconWhite, stepsIcon, stepsIconWhite;
+    //var bpmZoneIcons, bpmIcon, bpmIconWhite, bpm1Icon, bpm2Icon, bpm3Icon, bpm4Icon, bpm5Icon, bpmMaxRedIcon, bpmMaxBlackIcon, bpmMaxWhiteIcon;
      
     var width, height;
     var centerX, centerY;        
@@ -50,7 +50,7 @@ class Digital5View extends Ui.WatchFace {
     var hrHistory, hr;
     var steps, stepGoal, deltaSteps, stepsReached;
     var kcal, activeKcal, kcalReached;
-    var bpm, showBpmZones, bpmZoneIcons, maxBpm, currentZone;
+    var bpm, showBpmZones, maxBpm, currentZone;
     var distanceUnit, distance;            
     var colorizeStepText;
     var colorizeCalorieText;
@@ -73,16 +73,16 @@ class Digital5View extends Ui.WatchFace {
         alarmIconBlack   = Ui.loadResource(Rez.Drawables.alarmBlack);
         alertIcon        = Ui.loadResource(Rez.Drawables.alert);
         alertIconBlack   = Ui.loadResource(Rez.Drawables.alertBlack);
-        bpmIconWhite     = Ui.loadResource(Rez.Drawables.bpmWhite);
-        bpmIcon          = Ui.loadResource(Rez.Drawables.bpm);
-        bpm1Icon         = Ui.loadResource(Rez.Drawables.bpm1);
-        bpm2Icon         = Ui.loadResource(Rez.Drawables.bpm2);
-        bpm3Icon         = Ui.loadResource(Rez.Drawables.bpm3);
-        bpm4Icon         = Ui.loadResource(Rez.Drawables.bpm4);
-        bpm5Icon         = Ui.loadResource(Rez.Drawables.bpm5);
-        bpmMaxRedIcon    = Ui.loadResource(Rez.Drawables.bpmMaxRed);
-        bpmMaxBlackIcon  = Ui.loadResource(Rez.Drawables.bpmMaxBlack);
-        bpmMaxWhiteIcon  = Ui.loadResource(Rez.Drawables.bpmMaxWhite);
+        //bpmIconWhite     = Ui.loadResource(Rez.Drawables.bpmWhite);
+        //bpmIcon          = Ui.loadResource(Rez.Drawables.bpm);
+        //bpm1Icon         = Ui.loadResource(Rez.Drawables.bpm1);
+        //bpm2Icon         = Ui.loadResource(Rez.Drawables.bpm2);
+        //bpm3Icon         = Ui.loadResource(Rez.Drawables.bpm3);
+        //bpm4Icon         = Ui.loadResource(Rez.Drawables.bpm4);
+        //bpm5Icon         = Ui.loadResource(Rez.Drawables.bpm5);
+        //bpmMaxRedIcon    = Ui.loadResource(Rez.Drawables.bpmMaxRed);
+        //bpmMaxBlackIcon  = Ui.loadResource(Rez.Drawables.bpmMaxBlack);
+        //bpmMaxWhiteIcon  = Ui.loadResource(Rez.Drawables.bpmMaxWhite);
         burnedIcon       = Ui.loadResource(Rez.Drawables.burned);
         burnedIconWhite  = Ui.loadResource(Rez.Drawables.burnedWhite);
         stepsIcon        = Ui.loadResource(Rez.Drawables.steps);
@@ -122,7 +122,7 @@ class Digital5View extends Ui.WatchFace {
         
         clockTime                 = Sys.getClockTime();
         
-        bpmZoneIcons              = [ bpm1Icon, bpm2Icon, bpm3Icon, bpm4Icon, bpm5Icon ];
+        //bpmZoneIcons              = [ bpm1Icon, bpm2Icon, bpm3Icon, bpm4Icon, bpm5Icon ];
  
         // General
         width                     = dc.getWidth();
@@ -746,11 +746,26 @@ class Digital5View extends Ui.WatchFace {
         var bmpY  = xyPositions[1];
         var textX = xyPositions[2];
         var textY = xyPositions[3];
+        
+        dc.setColor(showBpmZones ? BPM_COLORS[currentZone - 1] : fieldForegroundColor, fieldBackgroundColor);
+        dc.fillCircle(bmpX + 6, bmpY + 6, 5);
+        dc.fillCircle(bmpX + 15, bmpY + 6, 5);
+        dc.fillRectangle(bmpX + 10, bmpY + 3, 2, 2);
+        dc.fillPolygon([[bmpX + 2, bmpY + 9], [bmpX + 10, bmpY + 5], [bmpX + 18, bmpY + 9], [bmpX + 17, bmpY + 12], [bmpX + 10, bmpY + 18], [bmpX + 5, bmpY + 12]]);
+        
+        if (bpm >= maxBpm) {
+            dc.setColor(Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
+            dc.fillRectangle(bmpX + 10, bmpY + 5, 2, 5);
+            dc.fillRectangle(bmpX + 10, bmpY + 12, 2, 2);
+        }
+        /*
         if (bpm >= maxBpm) {
             dc.drawBitmap(bmpX, bmpY, showBpmZones ? bpmMaxRedIcon : darkFieldBackground ? bpmMaxWhiteIcon : bpmMaxBlackIcon);
         } else {
             dc.drawBitmap(bmpX, bmpY, showBpmZones ? bpmZoneIcons[currentZone - 1] : darkFieldBackground ? bpmIconWhite : bpmIcon);
         }
+        */
+        
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
         if (lcdFontDataFields) {
             dc.drawText(textX, textY, field < 4 ? digitalUpright24 : digitalUpright20, (bpm > 0 ? bpm.toString() : ""), Gfx.TEXT_JUSTIFY_RIGHT);
