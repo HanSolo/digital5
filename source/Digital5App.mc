@@ -6,6 +6,7 @@ using Toybox.Time;
 using Toybox.Time.Gregorian;
 
 class Digital5App extends App.AppBase {
+    hidden const HALF_DAY      = new Time.Duration(43200);
     hidden const SIXTY_MINUTES = new Time.Duration(3600);
     hidden var   view;
 
@@ -100,7 +101,12 @@ class Digital5App extends App.AppBase {
             if (null == lastTime) {
                 Background.registerForTemporalEvent(Time.now());
             } else {
-                var nextTime = lastTime.add(SIXTY_MINUTES);
+                var nextTime;
+                if (App.getApp().getProperty("SunriseSunset") && App.getApp().getProperty("DarkSkyApiKey").length() == 0) {
+                    nextTime = lastTime.add(HALF_DAY);
+                } else {
+                    nextTime = lastTime.add(SIXTY_MINUTES);
+                }
                 Background.registerForTemporalEvent(nextTime);
             }
         }
