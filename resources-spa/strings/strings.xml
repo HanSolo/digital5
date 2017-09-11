@@ -151,6 +151,7 @@
     <string id="Meters">Metros arriba/abajo</string>
     <string id="ActKcalAvg">Act. Kcal media</string>
     <string id="DeltaSteps">Incremento de pasos</string>
+    <string id="Weather">El clima</string>
     
     <string id="DarkUpperBackground">Área de fondo superior oscura</string>
 
@@ -162,4 +163,5 @@
 
     <string id="SunriseSunset">Mostrar la salida y puesta de sol</string>
 	
+	<string id="DarkSkyApiKey">DarkSky API Key (El clima)</string>
 </strings>

@@ -151,6 +151,7 @@
     <string id="Meters">Meters up/down</string>
     <string id="ActKcalAvg">Act. Kcal Avg</string>
     <string id="DeltaSteps">Delta Steps</string>
+    <string id="Weather">Weather</string>
     
     <string id="DarkUpperBackground">Dark upper area background</string>
     
@@ -162,4 +163,5 @@
     
     <string id="SunriseSunset">Show Sunrise/Sunset</string>
     
+    <string id="DarkSkyApiKey">DarkSky API Key (Weather)</string>
 </strings>

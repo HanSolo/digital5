@@ -24,27 +24,23 @@ class Digital5View extends Ui.WatchFace {
 
     enum { WOMAN, MEN }
     enum { UPPER_LEFT, UPPER_RIGHT, LOWER_LEFT, LOWER_RIGHT, BOTTOM_FIELD }
-    enum { STEPS, CALORIES, ACTIVE_CALORIES, HEART_RATE, DISTANCE, ALTITUDE, PRESSURE, ACTIVE_TIME_TODAY, ACTIVE_TIME_WEEK, FLOORS, METERS, AVG_KCAL_AVG, DELTA_STEPS }    
-    const DARK_RED      = 0x550000;
     const BRIGHT_BLUE   = 0x0055ff;
     const BRIGHT_GREEN  = 0x55ff00;
     const BRIGHT_RED    = 0xff0055;
     const YELLOW        = 0xffff00;
-    const YELLOW_GREEN  = 0xaaff00;
-    const GREEN_YELLOW  = 0x55ff55;
     
-    const STEP_COLORS   = [ DARK_RED, Gfx.COLOR_DK_RED, Gfx.COLOR_RED, Gfx.COLOR_ORANGE, Gfx.COLOR_YELLOW, YELLOW, YELLOW_GREEN, GREEN_YELLOW, BRIGHT_GREEN, Gfx.COLOR_GREEN ];
+    const STEP_COLORS   = [ 0x550000, Gfx.COLOR_DK_RED, Gfx.COLOR_RED, Gfx.COLOR_ORANGE, Gfx.COLOR_YELLOW, YELLOW, 0xaaff00, 0x55ff55, BRIGHT_GREEN, Gfx.COLOR_GREEN ];
     const LEVEL_COLORS  = [ Gfx.COLOR_GREEN, Gfx.COLOR_DK_GREEN, Gfx.COLOR_YELLOW, Gfx.COLOR_ORANGE, Gfx.COLOR_RED ];
-    const DAY_COUNT     = [0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334];
+    const DAY_COUNT     = [ 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 ];
     var weekdays        = new [7];
     var months          = new [12];
     var sunriseText     = "--:--";
     var sunsetText      = "--:--";
     var digitalUpright72, digitalUpright26, digitalUpright24, digitalUpright20, digitalUpright16;
-    var mailIcon, mailIconBlack, alarmIcon, alarmIconBlack;
-    var alertIcon, alertIconBlack;
+    var mailIcon, mailIconBlack, alarmIcon, alarmIconBlack, alertIcon, alertIconBlack;
     var bpmIcon, bpmIconWhite, burnedIcon, burnedIconWhite, stepsIcon, stepsIconWhite;
     var bpm1Icon, bpm2Icon, bpm3Icon, bpm4Icon, bpm5Icon, bpmMaxRedIcon, bpmMaxBlackIcon, bpmMaxWhiteIcon;
+    var clearIcon, clearIconBlack, rainIcon, rainIconBlack, cloudyIcon, cloudyIconBlack, pCloudyIcon, pCloudyIconBlack;
      
     var width, height;
     var centerX, centerY;        
@@ -54,7 +50,7 @@ class Digital5View extends Ui.WatchFace {
     var systemStats;        
     var hrHistory, hr;
     var steps, stepGoal, deltaSteps, stepsReached;
-    var kcal;
+    var kcal, activeKcal, kcalReached;
     var bpm, showBpmZones, bpmZoneIcons, maxBpm, currentZone;
     var distanceUnit, distance;            
     var colorizeStepText;
@@ -62,7 +58,6 @@ class Digital5View extends Ui.WatchFace {
     var upperLeftField, upperRightField, lowerLeftField, lowerRightField, bottomField;
     var darkUpperBackground, upperBackgroundColor, upperForegroundColor;
     var darkFieldBackground, fieldBackgroundColor, fieldForegroundColor;
-    var activeKcal, kcalReached;
     var deviceName;
       
     function initialize() {
@@ -94,7 +89,15 @@ class Digital5View extends Ui.WatchFace {
         burnedIcon       = Ui.loadResource(Rez.Drawables.burned);
         burnedIconWhite  = Ui.loadResource(Rez.Drawables.burnedWhite);
         stepsIcon        = Ui.loadResource(Rez.Drawables.steps);
-        stepsIconWhite   = Ui.loadResource(Rez.Drawables.stepsWhite);        
+        stepsIconWhite   = Ui.loadResource(Rez.Drawables.stepsWhite);
+        clearIcon        = Ui.loadResource(Rez.Drawables.clear);
+        clearIconBlack   = Ui.loadResource(Rez.Drawables.clearBlack);
+        rainIcon         = Ui.loadResource(Rez.Drawables.rain);
+        rainIconBlack    = Ui.loadResource(Rez.Drawables.rainBlack);
+        cloudyIcon       = Ui.loadResource(Rez.Drawables.cloudy);
+        cloudyIconBlack  = Ui.loadResource(Rez.Drawables.cloudyBlack);
+        pCloudyIcon      = Ui.loadResource(Rez.Drawables.pCloudy);
+        pCloudyIconBlack = Ui.loadResource(Rez.Drawables.pCloudyBlack);  
         weekdays[0]      = Ui.loadResource(Rez.Strings.Sun);
         weekdays[1]      = Ui.loadResource(Rez.Strings.Mon);
         weekdays[2]      = Ui.loadResource(Rez.Strings.Tue);
@@ -190,6 +193,7 @@ class Digital5View extends Ui.WatchFace {
         fieldBackgroundColor      = darkFieldBackground ? Gfx.COLOR_BLACK : Gfx.COLOR_WHITE;
         fieldForegroundColor      = darkFieldBackground ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK;
         var showSunriseSunset     = App.getApp().getProperty("SunriseSunset");
+        var apiKey                = App.getApp().getProperty("DarkSkyApiKey");
         var gender;
         var userWeight;
         var userHeight;
@@ -234,7 +238,7 @@ class Digital5View extends Ui.WatchFace {
         } else {
             currentZone = 1;
         }
-        
+
         // Draw Background
         dc.setPenWidth(1);     
         dc.setColor(upperBackgroundColor, Gfx.COLOR_TRANSPARENT);
@@ -373,6 +377,18 @@ class Digital5View extends Ui.WatchFace {
                 dc.drawText(182, y, Graphics.FONT_XTINY, sunsetText, Gfx.TEXT_JUSTIFY_RIGHT);
             }
         }
+        
+        /* Weather Icon
+        if (apiKey.length() > 0) {
+            var icon = App.getApp().getProperty("icon");
+            switch(icon) {
+                case 0 : dc.drawBitmap(111, 34, darkUpperBackground ? clearIcon : clearIconBlack); break;
+                case 1 : dc.drawBitmap(111, 34, darkUpperBackground ? rainIcon : rainIconBlack); break;
+                case 2 : dc.drawBitmap(111, 34, darkUpperBackground ? cloudyIcon : cloudyIconBlack); break;
+                case 3 : dc.drawBitmap(111, 34, darkUpperBackground ? pCloudyIcon : pCloudyIconBlack); break;
+                default: break;
+            }
+        }*/
                                
         // Step Bar background
         if (showStepBar) {
@@ -531,14 +547,15 @@ class Digital5View extends Ui.WatchFace {
             case 2: drawCalories(getXYPositions(UPPER_LEFT), dc, true, UPPER_LEFT); break;
             case 3: drawHeartRate(getXYPositions(UPPER_LEFT), dc, UPPER_LEFT); break;
             case 4: drawDistance(getXYPositions(UPPER_LEFT), dc); break;
-            case 5: drawWithUnit(getXYPositions(UPPER_LEFT), dc, ALTITUDE, UPPER_LEFT); break;
-            case 6: drawWithUnit(getXYPositions(UPPER_LEFT), dc, PRESSURE, UPPER_LEFT); break;
+            case 5: drawWithUnit(getXYPositions(UPPER_LEFT), dc, 5, UPPER_LEFT); break;
+            case 6: drawWithUnit(getXYPositions(UPPER_LEFT), dc, 6, UPPER_LEFT); break;
             case 7: drawActiveTime(getXYPositions(UPPER_LEFT), dc, true, UPPER_LEFT); break;
             case 8: drawActiveTime(getXYPositions(UPPER_LEFT), dc, false, UPPER_LEFT); break;
             case 9: drawFloors(getXYPositions(UPPER_LEFT), dc, UPPER_LEFT); break;
             case 10: drawMeters(getXYPositions(UPPER_LEFT), dc, UPPER_LEFT); break;
             case 11: drawActKcalAvg(getXYPositions(UPPER_LEFT), dc, UPPER_LEFT); break;
             case 12: drawSteps(getXYPositions(UPPER_LEFT), dc, true); break;
+            case 13: drawWithUnit(getXYPositions(UPPER_LEFT), dc, 13, UPPER_LEFT); break;
         }
        
         // UpperRight
@@ -548,14 +565,15 @@ class Digital5View extends Ui.WatchFace {
             case 2: drawCalories(getXYPositions(UPPER_RIGHT), dc, true, UPPER_RIGHT); break;
             case 3: drawHeartRate(getXYPositions(UPPER_RIGHT), dc, UPPER_RIGHT); break;
             case 4: drawDistance(getXYPositions(UPPER_RIGHT), dc); break;
-            case 5: drawWithUnit(getXYPositions(UPPER_RIGHT), dc, ALTITUDE, UPPER_RIGHT); break;
-            case 6: drawWithUnit(getXYPositions(UPPER_RIGHT), dc, PRESSURE, UPPER_RIGHT); break;
+            case 5: drawWithUnit(getXYPositions(UPPER_RIGHT), dc, 5, UPPER_RIGHT); break;
+            case 6: drawWithUnit(getXYPositions(UPPER_RIGHT), dc, 6, UPPER_RIGHT); break;
             case 7: drawActiveTime(getXYPositions(UPPER_RIGHT), dc, true, UPPER_RIGHT); break;
             case 8: drawActiveTime(getXYPositions(UPPER_RIGHT), dc, false, UPPER_RIGHT); break;
             case 9: drawFloors(getXYPositions(UPPER_RIGHT), dc, UPPER_RIGHT); break;
             case 10: drawMeters(getXYPositions(UPPER_RIGHT), dc, UPPER_RIGHT); break;
             case 11: drawActKcalAvg(getXYPositions(UPPER_RIGHT), dc, UPPER_RIGHT); break;
             case 12: drawSteps(getXYPositions(UPPER_RIGHT), dc, true); break;
+            case 13: drawWithUnit(getXYPositions(UPPER_RIGHT), dc, 13, UPPER_RIGHT); break;
         }
        
         // LowerLeft
@@ -590,7 +608,7 @@ class Digital5View extends Ui.WatchFace {
             case 2: drawCalories(getXYPositions(BOTTOM_FIELD), dc, true, BOTTOM_FIELD); break;
             case 3: drawHeartRate(getXYPositions(BOTTOM_FIELD), dc, BOTTOM_FIELD); break;
             case 5: 
-                drawWithUnit(getXYPositions(BOTTOM_FIELD), dc, ALTITUDE, BOTTOM_FIELD);
+                drawWithUnit(getXYPositions(BOTTOM_FIELD), dc, 5, BOTTOM_FIELD);
                 dc.setPenWidth(1);
                 // m
                 dc.drawLine(168, 218, 168, 223);
@@ -599,7 +617,7 @@ class Digital5View extends Ui.WatchFace {
                 dc.drawLine(168, 218, 172, 218);
                 break;
             case 6:
-                drawWithUnit(getXYPositions(BOTTOM_FIELD), dc, PRESSURE, BOTTOM_FIELD);
+                drawWithUnit(getXYPositions(BOTTOM_FIELD), dc, 6, BOTTOM_FIELD);
                 dc.setPenWidth(1);
                 // m
                 dc.drawLine(168, 218, 168, 223);
@@ -780,19 +798,34 @@ class Digital5View extends Ui.WatchFace {
         var unitX      = xyPositions[6];
         var unitY      = xyPositions[7];
         var fieldText;
-        var unitText;
+        var unitText   = "";
         switch(sensor) {
-            case ALTITUDE:
+            case 5: // Altitude
                 var altHistory = Sensor.getElevationHistory(null);        
                 var altitude   = altHistory.next();
                 fieldText = null == altitude ? "-" : altitude.data.format("%0.0f");
                 unitText  = "m";
                 break;
-            case PRESSURE:
+            case 6: // Pressure
                 var pressureHistory = Sensor.getPressureHistory(null);
                 var pressure        = pressureHistory.next();
                 fieldText = null == pressure ? "-" : (pressure.data.toDouble() / 100.0).format("%0.2f");
                 unitText = "mb";
+                break;
+            case 13: // Weather
+                var minTemp = distanceUnit == 0 ? App.getApp().getProperty("tempMin") : App.getApp().getProperty("tempMin") * 1.8 + 32;
+                var maxTemp = distanceUnit == 0 ? App.getApp().getProperty("tempMax") : App.getApp().getProperty("tempMax") * 1.8 + 32;
+                var icon    = App.getApp().getProperty("icon");
+                var bmpX    = xyPositions[0];
+                var bmpY    = xyPositions[1];
+                fieldText = minTemp.format("%.0f") + "/" + maxTemp.format("%.0f");
+                switch(icon) {
+                    case 0 : dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? clearIcon : clearIconBlack); break;
+                    case 1 : dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? rainIcon : rainIconBlack); break;
+                    case 2 : dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? cloudyIcon : cloudyIconBlack); break;
+                    case 3 : dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? pCloudyIcon : pCloudyIconBlack); break;
+                    default: break;
+                }
                 break;
         }
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
@@ -829,8 +862,6 @@ class Digital5View extends Ui.WatchFace {
         }  
     }    
     function drawFloors(xyPositions, dc, field) {
-        var bmpX     = xyPositions[0];
-        var bmpY     = xyPositions[1];
         var textX    = xyPositions[2];
         var textY    = xyPositions[3];
         var horAlign = Gfx.TEXT_JUSTIFY_RIGHT;
@@ -889,7 +920,7 @@ class Digital5View extends Ui.WatchFace {
             dc.drawText(textX, textY, Graphics.FONT_XTINY, getActKcalAvg(activeKcal), horAlign);
         }
     }
-
+    
     function drawTime(hourColor, minuteColor, font, dc) {
         var hh   = clockTime.hour;
         var hour = is24Hour ? hh : (hh == 12) ? hh : (hh % 12);

@@ -62,4 +62,6 @@
     <property id="UserLng" type="float">0.0</property>
     
     <property id="SunriseSunset" type="boolean">false</property>
+    
+    <property id="DarkSkyApiKey" type="string"></property>
 </properties>

@@ -151,6 +151,7 @@
     <string id="Meters">Hauteur grimpée/descendue</string>
     <string id="ActKcalAvg">Act. Kcal l'intersection</string>
     <string id="DeltaSteps">La différence á la destination du jour (étapes)</string>
+    <string id="Weather">Le temps</string>
     
     <string id="DarkUpperBackground">Fond sombre pour la zone supérieure</string>
     
@@ -162,4 +163,5 @@
     
     <string id="SunriseSunset">Afficher le lever et le coucher du soleil</string>
     
+    <string id="DarkSkyApiKey">DarkSky API Key (Le temps)</string>
 </strings>

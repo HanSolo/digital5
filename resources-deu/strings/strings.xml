@@ -151,6 +151,7 @@
     <string id="Meters">Meter rauf/runter</string>
     <string id="ActKcalAvg">Akt. Kcal Durchschnitt</string>
     <string id="DeltaSteps">Differenz Schritte (Tagesziel)</string>
+    <string id="Weather">Wetter</string>
     
     <string id="DarkUpperBackground">Dunkler Hintergrund für oberen Bereich</string>
     
@@ -162,4 +163,5 @@
     
     <string id="SunriseSunset">Sonnenauf- und untergang anzeigen</string>
     
+    <string id="DarkSkyApiKey">DarkSky API Key (Wetter)</string>
 </strings>
