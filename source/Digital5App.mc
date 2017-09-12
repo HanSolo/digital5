@@ -22,7 +22,7 @@ class Digital5App extends App.AppBase {
     function getInitialView() {
         Background.deleteTemporalEvent();
         App.getApp().setProperty("status", "NA");
-        enableWebRequest(App.getApp().getProperty("SunriseSunset") || App.getApp().getProperty("DarkSkyApiKey").length() > 0);        
+        enableWebRequest((App.getApp().getProperty("SunriseSunset") || App.getApp().getProperty("DarkSkyApiKey").length() > 0), false);        
         if (null == App.getApp().getProperty("ActKcalAvg")) {
             var actKcalAvg = [0, 0, 0, 0, 0, 0];
             App.getApp().setProperty("ActKcalAvg", actKcalAvg);
@@ -90,24 +90,27 @@ class Digital5App extends App.AppBase {
     }
 
     function onSettingsChanged() {
-        enableWebRequest(App.getApp().getProperty("SunriseSunset") || App.getApp().getProperty("DarkSkyApiKey").length() > 0);
+        enableWebRequest((App.getApp().getProperty("SunriseSunset") || App.getApp().getProperty("DarkSkyApiKey").length() > 0), true);
         WatchUi.requestUpdate();
     }
     
-    function enableWebRequest(enabled) {
+    function enableWebRequest(enabled, updateNow) {
         Background.deleteTemporalEvent();
         if (enabled) {
-            var lastTime = Background.getLastTemporalEventTime();
-            if (null == lastTime) {
-                Background.registerForTemporalEvent(Time.now());
-            } else {
-                var nextTime;
-                if (App.getApp().getProperty("SunriseSunset") && App.getApp().getProperty("DarkSkyApiKey").length() == 0) {
-                    nextTime = lastTime.add(HALF_DAY);
+            var lastTime     = Background.getLastTemporalEventTime();
+            var deltaSeconds = Time.now().value() - lastTime.value();
+            if (deltaSeconds > 300) {
+                if (null == lastTime || updateNow) {
+                    Background.registerForTemporalEvent(Time.now());
                 } else {
-                    nextTime = lastTime.add(SIXTY_MINUTES);
+                    var nextTime;
+                    if (App.getApp().getProperty("SunriseSunset") && App.getApp().getProperty("DarkSkyApiKey").length() == 0) {
+                        nextTime = lastTime.add(HALF_DAY);
+                    } else {
+                        nextTime = lastTime.add(SIXTY_MINUTES);
+                    }
+                    Background.registerForTemporalEvent(nextTime);
                 }
-                Background.registerForTemporalEvent(nextTime);
             }
         }
     }

@@ -18,8 +18,8 @@ class Digital5ServiceDelegate extends System.ServiceDelegate {
     function onTemporalEvent() {
         var location = Activity.getActivityInfo().currentLocation;
         if (null == location) {
-            var lat = App.getApp().getProperty("UserLat");
-            var lng = App.getApp().getProperty("UserLng");
+            var lat = App.getApp().getProperty("UserLat").toFloat();
+            var lng = App.getApp().getProperty("UserLng").toFloat();
             if (null != lat && null != lng) {
                 if (apiKey.length() > 0) {
                     requestWeather(lat, lng, apiKey);
