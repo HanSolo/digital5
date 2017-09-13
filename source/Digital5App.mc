@@ -36,7 +36,7 @@ class Digital5App extends App.AppBase {
     }
     
     function getServiceDelegate() {
-        updateLocation();
+        //updateLocation();
         return [new Digital5ServiceDelegate()]; 
     }
 
@@ -44,9 +44,8 @@ class Digital5App extends App.AppBase {
         if (data instanceof Lang.String) {
             App.getApp().setProperty("status", data);
         } else if (data instanceof Dictionary) {
-            var showSunriseSunset = App.getApp().getProperty("SunriseSunset");
             var apiKey            = App.getApp().getProperty("DarkSkyApiKey");
-            if (apiKey.length() > 0) {
+            if (apiKey.length() == 32) {
                 var sunrise = Gregorian.info(new Time.Moment(data.get("sunrise")), Time.FORMAT_SHORT);
                 var sunset  = Gregorian.info(new Time.Moment(data.get("sunset")), Time.FORMAT_SHORT);
                 var icon    = data.get("icon");
@@ -68,23 +67,6 @@ class Digital5App extends App.AppBase {
                 } else {
                     App.getApp().setProperty("icon", 4);
                 }
-            } else {
-                var requestStatus = data.get("status");
-                if (requestStatus.equals("OK")) {
-                    var result        = data.get("results");
-                    var sunriseString = result.get("sunrise");
-                    var sunsetString  = result.get("sunset");                
-                    var sunriseTime   = getTime(sunriseString, sunriseString.find("PM") != null);
-                    var sunsetTime    = getTime(sunsetString, sunsetString.find("PM") != null);               
-                    var sunrise       = Gregorian.info(Gregorian.moment({:hour => sunriseTime[0], :minute => sunriseTime[1]}), Time.FORMAT_SHORT); 
-                    var sunset        = Gregorian.info(Gregorian.moment({:hour => sunsetTime[0], :minute => sunsetTime[1]}), Time.FORMAT_SHORT);
-                    App.getApp().setProperty("status", "OK");
-                    App.getApp().setProperty("sunriseHH", sunrise.hour);
-                    App.getApp().setProperty("sunriseMM", sunrise.min);
-                    App.getApp().setProperty("sunsetHH", sunset.hour);
-                    App.getApp().setProperty("sunsetMM", sunset.min);
-                    if (null != view) { WatchUi.requestUpdate(); }
-                }
             }
         }
     }
@@ -99,27 +81,5 @@ class Digital5App extends App.AppBase {
             App.getApp().setProperty("UserLat", location.toDegrees()[0]);
             App.getApp().setProperty("UserLng", location.toDegrees()[1]);
         }
-    }
-    
-    function getTime(timeString, isPM) {
-        var chars      = timeString.toCharArray();
-        var colonCount = 0;
-        var hh         = "";
-        var mm         = "";
-        var ss         = "";
-        var length     = timeString.length();
-        for (var i = 0 ; i < length ; i++) {
-            var c = chars[i];
-            if (c.toString().equals(":")) {
-                colonCount++;
-                continue;
-            } else if (c.toString().equals(" ")) {
-                break;
-            }
-            if (colonCount == 0) { hh = hh + chars[i].toString(); }
-            else if (colonCount == 1) { mm = mm + chars[i].toString(); }
-            else if (colonCount == 2) { ss = ss + chars[i].toString(); }
-        }
-        return [isPM ? hh.toNumber() + 12 : hh.toNumber(), mm.toNumber()];
     }
 }

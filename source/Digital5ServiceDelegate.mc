@@ -13,16 +13,8 @@ class Digital5ServiceDelegate extends System.ServiceDelegate {
     
     function onTemporalEvent() {
         //System.println("onTemporalEvent()");
-        var location = Activity.getActivityInfo().currentLocation;
-        var lat;
-        var lng;
-        if (null == location) {
-            lat = App.getApp().getProperty("UserLat").toFloat();
-            lng = App.getApp().getProperty("UserLng").toFloat();
-        } else {
-            lat = location.toDegrees()[0];
-            lng = location.toDegrees()[1];
-        }
+        var lat = App.getApp().getProperty("UserLat").toFloat();
+        var lng = App.getApp().getProperty("UserLng").toFloat();
         if (null != lat && null != lng) {
             makeRequest(lat, lng);
         } else {
@@ -33,24 +25,21 @@ class Digital5ServiceDelegate extends System.ServiceDelegate {
     function makeRequest(lat, lng) {
         var apiKey = App.getApp().getProperty("DarkSkyApiKey");
         var url, params;
-        if (null == apiKey || apiKey.length() != 32) {
-            url    = "https://api.sunrise-sunset.org/json";
-            params = { "lat" => lat.toString(), "lng" => lng.toString() };
-        } else {
-            url    = "https://api.darksky.net/forecast/" + apiKey + "/" + lat.toString() + "," + lng.toString() + "," + Time.now().value();
-            params = { "exclude" => "currently,minutely,hourly,alerts,flags", "units" => "si" };
-        }
-        if (System.getDeviceSettings().phoneConnected) {
-            //System.println("makeRequest()");
+        if (null != apiKey || apiKey.length() == 32) {
+            var url    = "https://api.darksky.net/forecast/" + apiKey + "/" + lat.toString() + "," + lng.toString() + "," + Time.now().value();
+            var params = { "exclude" => "currently,minutely,hourly,alerts,flags", "units" => "si" };
             var options = {
                 :methods => Comm.HTTP_REQUEST_METHOD_GET,
                 :headers => { "Content-Type" => Comm.REQUEST_CONTENT_TYPE_JSON },
                 :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_JSON
             };
-            Comm.makeWebRequest(url, params, options, method(:onReceive));
-        } else {
-            //System.println("Background.exit(\"NOT CONNECTED\")");
-            Background.exit("NOT CONNECTED");
+            if (System.getDeviceSettings().phoneConnected) {
+                //System.println("makeRequest()");
+                Comm.makeWebRequest(url, params, options, method(:onReceive));
+            } else {
+                //System.println("Background.exit(\"NOT CONNECTED\")");
+                Background.exit("NOT CONNECTED");
+            }
         }
     }
 
@@ -73,9 +62,6 @@ class Digital5ServiceDelegate extends System.ServiceDelegate {
                 };
                 //System.println("Background.exit(WeatherData)");
                 Background.exit(dict);
-            } else {
-                //System.println("Background.exit(SunriseSunsetData)");
-                Background.exit(data);
             }
         } else {
            //System.println("Background.exit(\"FAIL\")");
