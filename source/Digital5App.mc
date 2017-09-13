@@ -6,9 +6,7 @@ using Toybox.Time;
 using Toybox.Time.Gregorian;
 
 class Digital5App extends App.AppBase {
-    hidden const HALF_DAY      = new Time.Duration(43200);
-    hidden const SIXTY_MINUTES = new Time.Duration(3600);
-    hidden var   view;
+    hidden var view;
 
 
     function initialize() {
@@ -22,9 +20,8 @@ class Digital5App extends App.AppBase {
     function getInitialView() {
         App.getApp().setProperty("status", "NA");
         
-        //if ((App.getApp().getProperty("SunriseSunset") || App.getApp().getProperty("DarkSkyApiKey").length() == 32)) {
-            updateInBackground(false);
-        //}
+        Background.deleteTemporalEvent();
+        Background.registerForTemporalEvent(new Time.Duration(15 * 60));
                 
         if (null == App.getApp().getProperty("ActKcalAvg")) {
             var actKcalAvg = [0, 0, 0, 0, 0, 0];
@@ -90,25 +87,10 @@ class Digital5App extends App.AppBase {
                 }
             }
         }
-        Background.deleteTemporalEvent();
-        Background.registerForTemporalEvent(new Time.Duration(3600));
     }
 
     function onSettingsChanged() {
-        updateInBackground(true);
         WatchUi.requestUpdate();
-    }
-    
-    function updateInBackground(updateNow) {
-        var lastTime     = Background.getLastTemporalEventTime();
-        var deltaSeconds = null == lastTime ? 305 : (Time.now().value() - lastTime.value());
-        if (deltaSeconds > 300) {
-            if (null == lastTime || updateNow) {
-                Background.registerForTemporalEvent(Time.now());
-            } else {
-                Background.registerForTemporalEvent(new Time.Duration(3600));
-            }
-        }
     }
     
     function updateLocation() {
