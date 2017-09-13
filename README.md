@@ -22,8 +22,10 @@ A simple digital watch face for the Garmin fenix 5x which shows the following da
 - average calories burned the last 7 days
 - active time of the last week
 - active time of today
-- sunrise and sunset ([Powered by Sunrise Sunset](https://sunrise-sunset.org/api))
-- weather ([Powered by Dark Sky](https://darksky.net/poweredby/))
+- sunrise and sunset
+- weather
+
+([Powered by Dark Sky](https://darksky.net/poweredby/))
 
 The LCD background can be switched off and the heart rate zone could be visualized by colors.
 On the left side it will show the daily step goal in a colored bar (is the bar green then the daily stepgoal is reached). On the right side it shows the burned calories where the bar is blue as long as you have not reached your daily base calorie consumption, it will turn green when the burned calories are higher than your daily base calorie consumption. Are the burned calories more than 2x the base calorie consumption the bar will turn pink. 
