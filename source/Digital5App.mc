@@ -20,9 +20,12 @@ class Digital5App extends App.AppBase {
     function onStop(state) {}
 
     function getInitialView() {
-        Background.deleteTemporalEvent();
         App.getApp().setProperty("status", "NA");
-        enableWebRequest((App.getApp().getProperty("SunriseSunset") || App.getApp().getProperty("DarkSkyApiKey").length() > 0), false);        
+        
+        //if ((App.getApp().getProperty("SunriseSunset") || App.getApp().getProperty("DarkSkyApiKey").length() == 32)) {
+            updateInBackground(false);
+        //}
+                
         if (null == App.getApp().getProperty("ActKcalAvg")) {
             var actKcalAvg = [0, 0, 0, 0, 0, 0];
             App.getApp().setProperty("ActKcalAvg", actKcalAvg);
@@ -36,21 +39,17 @@ class Digital5App extends App.AppBase {
     }
     
     function getServiceDelegate() {
-        //System.println("getServiceDelegate()");
+        updateLocation();
         return [new Digital5ServiceDelegate()]; 
     }
 
     function onBackgroundData(data) {
-        System.println("onBackgroundData(" + data + ")");
-        checkForLocationAndAdjustUpdateTime();
         if (data instanceof Lang.String) {
-            //System.println("Status: " + data);
             App.getApp().setProperty("status", data);
         } else if (data instanceof Dictionary) {
             var showSunriseSunset = App.getApp().getProperty("SunriseSunset");
             var apiKey            = App.getApp().getProperty("DarkSkyApiKey");
             if (apiKey.length() > 0) {
-                //System.println("Store weather dictionary to properties: " + data);
                 var sunrise = Gregorian.info(new Time.Moment(data.get("sunrise")), Time.FORMAT_SHORT);
                 var sunset  = Gregorian.info(new Time.Moment(data.get("sunset")), Time.FORMAT_SHORT);
                 var icon    = data.get("icon");
@@ -73,7 +72,6 @@ class Digital5App extends App.AppBase {
                     App.getApp().setProperty("icon", 4);
                 }
             } else {
-                //System.println("Store sunrise/sunset dictionary to properties: " + data);
                 var requestStatus = data.get("status");
                 if (requestStatus.equals("OK")) {
                     var result        = data.get("results");
@@ -92,56 +90,32 @@ class Digital5App extends App.AppBase {
                 }
             }
         }
+        Background.deleteTemporalEvent();
+        Background.registerForTemporalEvent(new Time.Duration(3600));
     }
 
     function onSettingsChanged() {
-        //System.println("onSettingsChanged()");
-        enableWebRequest((App.getApp().getProperty("SunriseSunset") || App.getApp().getProperty("DarkSkyApiKey").length() > 0), true);
+        updateInBackground(true);
         WatchUi.requestUpdate();
     }
     
-    function enableWebRequest(enabled, updateNow) {
-        //System.println("enableWebRequest(" + enabled + ", " + updateNow + ")");
-        Background.deleteTemporalEvent();
-        if (enabled) {
-            var lastTime     = Background.getLastTemporalEventTime();
-            var deltaSeconds = null == lastTime ? 305 : (Time.now().value() - lastTime.value());
-            
-            //System.println("lastTime    : " + (null == lastTime ? "null" : lastTime.value()));
-            //System.println("deltaSeconds: " + deltaSeconds);
-            
-            if (deltaSeconds > 300) {
-                //System.println("deltaSeconds > 300 (" + deltaSeconds + ")");
-                if (null == lastTime || updateNow) {
-                    //System.println("First time web request or updateNow == true");
-                    Background.registerForTemporalEvent(Time.now());
-                } else {
-                    var nextTime;
-                    if (App.getApp().getProperty("SunriseSunset") && App.getApp().getProperty("DarkSkyApiKey").length() == 0) {
-                        nextTime = lastTime.add(HALF_DAY);
-                        //System.println("Web request update interval HALF_DAY");
-                    } else {
-                        nextTime = lastTime.add(SIXTY_MINUTES);
-                        //System.println("Web request update interval SIXTY_MINUTES");
-                    }
-                    Background.registerForTemporalEvent(nextTime);
-                }
+    function updateInBackground(updateNow) {
+        var lastTime     = Background.getLastTemporalEventTime();
+        var deltaSeconds = null == lastTime ? 305 : (Time.now().value() - lastTime.value());
+        if (deltaSeconds > 300) {
+            if (null == lastTime || updateNow) {
+                Background.registerForTemporalEvent(Time.now());
             } else {
-                //System.println("deltaSeconds < 300 (" + deltaSeconds + ")");
+                Background.registerForTemporalEvent(new Time.Duration(3600));
             }
         }
     }
     
-    function checkForLocationAndAdjustUpdateTime() {
+    function updateLocation() {
         var location = Activity.getActivityInfo().currentLocation;
         if (null != location) {
             App.getApp().setProperty("UserLat", location.toDegrees()[0]);
             App.getApp().setProperty("UserLng", location.toDegrees()[1]);
-        }
-        var status = App.getApp().getProperty("status");
-        if (!status.equals("FAIL")) {
-            Background.deleteTemporalEvent();
-            Background.registerForTemporalEvent(SIXTY_MINUTES);
         }
     }
     
