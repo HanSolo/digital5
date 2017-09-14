@@ -767,10 +767,10 @@ class Digital5View extends Ui.WatchFace {
         var unitY    = xyPositions[7];
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
         if (lcdFontDataFields) {
-            dc.drawText(textX, textY, digitalUpright24, distance > 99.99 ? distance.format("%0.0f") : distance.format("%0.1f"), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(textX, textY, digitalUpright24, distance > 99.99 ? distance.format("%.0f") : distance.format("%.1f"), Gfx.TEXT_JUSTIFY_RIGHT);
             dc.drawText(unitLcdX, unitLcdY, digitalUpright16, distanceUnit == 0 ? "km" : "mi", Gfx.TEXT_JUSTIFY_LEFT);
         } else {
-            dc.drawText(textX, textY, Graphics.FONT_XTINY, distance > 99.99 ? distance.format("%0.0f") : distance.format("%0.1f"), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(textX, textY, Graphics.FONT_XTINY, distance > 99.99 ? distance.format("%.0f") : distance.format("%.1f"), Gfx.TEXT_JUSTIFY_RIGHT);
             dc.drawText(unitX, unitY, Graphics.FONT_XTINY, distanceUnit == 0 ? "km" : "mi", Gfx.TEXT_JUSTIFY_LEFT);
         }
     }
@@ -788,16 +788,14 @@ class Digital5View extends Ui.WatchFace {
                 var altHistory     = Sensor.getElevationHistory(null);        
                 var altitude       = altHistory.next();
                 var altitudeOffset = App.getApp().getProperty("AltitudeOffset").toFloat();
-                if (null == altitudeOffset) { altitudeOffset = 0.0; }
-                fieldText = null == altitude ? "-" : (altitude.data.toFloat() + altitudeOffset).format("%0.0f");
+                fieldText = null == altitude ? "-" : (altitude.data.toFloat() + altitudeOffset).format("%.0f");
                 unitText  = "m";
                 break;
             case 6: // Pressure
                 var pressureHistory = Sensor.getPressureHistory(null);
                 var pressure        = pressureHistory.next();
-                var pressureOffset  = App.getApp().getProperty("PressureOffset").toFloat();
-                if (null == pressureOffset) { pressureOffset = 0.0; }
-                fieldText = null == pressure ? "-" : ((pressure.data.toFloat() + pressureOffset) / 100.0).format("%0.2f");
+                var pressureOffset  = App.getApp().getProperty("PressureOffset").toFloat() * 100.0;                
+                fieldText = null == pressure ? "-" : ((pressure.data.toFloat() + pressureOffset) / 100.0).format("%.2f");
                 unitText = "mb";
                 break;
             case 13: // Weather
