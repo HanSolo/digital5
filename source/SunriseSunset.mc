@@ -31,7 +31,8 @@ class SunRiseSunSet {
                 day     = day of the year
                 sunrise = true for sunrise, false for sunset
             output:
-                time of sunrise/sunset in hours */
+                time of sunrise/sunset in hours
+        */
         var day    = dayOfTheYear();
         var lat    = App.getApp().getProperty("UserLat").toFloat();
         var lng    = App.getApp().getProperty("UserLng").toFloat();

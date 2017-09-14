@@ -1127,15 +1127,27 @@ class Digital5View extends Ui.WatchFace {
     }
     
     function calcSunriseSunset() {
-        var sunrise = sunRiseSet.computeSunrise(true) / 1000 / 60 / 60;
-        var sunset  = sunRiseSet.computeSunrise(false) / 1000 / 60 / 60;
+        var sunrise     = sunRiseSet.computeSunrise(true) / 1000 / 60 / 60;
+        var sunset      = sunRiseSet.computeSunrise(false) / 1000 / 60 / 60;
         
+        var sunriseHH   = Math.floor(sunrise).toNumber();
+        var sunriseMM   = Math.floor((sunrise-Math.floor(sunrise))*60).toNumber();
+        var sunriseAmPm = "";
+        var sunsetHH    = Math.floor(sunset).toNumber();
+        var sunsetMM    = Math.floor((sunset-Math.floor(sunset))*60).toNumber();
+        var sunsetAmPm  = "";
+        if (!is24Hour) {
+            sunriseAmPm = sunriseHH < 12 ? "A" : "P";
+            sunsetAmPm  = sunsetHH < 12 ? "A" : "P";
+            sunriseHH   = sunriseHH == 0 ? sunriseHH : sunriseHH % 12;
+            sunsetHH    = sunsetHH == 0 ? sunsetHH : sunsetHH % 12;
+        }
         if (showLeadingZero) {
-            sunriseText = Lang.format("$1$:$2$", [Math.floor(sunrise).format("%02.0f"), Math.floor((sunrise-Math.floor(sunrise))*60).format("%02.0f")]);
-            sunsetText  = Lang.format("$1$:$2$", [Math.floor(sunset).format("%02.0f"), Math.floor((sunset-Math.floor(sunset))*60).format("%02.0f")]);
+            sunriseText = Lang.format("$1$:$2$$3$", [sunriseHH.format("%02d"), sunriseMM.format("%02d"), sunriseAmPm]);
+            sunsetText  = Lang.format("$1$:$2$$3$", [sunsetHH.format("%02d"), sunsetMM.format("%02d"), sunsetAmPm]);
         } else {
-            sunriseText = Lang.format("$1$:$2$", [Math.floor(sunrise).format("%02.0f"), Math.floor((sunrise-Math.floor(sunrise))*60).format("%02.0f")]);
-            sunsetText  = Lang.format("$1$:$2$", [Math.floor(sunset).format("%02.0f"), Math.floor((sunset-Math.floor(sunset))*60).format("%02.0f")]);
+            sunriseText = Lang.format("$1$:$2$$3$", [sunriseHH, sunriseMM, sunriseAmPm]);
+            sunsetText  = Lang.format("$1$:$2$$3$", [sunsetHH, sunsetMM, sunsetAmPm]);
         }
     }
 }
