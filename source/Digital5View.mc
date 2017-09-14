@@ -786,14 +786,14 @@ class Digital5View extends Ui.WatchFace {
             case 5: // Altitude
                 var altHistory     = Sensor.getElevationHistory(null);        
                 var altitude       = altHistory.next();
-                var altitudeOffset = App.getApp().getProperty("altitudeOffset").toFloat();
+                var altitudeOffset = App.getApp().getProperty("AltitudeOffset").toFloat();
                 fieldText = null == altitude ? "-" : (altitude.data.toFloat() + altitudeOffset).format("%0.0f");
                 unitText  = "m";
                 break;
             case 6: // Pressure
                 var pressureHistory = Sensor.getPressureHistory(null);
                 var pressure        = pressureHistory.next();
-                var pressureOffset  = App.getApp().getProperty("pressureOffset").toFloat();
+                var pressureOffset  = App.getApp().getProperty("PressureOffset").toFloat();
                 fieldText = null == pressure ? "-" : ((pressure.data.toFloat() + pressureOffset) / 100.0).format("%0.2f");
                 unitText = "mb";
                 break;
@@ -1054,7 +1054,7 @@ class Digital5View extends Ui.WatchFace {
                 unitY    = 183;
                 break;
             case 4: // BOTTOM_FIELD
-                bmpX     = 84;
+                bmpX     = 85;
                 bmpY     = 216;
                 textX    = 150;
                 textY    = 213;
