@@ -119,6 +119,9 @@
 	<string id="HourColor">La couleur des heures</string>
 	<string id="MinuteColor">La couleur des minutes</string>
 	
+	<string id="AltitudeOffset">Le déport l'altitude</string>
+	<string id="PressureOffset">Le déport pression d'air</string>
+	
 	<string id="White">Blanc</string>
     <string id="Black">Noir</string>
     <string id="Red">Rouge</string>
@@ -162,6 +165,10 @@
     <string id="UserLng">Position Longitude (DDD.dddd)</string>
     
     <string id="SunriseSunset">Afficher le lever et le coucher du soleil</string>
+    
+    <string id="CurrentTimezoneOffset">Fuseau horaire courante</string>
+    
+    <string id="CurrentWeather">Le temps courante (adopté)/ pa jour (non adopté)</string>
     
     <string id="DarkSkyApiKey">DarkSky API Key (Le temps)</string>
 </strings>

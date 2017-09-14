@@ -183,6 +183,14 @@
     <setting propertyKey="@Properties.SecondsAlwaysOn" title="@Strings.SecondsAlwaysOn">
     	<settingConfig type="boolean" />
     </setting>
+    
+    <setting propertyKey="@Properties.AltitudeOffset" title="@Strings.AltitudeOffset">
+    	<settingConfig type="numeric" />
+    </setting>
+    
+    <setting propertyKey="@Properties.PressureOffset" title="@Strings.PressureOffset">
+    	<settingConfig type="numeric" />
+    </setting>
         
     <setting propertyKey="@Properties.UpperLeftField" title="@Strings.UpperLeftField">
     	<settingConfig type="list">
@@ -258,6 +266,7 @@
     		<listEntry value="9">@Strings.Floors</listEntry>
     		<listEntry value="10">@Strings.Meters</listEntry>
     		<listEntry value="11">@Strings.ActKcalAvg</listEntry>
+    		<listEntry value="13">@Strings.Weather</listEntry>
         </settingConfig>
     </setting>
          
@@ -270,6 +279,54 @@
     </setting>
     
     <setting propertyKey="@Properties.SunriseSunset" title="@Strings.SunriseSunset">
+    	<settingConfig type="boolean" />
+    </setting>
+    
+    <setting propertyKey="@Properties.CurrentTimezoneOffset" title="@Strings.CurrentTimezoneOffset" prompt="@Strings.CurrentTimezoneOffset">
+        <settingConfig type="list">
+            <listEntry value="-43200">@Strings.UTC_M_1200</listEntry>
+            <listEntry value="-39600">@Strings.UTC_M_1100</listEntry>
+            <listEntry value="-36000">@Strings.UTC_M_1000</listEntry>
+            <listEntry value="-34200">@Strings.UTC_M_0930</listEntry>
+            <listEntry value="-32400">@Strings.UTC_M_0900</listEntry>
+            <listEntry value="-28800">@Strings.UTC_M_0800</listEntry>
+            <listEntry value="-25200">@Strings.UTC_M_0700</listEntry>
+            <listEntry value="-21600">@Strings.UTC_M_0600</listEntry>
+            <listEntry value="-18000">@Strings.UTC_M_0500</listEntry>
+            <listEntry value="-14400">@Strings.UTC_M_0400</listEntry>
+            <listEntry value="-12600">@Strings.UTC_M_0330</listEntry>
+            <listEntry value="-10800">@Strings.UTC_M_0300</listEntry>
+            <listEntry value="-7200">@Strings.UTC_M_0200</listEntry>
+            <listEntry value="-3600">@Strings.UTC_M_0100</listEntry>
+            <listEntry value="0">@Strings.UTC_P_0000</listEntry>
+            <listEntry value="3600">@Strings.UTC_P_0100</listEntry>
+            <listEntry value="7200">@Strings.UTC_P_0200</listEntry>
+            <listEntry value="10800">@Strings.UTC_P_0300</listEntry>
+            <listEntry value="12600">@Strings.UTC_P_0330</listEntry>
+            <listEntry value="14400">@Strings.UTC_P_0400</listEntry>
+            <listEntry value="16200">@Strings.UTC_P_0430</listEntry>
+            <listEntry value="18000">@Strings.UTC_P_0500</listEntry>
+            <listEntry value="19800">@Strings.UTC_P_0530</listEntry>
+            <listEntry value="20700">@Strings.UTC_P_0545</listEntry>
+            <listEntry value="21600">@Strings.UTC_P_0600</listEntry>
+            <listEntry value="23400">@Strings.UTC_P_0630</listEntry>
+            <listEntry value="25200">@Strings.UTC_P_0700</listEntry>
+            <listEntry value="28800">@Strings.UTC_P_0800</listEntry>
+            <listEntry value="30600">@Strings.UTC_P_0830</listEntry>
+            <listEntry value="31500">@Strings.UTC_P_0845</listEntry>
+            <listEntry value="32400">@Strings.UTC_P_0900</listEntry>
+            <listEntry value="34200">@Strings.UTC_P_0930</listEntry>
+            <listEntry value="36000">@Strings.UTC_P_1000</listEntry>
+            <listEntry value="37800">@Strings.UTC_P_1030</listEntry>
+            <listEntry value="39600">@Strings.UTC_P_1100</listEntry>
+            <listEntry value="43200">@Strings.UTC_P_1200</listEntry>            
+            <listEntry value="45900">@Strings.UTC_P_1245</listEntry>
+            <listEntry value="46800">@Strings.UTC_P_1300</listEntry>
+            <listEntry value="50400">@Strings.UTC_P_1400</listEntry>
+        </settingConfig>
+    </setting>
+    
+    <setting propertyKey="@Properties.CurrentWeather" title="@Strings.CurrentWeather">
     	<settingConfig type="boolean" />
     </setting>
     

@@ -36,7 +36,7 @@ class Digital5App extends App.AppBase {
     }
     
     function getServiceDelegate() {
-        //updateLocation();
+        updateLocation();
         return [new Digital5ServiceDelegate()]; 
     }
 
@@ -44,18 +44,17 @@ class Digital5App extends App.AppBase {
         if (data instanceof Lang.String) {
             App.getApp().setProperty("status", data);
         } else if (data instanceof Dictionary) {
-            var apiKey            = App.getApp().getProperty("DarkSkyApiKey");
+            var apiKey = App.getApp().getProperty("DarkSkyApiKey");
             if (apiKey.length() == 32) {
-                var sunrise = Gregorian.info(new Time.Moment(data.get("sunrise")), Time.FORMAT_SHORT);
-                var sunset  = Gregorian.info(new Time.Moment(data.get("sunset")), Time.FORMAT_SHORT);
-                var icon    = data.get("icon");
+                var currentWeather = App.getApp().getProperty("CurrentWeather");
                 App.getApp().setProperty("status", "OK");
-                App.getApp().setProperty("sunriseHH", sunrise.hour);
-                App.getApp().setProperty("sunriseMM", sunrise.min);
-                App.getApp().setProperty("sunsetHH", sunset.hour);
-                App.getApp().setProperty("sunsetMM", sunset.min);
-                App.getApp().setProperty("tempMin", data.get("minTemp"));
-                App.getApp().setProperty("tempMax", data.get("maxTemp"));
+                if (currentWeather) {
+                    App.getApp().setProperty("temperature", data.get("temperature"));
+                } else {
+                    App.getApp().setProperty("tempMin", data.get("minTemp"));
+                    App.getApp().setProperty("tempMax", data.get("maxTemp"));
+                }
+                var icon = data.get("icon");
                 if (icon.equals("clear-day") || icon.equals("clear-night")) {
                     App.getApp().setProperty("icon", 0);
                 } else if (icon.equals("rain") || icon.equals("snow") || icon.equals("sleet") || icon.equals("hail") || icon.equals("thunderstorm")) {

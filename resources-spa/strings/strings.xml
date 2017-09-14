@@ -45,7 +45,7 @@
 	
 	<string id="ShowHomeTimezone">Mostrar zona horaria local</string>
 	
-	<string id="HomeTimezoneOffset">Mostrar desfase zona horaria local</string>
+	<string id="HomeTimezoneOffset">Desfase zona horaria local</string>
 	
 	<string id="UTC_M_1200">UTC-12:00</string>
 	<string id="UTC_M_1100">UTC-11:00</string>
@@ -119,6 +119,9 @@
 	<string id="HourColor">El color de horas</string>
 	<string id="MinuteColor">El color de minutos</string>
 	
+	<string id="AltitudeOffset">El la altitud</string>
+	<string id="PressureOffset">El presión atmosférica</string>
+	
 	<string id="White">Blanco</string>
     <string id="Black">Negro</string>
     <string id="Red">Rojo</string>
@@ -162,6 +165,10 @@
     <string id="UserLng">Posición Longitud (DDD.dddd)</string>
 
     <string id="SunriseSunset">Mostrar la salida y puesta de sol</string>
+
+	<string id="CurrentTimezoneOffset">Desfase zona horaria real</string>
+
+    <string id="CurrentWeather">El clima real (seleccionado)/ a diaro (no seleccionado)</string>
 	
 	<string id="DarkSkyApiKey">DarkSky API Key (El clima)</string>
 </strings>

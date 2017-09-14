@@ -47,6 +47,10 @@
     <property id="HourColor" type="number">0xFFFFFF</property>
     <property id="MinuteColor" type="number">0xFFFFFF</property>
     
+    <property id="AltitudeOffset" type="float">0.0</property>
+    
+    <property id="PressureOffset" type="float">0.0</property>
+    
     <property id="UpperLeftField" type="number">0</property>
     <property id="UpperRightField" type="number">1</property>
     <property id="LowerLeftField" type="number">3</property>
@@ -62,6 +66,10 @@
     <property id="UserLng" type="float">0.0</property>
     
     <property id="SunriseSunset" type="boolean">false</property>
+    
+    <property id="CurrentTimezoneOffset" type="number">3600</property>
+    
+    <property id="CurrentWeather" type="boolean">true</property>
     
     <property id="DarkSkyApiKey" type="string"></property>
 </properties>

@@ -23,11 +23,14 @@ class Digital5ServiceDelegate extends System.ServiceDelegate {
     }
 
     function makeRequest(lat, lng) {
-        var apiKey = App.getApp().getProperty("DarkSkyApiKey");
+        var apiKey         = App.getApp().getProperty("DarkSkyApiKey");
+        var currentWeather = App.getApp().getProperty("CurrentWeather");
         var url, params;
         if (null != apiKey || apiKey.length() == 32) {
             var url    = "https://api.darksky.net/forecast/" + apiKey + "/" + lat.toString() + "," + lng.toString() + "," + Time.now().value();
-            var params = { "exclude" => "currently,minutely,hourly,alerts,flags", "units" => "si" };
+            var params = currentWeather ? { "exclude" => "daily,minutely,hourly,alerts,flags", "units" => "si" } : { "exclude" => "currently,minutely,hourly,alerts,flags", "units" => "si" };
+            //var params = { "exclude" => "currently,minutely,hourly,alerts,flags", "units" => "si" }; // daily
+            //var params = { "exclude" => "daily,minutely,hourly,alerts,flags", "units" => "si" }; // currently
             var options = {
                 :methods => Comm.HTTP_REQUEST_METHOD_GET,
                 :headers => { "Content-Type" => Comm.REQUEST_CONTENT_TYPE_JSON },
@@ -47,19 +50,27 @@ class Digital5ServiceDelegate extends System.ServiceDelegate {
         //System.println("onReceive(" + responseCode + ", " + data + ")");
         if (responseCode == 200) {
             if (data instanceof Lang.String && data.equals("Forbidden")) { onBackgroundData("WRONG KEY"); }
-            var apiKey = App.getApp().getProperty("DarkSkyApiKey");
+            var apiKey         = App.getApp().getProperty("DarkSkyApiKey");
+            var currentWeather = App.getApp().getProperty("CurrentWeather");
+            var dict;
             if (apiKey.length() == 32) {
                 //System.println("Write data to dictionary");
-                var daily = data.get("daily");
-                var days  = daily.get("data");
-                var today = days[0];
-                var dict = {
-                    "icon"    => today.get("icon"),
-                    "sunrise" => today.get("sunriseTime"),
-                    "sunset"  => today.get("sunsetTime"),
-                    "minTemp" => today.get("temperatureMin"),
-                    "maxTemp" => today.get("temperatureMax")
-                };
+                if (currentWeather) {
+                    var currently = data.get("currently");
+                    dict = {
+                        "icon"        => currently.get("icon"),
+                        "temperature" => currently.get("temperature")
+                    };
+                } else {
+                    var daily = data.get("daily");
+                    var days  = daily.get("data");
+                    var today = days[0];
+                    dict = {
+                        "icon"    => today.get("icon"),
+                        "minTemp" => today.get("temperatureMin"),
+                        "maxTemp" => today.get("temperatureMax")
+                    };
+                }
                 //System.println("Background.exit(WeatherData)");
                 Background.exit(dict);
             }

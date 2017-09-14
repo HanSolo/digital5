@@ -21,6 +21,7 @@ class Digital5View extends Ui.WatchFace {
     var lcdFontDataFields;
     var showLeadingZero;
     var clockTime;
+    var sunRiseSet;
 
     enum { WOMAN, MEN }
     enum { UPPER_LEFT, UPPER_RIGHT, LOWER_LEFT, LOWER_RIGHT, BOTTOM_FIELD }
@@ -36,6 +37,7 @@ class Digital5View extends Ui.WatchFace {
     var months          = new [12];
     var sunriseText     = "--:--";
     var sunsetText      = "--:--";
+    var currentWeather;
     var digitalUpright72, digitalUpright26, digitalUpright24, digitalUpright20, digitalUpright16;
     var alarmIcon, alarmIconBlack, alertIcon, alertIconBlack;
     var burnedIcon, burnedIconWhite, stepsIcon, stepsIconWhite;
@@ -110,6 +112,10 @@ class Digital5View extends Ui.WatchFace {
         showLeadingZero           = App.getApp().getProperty("ShowLeadingZero");
         
         clockTime                 = Sys.getClockTime();
+        
+        sunRiseSet                = new SunRiseSunSet();
+        
+        currentWeather            = App.getApp().getProperty("CurrentWeather");
          
         // General
         width                     = dc.getWidth();
@@ -330,27 +336,8 @@ class Digital5View extends Ui.WatchFace {
                             
         // Sunrise/Sunset
         if (showSunriseSunset) {
-            var sunriseHH   = App.getApp().getProperty("sunriseHH");
-            var sunriseMM   = App.getApp().getProperty("sunriseMM");
-            var sunriseAmPm = "";
-            var sunsetHH    = App.getApp().getProperty("sunsetHH");
-            var sunsetMM    = App.getApp().getProperty("sunsetMM");
-            var sunsetAmPm  = "";
-            if (!is24Hour) {
-                if (sunriseHH != null && sunsetHH != null) {
-                    sunriseAmPm = sunriseHH < 12 ? "A" : "P";
-                    sunsetAmPm  = sunsetHH < 12 ? "A" : "P";
-                    sunriseHH   = sunriseHH == 0 ? sunriseHH : sunriseHH % 12;
-                    sunsetHH    = sunsetHH == 0 ? sunsetHH : sunsetHH % 12;
-                }
-            }
-            if (showLeadingZero) {
-                sunriseText = null == sunriseHH ? "--:--" : (sunriseHH.format("%02d") + ":" + sunriseMM.format("%02d") + sunriseAmPm);
-                sunsetText  = null == sunsetHH ? "--:--" : (sunsetHH.format("%02d") + ":" + sunsetMM.format("%02d") + sunsetAmPm);
-            } else {
-                sunriseText = null == sunriseHH ? "--:--" : (sunriseHH + ":" + sunriseMM + sunriseAmPm);
-                sunsetText  = null == sunsetHH ? "--:--" : (sunsetHH + ":" + sunsetMM + sunsetAmPm);
-            }
+            calcSunriseSunset();
+            
             dc.setColor(upperForegroundColor, upperBackgroundColor);
             dc.fillPolygon([[45, 50], [57, 50], [50, 44]]);    // upIcon
             dc.fillPolygon([[184, 44], [194, 44], [188, 49]]); // downIcon
@@ -622,6 +609,21 @@ class Digital5View extends Ui.WatchFace {
                 dc.drawCircle(69, 220, 4);
                 dc.drawLine(65, 224, 74, 215);            
                 break;
+            case 13:
+                drawWithUnit(getXYPositions(BOTTOM_FIELD), dc, 13, BOTTOM_FIELD);
+                dc.setPenWidth(1);
+                if (distanceUnit == 0) {
+                    // C
+                    dc.drawLine(173, 216, 169, 216);
+                    dc.drawLine(169, 216, 169, 223);
+                    dc.drawLine(173, 223, 168, 223);
+                } else {
+                    // F
+                    dc.drawLine(173, 216, 169, 216);
+                    dc.drawLine(169, 216, 169, 223);
+                    dc.drawLine(172, 219, 168, 219);
+                }
+                break;
         }
         onPartialUpdate(dc);
     }
@@ -782,35 +784,55 @@ class Digital5View extends Ui.WatchFace {
         var unitText   = "";
         switch(sensor) {
             case 5: // Altitude
-                var altHistory = Sensor.getElevationHistory(null);        
-                var altitude   = altHistory.next();
-                fieldText = null == altitude ? "-" : altitude.data.format("%0.0f");
+                var altHistory     = Sensor.getElevationHistory(null);        
+                var altitude       = altHistory.next();
+                var altitudeOffset = App.getApp().getProperty("altitudeOffset").toFloat();
+                fieldText = null == altitude ? "-" : (altitude.data.toFloat() + altitudeOffset).format("%0.0f");
                 unitText  = "m";
                 break;
             case 6: // Pressure
                 var pressureHistory = Sensor.getPressureHistory(null);
                 var pressure        = pressureHistory.next();
-                fieldText = null == pressure ? "-" : (pressure.data.toDouble() / 100.0).format("%0.2f");
+                var pressureOffset  = App.getApp().getProperty("pressureOffset").toFloat();
+                fieldText = null == pressure ? "-" : ((pressure.data.toFloat() + pressureOffset) / 100.0).format("%0.2f");
                 unitText = "mb";
                 break;
             case 13: // Weather
                 if (apiKey.length() > 0) {
-                    var minTemp = App.getApp().getProperty("tempMin");
-                    var maxTemp = App.getApp().getProperty("tempMax");
-                    if (null == minTemp || null == maxTemp) {
-                        fieldText = "--/--";
-                        unitText  = "E";
-                    } else {
-                        if (distanceUnit == 1) {
-                            minTemp = minTemp * 1.8 + 32;
-                            maxTemp = maxTemp * 1.8 + 32;
+                    if (field == 4) { textX += 10; }
+                    var icon = 4;
+                    if (currentWeather) {
+                        var temperature = App.getApp().getProperty("temperature");
+                        if (null == temperature) {
+                            fieldText = "--/--";
+                            unitText  = "E";
+                        } else {
+                            if (distanceUnit == 1) {
+                                temperature = temperature * 1.8 + 32;
+                            }
+                            icon = App.getApp().getProperty("icon");
+                            var bmpX  = xyPositions[0];
+                            var bmpY  = xyPositions[1];
+                            fieldText = temperature.format("%.1f");
                         }
-                        var icon  = App.getApp().getProperty("icon");
-                        var bmpX  = xyPositions[0];
-                        var bmpY  = xyPositions[1];
-                        fieldText = minTemp.format("%.0f") + "/" + maxTemp.format("%.0f");
-                        drawWeatherSymbol(field, icon, dc);
+                    } else {
+                        var minTemp = App.getApp().getProperty("tempMin");
+                        var maxTemp = App.getApp().getProperty("tempMax");
+                        if (null == minTemp || null == maxTemp) {
+                            fieldText = "--/--";
+                            unitText  = "E";
+                        } else {
+                            if (distanceUnit == 1) {
+                                minTemp = minTemp * 1.8 + 32;
+                                maxTemp = maxTemp * 1.8 + 32;
+                            }
+                            icon = App.getApp().getProperty("icon");
+                            var bmpX  = xyPositions[0];
+                            var bmpY  = xyPositions[1];
+                            fieldText = minTemp.format("%.0f") + "/" + maxTemp.format("%.0f");
+                        }
                     }
+                    drawWeatherSymbol(field, icon, dc);
                 } else {
                     fieldText = "--/--";
                     unitText  = "E";
@@ -910,8 +932,22 @@ class Digital5View extends Ui.WatchFace {
         }
     }
     function drawWeatherSymbol(field, icon, dc) {
-        var x = field == UPPER_LEFT ? 16  : 207;
-        var y = 157;
+        var x;
+        var y;
+        switch(field) {
+            case UPPER_LEFT:
+                x = 16;
+                y = 157;
+                break;
+            case UPPER_RIGHT:
+                x = 207;
+                y = 157;
+                break;
+            case BOTTOM_FIELD:
+                x = 85;
+                y = 216;
+                break;
+        }
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
         dc.setPenWidth(2);
         switch(icon) {
@@ -1086,5 +1122,18 @@ class Digital5View extends Ui.WatchFace {
         actKcalAvg[5] = actKcal < 0 ? 0 : actKcal;
         App.getApp().setProperty("ActKcalAvg", actKcalAvg);
         
+    }
+    
+    function calcSunriseSunset() {
+        var sunrise = sunRiseSet.computeSunrise(true) / 1000 / 60 / 60;
+        var sunset  = sunRiseSet.computeSunrise(false) / 1000 / 60 / 60;
+        
+        if (showLeadingZero) {
+            sunriseText = Lang.format("$1$:$2$", [Math.floor(sunrise).format("%02.0f"), Math.floor((sunrise-Math.floor(sunrise))*60).format("%02.0f")]);
+            sunsetText  = Lang.format("$1$:$2$", [Math.floor(sunset).format("%02.0f"), Math.floor((sunset-Math.floor(sunset))*60).format("%02.0f")]);
+        } else {
+            sunriseText = Lang.format("$1$:$2$", [Math.floor(sunrise).format("%02.0f"), Math.floor((sunrise-Math.floor(sunrise))*60).format("%02.0f")]);
+            sunsetText  = Lang.format("$1$:$2$", [Math.floor(sunset).format("%02.0f"), Math.floor((sunset-Math.floor(sunset))*60).format("%02.0f")]);
+        }
     }
 }
