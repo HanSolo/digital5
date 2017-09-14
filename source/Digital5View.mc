@@ -31,7 +31,6 @@ class Digital5View extends Ui.WatchFace {
     const YELLOW        = 0xffff00;
     const BPM_COLORS    = [ 0x0000FF, 0x00AA00, 0x00FF00, 0xFFAA00, 0xFF0000 ];
     const STEP_COLORS   = [ 0x550000, Gfx.COLOR_DK_RED, Gfx.COLOR_RED, Gfx.COLOR_ORANGE, Gfx.COLOR_YELLOW, YELLOW, 0xaaff00, 0x55ff55, BRIGHT_GREEN, Gfx.COLOR_GREEN ];
-    const LEVEL_COLORS  = [ Gfx.COLOR_GREEN, Gfx.COLOR_DK_GREEN, Gfx.COLOR_YELLOW, Gfx.COLOR_ORANGE, Gfx.COLOR_RED ];
     const DAY_COUNT     = [ 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 ];
     var weekdays        = new [7];
     var months          = new [12];
@@ -412,11 +411,14 @@ class Digital5View extends Ui.WatchFace {
         // Move Bar
         if (showMoveBar) {
             var moveBarLevel = actinfo.moveBarLevel;
+            moveBarLevel = 3;
             dc.setColor(darkUpperBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, upperBackgroundColor);
-            for (var i = 0 ; i < 5 ; i++) { dc.fillRectangle(54 + (i * 27), 144, 25, 4); }
-            if (moveBarLevel > Act.MOVE_BAR_LEVEL_MIN) { dc.setColor(LEVEL_COLORS[moveBarLevel - 1], upperBackgroundColor); }
-            for (var i = 0 ; i < moveBarLevel ; i++) { dc.fillRectangle(54 + (i * 27), 144, 25, 4); }
-            if (moveBarLevel == 5) { dc.drawBitmap(190, 141, darkUpperBackground ? alertIcon : alertIconBlack); }
+            dc.fillRectangle(29, 144, 73, 4);
+            for (var i = 0 ; i < 4 ; i++) { dc.fillRectangle(104 + (i * 27), 144, 25, 4); }
+            if (moveBarLevel > Act.MOVE_BAR_LEVEL_MIN) { dc.setColor(Gfx.COLOR_RED, upperBackgroundColor); }
+            dc.fillRectangle(29, 144, 73, 4);
+            for (var i = 0 ; i < (moveBarLevel - 1) ; i++) { dc.fillRectangle(104 + (i * 27), 144, 25, 4); }
+            if (moveBarLevel == 5) { dc.drawBitmap(217, 141, darkUpperBackground ? alertIcon : alertIconBlack); }
         }
         
         
