@@ -271,11 +271,11 @@
     </setting>
          
     <setting propertyKey="@Properties.UserLat" title="@Strings.UserLat">
-    	<settingConfig type="numeric" required="true" />
+    	<settingConfig type="alphanumeric" required="true" />
     </setting>
     
     <setting propertyKey="@Properties.UserLng" title="@Strings.UserLng">
-    	<settingConfig type="numeric" required="true" />
+    	<settingConfig type="alphanumeric" required="true" />
     </setting>
     
     <setting propertyKey="@Properties.SunriseSunset" title="@Strings.SunriseSunset">
