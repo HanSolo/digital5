@@ -61,9 +61,9 @@
     
     <property id="DarkFieldBackground" type="boolean">false</property>
     
-    <property id="UserLat" type="float">0.0</property>
+    <property id="UserLat" type="string">0.0</property>
     
-    <property id="UserLng" type="float">0.0</property>
+    <property id="UserLng" type="string">0.0</property>
     
     <property id="SunriseSunset" type="boolean">false</property>
     
