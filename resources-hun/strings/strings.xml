@@ -1,0 +1,174 @@
+<strings>
+
+	<string id="AppName">Digital5</string>
+
+    <string id="Gender">Nem</string>
+    <string id="Female">Nő</string>
+    <string id="Male">Férfi</string>    
+
+	<string id="Weight">Súly [kg]</string>
+	
+	<string id="Height">Magasság [cm]</string>
+	
+	<string id="Age">Életkor</string>
+	
+	<string id="BpmZones">BPM zónák mutatása</string>
+		
+	<string id="Sun">Va </string>
+	<string id="Mon">He </string>
+	<string id="Tue">Ke </string>
+	<string id="Wed">Sze</string>
+	<string id="Thu">Cs </string>
+	<string id="Fri">Pe </string>
+	<string id="Sat">Szo</string>
+	
+	<string id="Jan">JAN</string>
+	<string id="Feb">FEB</string>
+	<string id="Mar">MAR</string>
+	<string id="Apr">APR</string>
+	<string id="May">MAJ</string>
+	<string id="Jun">JUN</string>
+	<string id="Jul">JUL</string>
+	<string id="Aug">AUG</string>
+	<string id="Sep">SZEP</string>
+	<string id="Oct">OKT</string>
+	<string id="Nov">NOV</string>
+	<string id="Dec">DEC</string>
+		
+	<string id="LcdBackground">LCD háttér mutatása</string>
+	
+	<string id="LcdFont">Lcd betűtípus</string>
+	
+	<string id="LcdFontDataFields">Lcd betűtipus az adatmezőkön</string>
+	
+	<string id="DST">Nyári időszámítás</string>
+	
+	<string id="ShowHomeTimezone">Otthoni időzóna mutatása</string>
+	
+	<string id="HomeTimezoneOffset">Otthoni időzóna</string>
+	
+	<string id="UTC_M_1200">UTC-12:00</string>
+	<string id="UTC_M_1100">UTC-11:00</string>
+	<string id="UTC_M_1000">UTC-10:00</string>
+	<string id="UTC_M_0930">UTC-09:30</string>
+	<string id="UTC_M_0900">UTC-09:00</string>
+	<string id="UTC_M_0800">UTC-08:00</string>
+	<string id="UTC_M_0700">UTC-07:00</string>
+	<string id="UTC_M_0600">UTC-06:00</string>
+	<string id="UTC_M_0500">UTC-05:00</string>
+	<string id="UTC_M_0400">UTC-04:00</string>
+	<string id="UTC_M_0330">UTC-03:30</string>
+	<string id="UTC_M_0300">UTC-03:00</string>
+	<string id="UTC_M_0200">UTC-02:00</string>
+	<string id="UTC_M_0100">UTC-01:00</string>
+	<string id="UTC_M_0000">UTC-00:00</string>
+	<string id="UTC_P_0000">UTC+00:00</string>
+	<string id="UTC_P_0100">UTC+01:00</string>
+	<string id="UTC_P_0200">UTC+02:00</string>
+	<string id="UTC_P_0300">UTC+03:00</string>
+	<string id="UTC_P_0330">UTC+03:30</string>
+	<string id="UTC_P_0400">UTC+04:00</string>
+	<string id="UTC_P_0430">UTC+04:30</string>
+	<string id="UTC_P_0500">UTC+05:00</string>
+	<string id="UTC_P_0530">UTC+05:30</string>
+	<string id="UTC_P_0545">UTC+05:45</string>
+	<string id="UTC_P_0600">UTC+06:00</string>
+	<string id="UTC_P_0630">UTC+06:30</string>
+	<string id="UTC_P_0700">UTC+07:00</string>
+	<string id="UTC_P_0800">UTC+08:00</string>
+	<string id="UTC_P_0830">UTC+08:30</string>
+	<string id="UTC_P_0845">UTC+08:45</string>
+	<string id="UTC_P_0900">UTC+09:00</string>
+	<string id="UTC_P_0930">UTC+09:30</string>
+	<string id="UTC_P_1000">UTC+10:00</string>
+	<string id="UTC_P_1030">UTC+10:30</string>
+	<string id="UTC_P_1100">UTC+11:00</string>
+	<string id="UTC_P_1200">UTC+12:00</string>
+	<string id="UTC_P_1245">UTC+12:45</string>
+	<string id="UTC_P_1300">UTC+13:00</string>
+	<string id="UTC_P_1400">UTC+14:00</string>
+	
+	<string id="DateFormat">Dátum formátum</string>
+	<string id="DayMonth">Nap.Hónap</string>
+	<string id="MonthDay">Hónap/Nap</string>
+	
+	<string id="MonthAsText">Hónap betűvel</string>
+		
+	<string id="ShowCalendarWeek">Naptári hét mutatása</string>	
+	<string id="CalendarWeek">NH</string>
+		
+	<string id="ShowMoveBar">MoveBar mutatása</string>
+
+	<string id="ShowChargePercentage">Töltés kijelzése %-ban</string>
+	<string id="ShowPercentageUnder20">Töltés kijelzése %-ban 20% alatt</string>
+	
+	<string id="ShowLeadingZero">Vezető nullák mutatása</string>
+
+	<string id="ShowStepBar">Lépéssáv mutatása</string>
+	
+	<string id="ShowCalorieBar">Kalóriasáv mutatása</string>
+	
+	<string id="ColoredBattery">Akkumulátor színezése</string>
+	
+	<string id="ColorizeStepText">Lépésszám szöveg színezése</string>
+	
+	<string id="ColorizeCalorieText">Kalória szöveg színezése</string>
+	
+	<string id="SecondsAlwaysOn">Másodperc mutatása</string>
+	
+	<string id="HourColor">Óra színe</string>
+	<string id="MinuteColor">Perc színe</string>
+	
+	<string id="AltitudeOffset">Magasságkiegyenlítés</string>
+	<string id="PressureOffset">Nyomáskiegyenlítés</string>
+	
+	<string id="White">Fehér</string>
+    <string id="Black">Fekete</string>
+    <string id="Red">Piros</string>
+    <string id="DarkRed">Vörös</string>
+    <string id="Orange">Narancs</string>
+    <string id="Yellow">Sárga</string>
+    <string id="Green">Zöld</string>
+    <string id="DarkGreen">Sötétzöld</string>
+    <string id="Blue">Kék</string>
+    <string id="DarkBlue">Sötétkék</string>
+    <string id="Purple">Lila</string>
+    <string id="Pink">Rózsaszín</string>
+	
+	<string id="UpperLeftField">Bal felső mező</string>
+	<string id="UpperRightField">Jobb felső mező</string>
+	<string id="LowerLeftField">Bal alsó mező</string>
+	<string id="LowerRightField">Jobb alsó mező</string>
+	<string id="BottomField">Alsó mező</string>
+	
+	<string id="Steps">Lépések</string>
+    <string id="Calories">Kalória</string>
+    <string id="ActiveCalories">Aktív kalória</string>
+    <string id="HeartRate">Pulzus</string>
+    <string id="Distance">Távolság</string>	
+	<string id="Altitude">Magasság</string>
+    <string id="Pressure">Nyomás</string>
+    <string id="ActiveTimeDay">Aktív idő ma</string>
+    <string id="ActiveTimeWeek">Aktív idő a héten</string>
+    <string id="Floors">Emeletek fel/le</string>
+    <string id="Meters">Méter fel/le</string>
+    <string id="ActKcalAvg">Aktív kalória átlag</string>
+    <string id="DeltaSteps">Lépés delta</string>
+    <string id="Weather">Időjárás</string>
+    
+    <string id="DarkUpperBackground">Sötét felső háttér</string>
+    
+    <string id="DarkFieldBackground">Sötét mező háttér</string>
+    
+    <string id="UserLat">Szélességi érték (DDD.dddd)</string>
+    
+    <string id="UserLng">Hosszúsági érték (DDD.dddd)</string>
+    
+    <string id="SunriseSunset">Napkelte/napnyugta mutatása</string>
+    
+    <string id="CurrentTimezoneOffset">Jelenlegi időzóna</string>
+    
+    <string id="CurrentWeather">Jelenlegi (kiválasztott)/ Napi (nem kiválasztott) időjárás</string>
+    
+    <string id="DarkSkyApiKey">DarkSky API Kulcs (Időjárás)</string>
+</strings>
