@@ -411,7 +411,6 @@ class Digital5View extends Ui.WatchFace {
         // Move Bar
         if (showMoveBar) {
             var moveBarLevel = actinfo.moveBarLevel;
-            moveBarLevel = 3;
             dc.setColor(darkUpperBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, upperBackgroundColor);
             dc.fillRectangle(29, 144, 73, 4);
             for (var i = 0 ; i < 4 ; i++) { dc.fillRectangle(104 + (i * 27), 144, 25, 4); }
