@@ -25,8 +25,15 @@ class Digital5ServiceDelegate extends System.ServiceDelegate {
         var currentWeather = App.getApp().getProperty("CurrentWeather");
         var url, params;
         if (null != apiKey || apiKey.length() == 32) {
-            var url    = "https://api.darksky.net/forecast/" + apiKey + "/" + lat.toString() + "," + lng.toString() + "," + Time.now().value();
-            var params = currentWeather ? { "exclude" => "daily,minutely,hourly,alerts,flags", "units" => "si" } : { "exclude" => "currently,minutely,hourly,alerts,flags", "units" => "si" };
+            var url;
+            var params;
+            if (currentWeather) {
+                url    = "https://api.darksky.net/forecast/" + apiKey + "/" + lat.toString() + "," + lng.toString();
+                params = { "exclude" => "daily,minutely,hourly,alerts,flags", "units" => "si" };
+            } else {
+                url    = "https://api.darksky.net/forecast/" + apiKey + "/" + lat.toString() + "," + lng.toString() + "," + Time.now().value();
+                params = { "exclude" => "currently,minutely,hourly,alerts,flags", "units" => "si" };
+            }
             var options = {
                 :methods => Comm.HTTP_REQUEST_METHOD_GET,
                 :headers => { "Content-Type" => Comm.REQUEST_CONTENT_TYPE_JSON },

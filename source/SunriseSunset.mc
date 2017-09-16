@@ -38,7 +38,7 @@ class SunRiseSunSet {
         var lng    = App.getApp().getProperty("UserLng").toFloat();
         var zenith = 90.83333333333333;
         var D2R    = Math.PI / 180;
-        var R2D    = 180 / Math.PI;
+        var R2D    = 180.0 / Math.PI;
 
         // Convert the longitude to hour value and calculate an approximate time
         var lnHour = lng / 15;

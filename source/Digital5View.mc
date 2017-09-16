@@ -801,7 +801,7 @@ class Digital5View extends Ui.WatchFace {
             case 13: // Weather
                 if (apiKey.length() > 0) {
                     if (field == 4) { textX += 10; }
-                    var icon = 4;
+                    var icon = 5;
                     if (currentWeather) {
                         var temperature = App.getApp().getProperty("temperature");
                         if (null == temperature) {
@@ -994,6 +994,10 @@ class Digital5View extends Ui.WatchFace {
                 dc.fillCircle(x + 14, y + 15, 4);
                 dc.fillRectangle(x + 3, y + 16, 10, 4);
                 break;
+            case 4:
+                // Thunderstorm
+                dc.fillPolygon([[x + 8, y], [x + 15, y], [x + 9, y + 7], [x + 15, y + 7], [x + 5, y + 21], [x + 9, y + 10], [x + 4, y + 12], [x + 8, y]]);
+                break;    
         }
         dc.setPenWidth(1);
     }
