@@ -54,17 +54,20 @@ class Digital5App extends App.AppBase {
                     App.getApp().setProperty("tempMin", data.get("minTemp"));
                     App.getApp().setProperty("tempMax", data.get("maxTemp"));
                 }
+                // rain, snow, sleet, wind, fog, cloudy
                 var icon = data.get("icon");
                 if (icon.equals("clear-day") || icon.equals("clear-night")) {
                     App.getApp().setProperty("icon", 0);
-                } else if (icon.equals("rain") || icon.equals("snow") || icon.equals("sleet") || icon.equals("hail") || icon.equals("thunderstorm")) {
+                } else if (icon.equals("rain") || icon.equals("snow") || icon.equals("sleet") || icon.equals("hail")) {
                     App.getApp().setProperty("icon", 1);
                 } else if (icon.equals("cloudy")) {
                     App.getApp().setProperty("icon", 2);
                 } else if (icon.equals("partly-cloudy-day") || icon.equals("partly-cloudy-night")) {
                     App.getApp().setProperty("icon", 3);
-                } else {
+                } else if (icon.equals("thunderstorm") {
                     App.getApp().setProperty("icon", 4);
+                } else {
+                    App.getApp().setProperty("icon", 5);
                 }
             }
         }
