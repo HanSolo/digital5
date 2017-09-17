@@ -801,7 +801,7 @@ class Digital5View extends Ui.WatchFace {
             case 13: // Weather
                 if (apiKey.length() > 0) {
                     if (field == 4) { textX += 10; }
-                    var icon = 5;
+                    var icon = 7;
                     if (currentWeather) {
                         var temperature = App.getApp().getProperty("temperature");
                         if (null == temperature) {
@@ -966,20 +966,24 @@ class Digital5View extends Ui.WatchFace {
                 break;
             case 1:
                 // Rain
-                dc.fillCircle(x + 8, y + 5, 5);
-                dc.fillCircle(x + 4, y + 8, 4);
-                dc.fillCircle(x + 15, y + 8, 4);
-                dc.fillRectangle(x + 3, y + 8, 12, 5);
-                dc.drawLine(x + 6, y + 15, x + 5, y + 17);
-                dc.drawLine(x + 13, y + 15, x + 12, y + 17);
-                dc.drawLine(x + 9, y + 17, x + 8, y + 19);
+                drawCloud(dc, x, y);
+                dc.drawLine(x + 14, y + 9, x + 12, y + 12);
+                dc.drawLine(x + 9, y + 11, x + 7, y + 14);
+                dc.drawLine(x + 15, y + 14, x + 13, y + 17);
+                dc.drawLine(x + 10, y + 16, x + 8, y + 19);
                 break;
             case 2:
                 // Cloudy
-                dc.fillCircle(x + 8, y + 5, 5);
-                dc.fillCircle(x + 4, y + 8, 4);
-                dc.fillCircle(x + 15, y + 8, 4);
-                dc.fillRectangle(x + 3, y + 8, 12, 5);
+                drawCloud(dc, x, y);                
+                dc.fillCircle(x + 8, y + 13, 5);
+                dc.fillCircle(x + 13, y + 16, 4);
+                dc.fillCircle(x + 4, y + 16, 4);
+                dc.drawLine(x + 6, y + 20, x + 15, y + 20);
+                dc.setColor(fieldBackgroundColor, fieldBackgroundColor);
+                dc.fillCircle(x + 8, y + 14, 4);
+                dc.fillCircle(x + 12, y + 16, 3);
+                dc.fillCircle(x + 5, y + 16, 3);
+                dc.fillRectangle(x + 5, y + 14, 10, 6);
                 break;
             case 3:
                 // Partly Cloudy
@@ -989,17 +993,46 @@ class Digital5View extends Ui.WatchFace {
                 dc.drawLine(x + 19, y + 8, x + 22, y + 8);
                 dc.drawLine(x + 7, y + 2, x + 9, y + 4);
                 dc.drawLine(x + 18, y + 3, x + 19, y + 1);
-                dc.fillCircle(x + 8, y + 12, 5);
-                dc.fillCircle(x + 4, y + 15, 4);
-                dc.fillCircle(x + 14, y + 15, 4);
-                dc.fillRectangle(x + 3, y + 16, 10, 4);
+                dc.fillCircle(x + 8, y + 13, 5);
+                dc.fillCircle(x + 13, y + 16, 4);
+                dc.fillCircle(x + 4, y + 16, 4);
+                dc.drawLine(x + 6, y + 20, x + 15, y + 20);
+                dc.setColor(fieldBackgroundColor, fieldBackgroundColor);
+                dc.fillCircle(x + 8, y + 14, 4);
+                dc.fillCircle(x + 12, y + 16, 3);
+                dc.fillCircle(x + 5, y + 16, 3);
+                dc.fillRectangle(x + 5, y + 14, 10, 6);
                 break;
             case 4:
                 // Thunderstorm
-                dc.fillPolygon([[x + 8, y], [x + 15, y], [x + 9, y + 7], [x + 15, y + 7], [x + 5, y + 21], [x + 9, y + 10], [x + 4, y + 12], [x + 8, y]]);
-                break;    
+                drawCloud(dc, x, y);
+                dc.fillPolygon([[x + 10, y + 7], [x + 15, y + 7], [x + 11, y + 11], [x + 15, y + 11], [x + 6, y + 20], [x + 10, y + 13], [x + 7, y + 13], [x + 10, y + 7]]);
+                break;
+            case 5:
+            case 6:
+                // Sleet/Snow
+                drawCloud(dc, x, y);
+                dc.fillCircle(x + 9, y + 11, 2);
+                dc.fillCircle(x + 13, y + 15, 2);
+                dc.fillCircle(x + 7, y + 18, 2);
+                break;
+                break;  
+            
         }
         dc.setPenWidth(1);
+    }
+    
+    function drawCloud(dc, x, y) {
+        dc.setColor(fieldForegroundColor, fieldBackgroundColor);
+        dc.fillCircle(x + 11, y + 6, 6);
+        dc.fillCircle(x + 15, y + 9, 5);
+        dc.fillCircle(x + 4, y + 9, 4);
+        dc.setColor(fieldBackgroundColor, fieldBackgroundColor);
+        dc.fillCircle(x + 11, y + 7, 5);
+        dc.fillCircle(x + 14, y + 9, 4);
+        dc.fillCircle(x + 5, y + 9, 3);
+        dc.fillRectangle(x + 5, y + 8, 12, 7);
+        dc.setColor(fieldForegroundColor, fieldBackgroundColor);
     }
     
     function drawTime(hourColor, minuteColor, font, dc) {
