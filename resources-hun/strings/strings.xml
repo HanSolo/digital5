@@ -14,13 +14,13 @@
 	
 	<string id="BpmZones">BPM zónák mutatása</string>
 		
-	<string id="Sun">Va </string>
-	<string id="Mon">He </string>
-	<string id="Tue">Ke </string>
-	<string id="Wed">Sze</string>
-	<string id="Thu">Cs </string>
-	<string id="Fri">Pe </string>
-	<string id="Sat">Szo</string>
+	<string id="Sun">VA </string>
+	<string id="Mon">HE </string>
+	<string id="Tue">KE </string>
+	<string id="Wed">SZE</string>
+	<string id="Thu">CS </string>
+	<string id="Fri">PE </string>
+	<string id="Sat">SZO</string>
 	
 	<string id="Jan">JAN</string>
 	<string id="Feb">FEB</string>
