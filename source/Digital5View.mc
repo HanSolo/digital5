@@ -881,9 +881,9 @@ class Digital5View extends Ui.WatchFace {
         var horAlign = Gfx.TEXT_JUSTIFY_RIGHT;
         switch (field) {
             case 0: break;
-            case 1: bmpX +=2; textX += lcdFontDataFields ? 8 : 4; break;
+            case 1: bmpX +=2; textX += lcdFontDataFields ? 8 : 12; break;
             case 2: break;
-            case 3: bmpX +=2; textX += lcdFontDataFields ? 8 : 4; break;
+            case 3: bmpX +=2; textX += lcdFontDataFields ? 8 : 12; break;
             case 4: textX = 120; horAlign = Gfx.TEXT_JUSTIFY_CENTER; break;
         }
         var floorsClimbed   = actinfo.floorsClimbed;
