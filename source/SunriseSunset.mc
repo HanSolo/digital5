@@ -13,6 +13,11 @@ using Toybox.Activity as Activity;
 
 class SunRiseSunSet {
     
+    function initialize() {
+        App.getApp().setProperty("sunrise", (computeSunrise(true) / 3600000));
+        App.getApp().setProperty("sunset", (computeSunrise(false) / 3600000));
+    }
+    
     function dayOfTheYear() {
         var day   = Calendar.info(Time.now(), Time.FORMAT_SHORT).day;
         var month = Calendar.info(Time.now(), Time.FORMAT_SHORT).month;

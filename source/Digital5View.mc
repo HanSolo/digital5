@@ -677,6 +677,9 @@ class Digital5View extends Ui.WatchFace {
         var clockTime = Sys.getClockTime();
         if (clockTime.hour == 23 && clockTime.min == 59 && clockTime.sec == 59) {
             addActKcalToAverage(activeKcal); 
+        } else if (clockTime.hour == 0 && clockTime.min == 0 && clockTime.sec == 59) {
+            App.getApp().setProperty("sunrise", (sunRiseSet.computeSunrise(true) / 3600000));
+            App.getApp().setProperty("sunset", (sunRiseSet.computeSunrise(false) / 3600000));
         }
     }
 
@@ -1180,13 +1183,15 @@ class Digital5View extends Ui.WatchFace {
             actKcalAvg[i] = actKcalAvg[i+1];
         }
         actKcalAvg[5] = actKcal < 0 ? 0 : actKcal;
-        App.getApp().setProperty("ActKcalAvg", actKcalAvg);
-        
+        App.getApp().setProperty("ActKcalAvg", actKcalAvg);       
     }
-    
+
     function calcSunriseSunset() {
-        var sunrise     = sunRiseSet.computeSunrise(true) / 1000 / 60 / 60;
-        var sunset      = sunRiseSet.computeSunrise(false) / 1000 / 60 / 60;
+        //var sunrise     = sunRiseSet.computeSunrise(true) / 1000 / 60 / 60;
+        //var sunset      = sunRiseSet.computeSunrise(false) / 1000 / 60 / 60;
+        
+        var sunrise     = App.getApp().getProperty("sunrise");
+        var sunset      = App.getApp().getProperty("sunset");
         
         var sunriseHH   = Math.floor(sunrise).toNumber();
         var sunriseMM   = Math.floor((sunrise-Math.floor(sunrise))*60).toNumber();

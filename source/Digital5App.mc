@@ -7,6 +7,7 @@ using Toybox.Time.Gregorian;
 
 class Digital5App extends App.AppBase {
     hidden var view;
+    hidden var sunRiseSet;
 
 
     function initialize() {
@@ -27,6 +28,9 @@ class Digital5App extends App.AppBase {
             var actKcalAvg = [0, 0, 0, 0, 0, 0];
             App.getApp().setProperty("ActKcalAvg", actKcalAvg);
         }
+        
+        sunRiseSet = new SunRiseSunSet();
+        
         view = new Digital5View();
         if( Toybox.WatchUi has :WatchFaceDelegate ) {
             return [view, new Digital5Delegate()];
@@ -78,6 +82,8 @@ class Digital5App extends App.AppBase {
     }
 
     function onSettingsChanged() {
+        App.getApp().setProperty("sunrise", (sunRiseSet.computeSunrise(true) / 3600000));
+        App.getApp().setProperty("sunset", (sunRiseSet.computeSunrise(false) / 3600000));
         WatchUi.requestUpdate();
     }
     
