@@ -861,7 +861,7 @@ class Digital5View extends Ui.WatchFace {
             case 0: break;
             case 1: textX -= lcdFontDataFields ? 76 : 72; horAlign = Gfx.TEXT_JUSTIFY_LEFT; break;
             case 2: break;
-            case 3: textX -= lcdFontDataFields ? 55 : 51; horAlign = Gfx.TEXT_JUSTIFY_LEFT; break;
+            case 3: break; //textX -= lcdFontDataFields ? 55 : 51; horAlign = Gfx.TEXT_JUSTIFY_LEFT; break;
         }        
         var activeTimeText = getActiveTimeText(isDay);        
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
@@ -874,19 +874,34 @@ class Digital5View extends Ui.WatchFace {
         }  
     }    
     function drawFloors(xyPositions, dc, field) {
+        var bmpX     = xyPositions[0];
+        var bmpY     = xyPositions[1];
         var textX    = xyPositions[2];
         var textY    = xyPositions[3];
         var horAlign = Gfx.TEXT_JUSTIFY_RIGHT;
         switch (field) {
             case 0: break;
-            case 1: textX -= lcdFontDataFields ? 76 : 72; horAlign = Gfx.TEXT_JUSTIFY_LEFT; break;
+            case 1: bmpX +=2; textX += lcdFontDataFields ? 8 : 4; break;
             case 2: break;
-            case 3: textX -= lcdFontDataFields ? 55 : 51; horAlign = Gfx.TEXT_JUSTIFY_LEFT; break;
+            case 3: bmpX +=2; textX += lcdFontDataFields ? 8 : 4; break;
             case 4: textX = 120; horAlign = Gfx.TEXT_JUSTIFY_CENTER; break;
         }
         var floorsClimbed   = actinfo.floorsClimbed;
         var floorsDescended = actinfo.floorsDescended;
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
+        // draw stairs icon
+        if (field < 4) {
+            dc.setPenWidth(1);
+            dc.drawLine(bmpX + 3, bmpY + 15, bmpX + 6, bmpY + 15);
+            dc.drawLine(bmpX + 6, bmpY + 15, bmpX + 6, bmpY + 12);
+            dc.drawLine(bmpX + 6, bmpY + 12, bmpX + 9, bmpY + 12);
+            dc.drawLine(bmpX + 9, bmpY + 12, bmpX + 9, bmpY + 9);
+            dc.drawLine(bmpX + 9, bmpY + 9, bmpX + 12, bmpY + 9);
+            dc.drawLine(bmpX + 12, bmpY + 9, bmpX + 12, bmpY + 6);
+            dc.drawLine(bmpX + 12, bmpY + 6, bmpX + 15, bmpY + 6);
+            dc.drawLine(bmpX + 15, bmpY + 6, bmpX + 15, bmpY + 3);
+            dc.drawLine(bmpX + 15, bmpY + 3, bmpX + 18, bmpY + 3);
+        }
         if (lcdFontDataFields) {
             dc.drawText(textX, textY, field < 4 ? digitalUpright24 : digitalUpright20, (floorsClimbed.toString() + "/" + floorsDescended.toString()), horAlign);
         } else {
@@ -904,6 +919,13 @@ class Digital5View extends Ui.WatchFace {
         var metersDescended = actinfo.metersDescended.format("%0d");
         var horAlign        = Gfx.TEXT_JUSTIFY_RIGHT;
         if (field == 4) { textX = 120; horAlign = Gfx.TEXT_JUSTIFY_CENTER; }
+        switch (field) {
+            case 0: break;
+            case 1: unitLcdX += 8; unitX += 4; textX += lcdFontDataFields ? 8 : 4; break; //horAlign = Gfx.TEXT_JUSTIFY_LEFT; break;
+            case 2: break;
+            case 3: unitLcdX += 8; unitX += 4; textX += lcdFontDataFields ? 8 : 4; break; //horAlign = Gfx.TEXT_JUSTIFY_LEFT; break;
+            case 4: textX = 120; horAlign = Gfx.TEXT_JUSTIFY_CENTER; break;
+        }        
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
         if (lcdFontDataFields) {
             dc.drawText(textX, textY, field < 4 ? digitalUpright24 : digitalUpright20, metersClimbed.toString() + "/" + metersDescended.toString(), horAlign);

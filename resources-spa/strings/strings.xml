@@ -168,6 +168,8 @@
 
 	<string id="CurrentTimezoneOffset">Desfase zona horaria real</string>
 
+	<string id="CurrentDST">Horario de Verano (la posición real)</string>
+
     <string id="CurrentWeather">El clima real (seleccionado)/ a diaro (no seleccionado)</string>
 	
 	<string id="DarkSkyApiKey">DarkSky API Key (El clima)</string>

@@ -85,6 +85,11 @@ class SunRiseSunSet {
         // Current timezone offset from settings
         var currentTimezoneOffset = App.getApp().getProperty("CurrentTimezoneOffset").toFloat() / 3600.0;
 
+        // Take current timezone daylight saving time into account from settings
+        if (App.getApp().getProperty("CurrentDST")) {
+            currentTimezoneOffset++;
+        }
+
         // Convert UT value to local time zone of latitude/longitude
         var localT = clampTo24((UT + currentTimezoneOffset));
 

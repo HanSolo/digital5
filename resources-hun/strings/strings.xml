@@ -168,6 +168,8 @@
     
     <string id="CurrentTimezoneOffset">Jelenlegi időzóna</string>
     
+    <string id="CurrentDST">Nyári időszámítás (aktuális pozíció)</string>
+    
     <string id="CurrentWeather">Jelenlegi (kiválasztott)/ Napi (nem kiválasztott) időjárás</string>
     
     <string id="DarkSkyApiKey">DarkSky API Kulcs (Időjárás)</string>

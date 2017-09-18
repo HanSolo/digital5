@@ -41,11 +41,11 @@
 	
 	<string id="LcdFontDataFields">Lcd font for datafields</string>
 	
-	<string id="DST">Daylight Saving Time</string>
+	<string id="DST">Daylight Saving Time (home location)</string>
 	
 	<string id="ShowHomeTimezone">Show Home Timezone</string>
 	
-	<string id="HomeTimezoneOffset">Home Timezone</string>
+	<string id="HomeTimezoneOffset">Timezone (home location)</string>
 	
 	<string id="UTC_M_1200">UTC-12:00</string>
 	<string id="UTC_M_1100">UTC-11:00</string>
@@ -166,7 +166,9 @@
     
     <string id="SunriseSunset">Show Sunrise/Sunset</string>
     
-    <string id="CurrentTimezoneOffset">Current Timezone</string>
+    <string id="CurrentTimezoneOffset">Timezone (current location)</string>
+    
+    <string id="CurrentDST">Daylight Saving Time (current location)</string>
     
     <string id="CurrentWeather">Current (selected)/ Daily (unselected) Weather</string>
     

@@ -326,6 +326,10 @@
         </settingConfig>
     </setting>
     
+    <setting propertyKey="@Properties.CurrentDST" title="@Strings.CurrentDST">
+        <settingConfig type="boolean" />
+    </setting>
+    
     <setting propertyKey="@Properties.CurrentWeather" title="@Strings.CurrentWeather">
     	<settingConfig type="boolean" />
     </setting>

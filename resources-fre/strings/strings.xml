@@ -168,6 +168,8 @@
     
     <string id="CurrentTimezoneOffset">Fuseau horaire courante</string>
     
+    <string id="CurrentDST">Heure d'été (la position courante)</string>
+    
     <string id="CurrentWeather">Le temps courante (adopté)/ pa jour (non adopté)</string>
     
     <string id="DarkSkyApiKey">DarkSky API Key (Le temps)</string>

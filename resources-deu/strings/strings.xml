@@ -166,7 +166,9 @@
     
     <string id="SunriseSunset">Sonnenauf- und untergang anzeigen</string>
     
-    <string id="CurrentTimezoneOffset">Aktuelle Zeitzone</string>
+    <string id="CurrentTimezoneOffset">Zeitzone (aktuelle Position)</string>
+    
+    <string id="CurrentDST">Sommerzeit (aktuelle Position)</string>
     
     <string id="CurrentWeather">Aktuelles (ausgewählt)/ Tägliches (nicht ausgewählt) Wetter</string>
     

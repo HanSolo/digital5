@@ -69,6 +69,8 @@
     
     <property id="CurrentTimezoneOffset" type="number">3600</property>
     
+    <property id="CurrentDST" type="boolean">false</property>
+    
     <property id="CurrentWeather" type="boolean">true</property>
     
     <property id="DarkSkyApiKey" type="string"></property>
