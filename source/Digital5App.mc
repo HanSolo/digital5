@@ -22,7 +22,7 @@ class Digital5App extends App.AppBase {
         App.getApp().setProperty("status", "NA");
         
         Background.deleteTemporalEvent();
-        Background.registerForTemporalEvent(new Time.Duration(15 * 60));
+        Background.registerForTemporalEvent(new Time.Duration(10 * 60));
                 
         if (null == App.getApp().getProperty("ActKcalAvg")) {
             var actKcalAvg = [0, 0, 0, 0, 0, 0];
