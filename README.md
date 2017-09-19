@@ -57,12 +57,11 @@ All segments pink   = 3x base calories burned
 
 The sunrise/sunset is calculated by an algorithm found at http://williams.best.vwh.net/sunrise_sunset_algorithm.htm.
 To be able to calculate the sunrise/sunset you have to put in the current location (latitude, longitude) and the current
-timezone you are in.
+timezone you are in. If you have daylight saving time in your current timezone please check the "Daylight saving time (current location)" checkbox.
 
 ATTENTION:
 Instead of giving negative reviews please file an issue at the [github issuetracker](https://github.com/HanSolo/digital5/issues) when you encounter problems.
 By using the issue tracker you can describe your problem and I can try to reproduce and fix it, thanks.
-
 
 To make use of the Weather feature you need your own Dark Sky API key,
 to get one please follow the steps below:
