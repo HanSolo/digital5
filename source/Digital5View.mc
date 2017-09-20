@@ -52,8 +52,8 @@ class Digital5View extends Ui.WatchFace {
     var kcal, activeKcal, kcalReached;
     var bpm, showBpmZones, maxBpm, currentZone;
     var distanceUnit, distance;            
-    var colorizeStepText;
-    var colorizeCalorieText;
+    var coloredStepText;
+    var coloredCalorieText;
     var upperLeftField, upperRightField, lowerLeftField, lowerRightField, bottomField;
     var darkUpperBackground, upperBackgroundColor, upperForegroundColor;
     var darkFieldBackground, fieldBackgroundColor, fieldForegroundColor;
@@ -136,8 +136,8 @@ class Digital5View extends Ui.WatchFace {
         showBpmZones              = App.getApp().getProperty("BpmZones");
         distanceUnit              = Sys.getDeviceSettings().distanceUnits;
         distance                  = distanceUnit == 0 ? actinfo.distance * 0.00001 : actinfo.distance * 0.00001 * 0.621371;
-        colorizeStepText          = App.getApp().getProperty("ColorizeStepText");
-        colorizeCalorieText       = App.getApp().getProperty("ColorizeCalorieText");
+        coloredStepText           = App.getApp().getProperty("ColorizeStepText");
+        coloredCalorieText        = App.getApp().getProperty("ColorizeCalorieText");
         upperLeftField            = App.getApp().getProperty("UpperLeftField").toNumber();
         upperRightField           = App.getApp().getProperty("UpperRightField").toNumber();
         lowerLeftField            = App.getApp().getProperty("LowerLeftField").toNumber();
@@ -693,7 +693,7 @@ class Digital5View extends Ui.WatchFace {
         if (showDeltaSteps) {
             dc.setColor(deltaSteps > 0 ? BRIGHT_RED : Gfx.COLOR_BLACK, fieldBackgroundColor);
         } else {
-            if (colorizeStepText) {
+            if (coloredStepText) {
                 stepsReached = stepsReached > 1.0 ? 1.0 : stepsReached;
                 var endIndex = (10.0 * stepsReached).toNumber();
                 dc.setColor(endIndex > 0 ? STEP_COLORS[endIndex - 1] : Gfx.COLOR_BLACK, fieldBackgroundColor);
@@ -713,7 +713,7 @@ class Digital5View extends Ui.WatchFace {
         if (isActiveKcal) {
             dc.setColor(fieldForegroundColor, fieldBackgroundColor);
         } else {
-            if (colorizeCalorieText) {
+            if (coloredCalorieText) {
                 if (kcalReached > 3.0) {
                     dc.setColor(Gfx.COLOR_PINK, fieldBackgroundColor);
                 } else if (kcalReached > 2.0) {
