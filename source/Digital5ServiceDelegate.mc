@@ -42,7 +42,6 @@ class Digital5ServiceDelegate extends System.ServiceDelegate {
 
     function onReceive(responseCode, data) {
         if (responseCode == 200) {
-            System.println(data);
             if (data instanceof Lang.String && data.equals("Forbidden")) {
                 var dict = { "msg" => "WRONG KEY" };
                 Background.exit(dict);
@@ -53,7 +52,7 @@ class Digital5ServiceDelegate extends System.ServiceDelegate {
                     var dict = {
                         "icon" => currently.get("icon"),
                         "temp" => currently.get("temperature"),
-                        "msg"  => "DAILY"
+                        "msg"  => "CURRENTLY"
                     };
                     Background.exit(dict);
                 } else {

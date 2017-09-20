@@ -817,20 +817,20 @@ class Digital5View extends Ui.WatchFace {
                             fieldText = temp.format("%.1f");
                         }
                     } else {
-                        var minTemp = App.getApp().getProperty("tempMin");
-                        var maxTemp = App.getApp().getProperty("tempMax");
-                        if (null == minTemp || null == maxTemp) {
+                        var tempMin = App.getApp().getProperty("tempMin");
+                        var tempMax = App.getApp().getProperty("tempMax");
+                        if (null == tempMin || null == tempMax) {
                             fieldText = "--/--";
                             unitText  = "E";
                         } else {
                             if (distanceUnit == 1) {
-                                minTemp = minTemp * 1.8 + 32;
-                                maxTemp = maxTemp * 1.8 + 32;
+                                tempMin = tempMin * 1.8 + 32;
+                                tempMax = tempMax * 1.8 + 32;
                             }
                             icon = App.getApp().getProperty("icon");
                             var bmpX  = xyPositions[0];
                             var bmpY  = xyPositions[1];
-                            fieldText = minTemp.format("%.0f") + "/" + maxTemp.format("%.0f");
+                            fieldText = tempMin.format("%.0f") + "/" + tempMax.format("%.0f");
                         }
                     }
                     drawWeatherSymbol(field, icon, dc);
