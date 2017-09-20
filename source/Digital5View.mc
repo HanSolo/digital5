@@ -57,7 +57,7 @@ class Digital5View extends Ui.WatchFace {
     var upperLeftField, upperRightField, lowerLeftField, lowerRightField, bottomField;
     var darkUpperBackground, upperBackgroundColor, upperForegroundColor;
     var darkFieldBackground, fieldBackgroundColor, fieldForegroundColor;
-    var deviceName, status, apiKey;
+    var deviceName, apiKey;
       
     function initialize() {
         WatchFace.initialize();
@@ -150,7 +150,6 @@ class Digital5View extends Ui.WatchFace {
         fieldBackgroundColor      = darkFieldBackground ? Gfx.COLOR_BLACK : Gfx.COLOR_WHITE;
         fieldForegroundColor      = darkFieldBackground ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK;
         apiKey                    = App.getApp().getProperty("DarkSkyApiKey");
-        status                    = App.getApp().getProperty("status");
         
         var charge                = systemStats.battery;
         var showChargePercentage  = App.getApp().getProperty("ShowChargePercentage");
@@ -802,7 +801,7 @@ class Digital5View extends Ui.WatchFace {
                 unitText = "mb";
                 break;
             case 13: // Weather
-                if (apiKey != null) {
+                if (apiKey.length() > 0) {
                     if (field == 4) { textX += 10; }
                     var icon = 7;
                     if (currentWeather) {
@@ -1187,9 +1186,6 @@ class Digital5View extends Ui.WatchFace {
     }
 
     function calcSunriseSunset() {
-        //var sunrise     = sunRiseSet.computeSunrise(true) / 1000 / 60 / 60;
-        //var sunset      = sunRiseSet.computeSunrise(false) / 1000 / 60 / 60;
-        
         var sunrise     = App.getApp().getProperty("sunrise");
         var sunset      = App.getApp().getProperty("sunset");
         

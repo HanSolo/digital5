@@ -15,12 +15,9 @@ class Digital5App extends App.AppBase {
     }
 
     function onStart(state) {}
-    
     function onStop(state) {}
 
     function getInitialView() {
-        App.getApp().setProperty("status", "NA");
-                        
         if (null == App.getApp().getProperty("ActKcalAvg")) {
             var actKcalAvg = [0, 0, 0, 0, 0, 0];
             App.getApp().setProperty("ActKcalAvg", actKcalAvg);
@@ -44,23 +41,25 @@ class Digital5App extends App.AppBase {
         return [new Digital5ServiceDelegate()]; 
     }
 
-    function onBackgroundData(data) {
-        if (data instanceof Lang.String) {
-            App.getApp().setProperty("status", data);
-        } else if (data instanceof Dictionary) {
-            var apiKey = App.getApp().getProperty("DarkSkyApiKey");
-            if (apiKey != null) {
-                var currentWeather = App.getApp().getProperty("CurrentWeather");
-                App.getApp().setProperty("status", "OK");
-                if (currentWeather) {
-                    App.getApp().setProperty("temperature", data.get("temperature"));
+    function onBackgroundData(dto) {
+        System.println(dto.toString());
+        if (data instanceof DTO) {
+            if (dto.msg.equals("FAIL")) {
+                
+            } else if (dto.msg.equals("WRONG KEY")) {
+            
+            } else {
+                if (dto.msg.equals("CURRENTLY")) {
+                    App.getApp().setProperty("temperature", dto.temp);
                 } else {
-                    App.getApp().setProperty("tempMin", data.get("minTemp"));
-                    App.getApp().setProperty("tempMax", data.get("maxTemp"));
+                    App.getApp().setProperty("tempMin", dto.tempMin);
+                    App.getApp().setProperty("tempMax", dto.tempMax);
                 }
                 // rain, snow, sleet, wind, fog, cloudy
-                var icon = data.get("icon");
-                if (icon.equals("clear-day") || icon.equals("clear-night")) {
+                var icon = dto.icon;
+                if (icon == null) {
+                    App.getApp().setProperty("icon", 7);
+                } else if (icon.equals("clear-day") || icon.equals("clear-night")) {
                     App.getApp().setProperty("icon", 0);
                 } else if (icon.equals("rain") || icon.equals("hail")) {
                     App.getApp().setProperty("icon", 1);
