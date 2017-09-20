@@ -805,18 +805,16 @@ class Digital5View extends Ui.WatchFace {
                     if (field == 4) { textX += 10; }
                     var icon = 7;
                     if (currentWeather) {
-                        var temperature = App.getApp().getProperty("temp");
-                        if (null == temperature) {
+                        var temp = App.getApp().getProperty("temp");
+                        if (null == temp) {
                             fieldText = "--/--";
                             unitText  = "E";
                         } else {
-                            if (distanceUnit == 1) {
-                                temperature = temperature * 1.8 + 32;
-                            }
+                            if (distanceUnit == 1) { temp = temp * 1.8 + 32; }
                             icon = App.getApp().getProperty("icon");
                             var bmpX  = xyPositions[0];
                             var bmpY  = xyPositions[1];
-                            fieldText = temperature.format("%.1f");
+                            fieldText = temp.format("%.1f");
                         }
                     } else {
                         var minTemp = App.getApp().getProperty("tempMin");
