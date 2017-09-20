@@ -44,13 +44,12 @@ class Digital5App extends App.AppBase {
     function onBackgroundData(data) {
         if (data instanceof Dictionary) {
             var msg = data.get("msg");
-            
             if (msg.equals("FAIL")) {
-                
+
             } else if (msg.equals("WRONG KEY")) {
-            
+
             } else if (msg.equals("CURRENTLY")) {
-                    App.getApp().setProperty("temperature", data.get("temp"));
+                    App.getApp().setProperty("temp", data.get("temp"));
             } else if (msg.equals("DAILY")) {
                     App.getApp().setProperty("tempMin", data.get("tempMin"));
                     App.getApp().setProperty("tempMax", data.get("tempMax"));

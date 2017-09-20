@@ -805,7 +805,7 @@ class Digital5View extends Ui.WatchFace {
                     if (field == 4) { textX += 10; }
                     var icon = 7;
                     if (currentWeather) {
-                        var temperature = App.getApp().getProperty("temperature");
+                        var temperature = App.getApp().getProperty("temp");
                         if (null == temperature) {
                             fieldText = "--/--";
                             unitText  = "E";
