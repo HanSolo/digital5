@@ -20,10 +20,7 @@ class Digital5App extends App.AppBase {
 
     function getInitialView() {
         App.getApp().setProperty("status", "NA");
-        
-        Background.deleteTemporalEvent();
-        Background.registerForTemporalEvent(new Time.Duration(10 * 60));
-                
+                        
         if (null == App.getApp().getProperty("ActKcalAvg")) {
             var actKcalAvg = [0, 0, 0, 0, 0, 0];
             App.getApp().setProperty("ActKcalAvg", actKcalAvg);
@@ -32,6 +29,9 @@ class Digital5App extends App.AppBase {
         sunRiseSet = new SunRiseSunSet();
         
         view = new Digital5View();
+        
+        Background.registerForTemporalEvent(new Time.Duration(10 * 60));
+        
         if( Toybox.WatchUi has :WatchFaceDelegate ) {
             return [view, new Digital5Delegate()];
         } else {
@@ -49,7 +49,7 @@ class Digital5App extends App.AppBase {
             App.getApp().setProperty("status", data);
         } else if (data instanceof Dictionary) {
             var apiKey = App.getApp().getProperty("DarkSkyApiKey");
-            if (apiKey.length() == 32) {
+            if (apiKey != null) {
                 var currentWeather = App.getApp().getProperty("CurrentWeather");
                 App.getApp().setProperty("status", "OK");
                 if (currentWeather) {
@@ -89,6 +89,7 @@ class Digital5App extends App.AppBase {
     
     function updateLocation() {
         var location = Activity.getActivityInfo().currentLocation;
+            
         if (null != location) {
             App.getApp().setProperty("UserLat", location.toDegrees()[0]);
             App.getApp().setProperty("UserLng", location.toDegrees()[1]);

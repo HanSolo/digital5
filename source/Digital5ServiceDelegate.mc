@@ -24,7 +24,7 @@ class Digital5ServiceDelegate extends System.ServiceDelegate {
         var apiKey         = App.getApp().getProperty("DarkSkyApiKey");
         var currentWeather = App.getApp().getProperty("CurrentWeather");
         var url, params;
-        if (null != apiKey || apiKey.length() == 32) {
+        if (apiKey != null) {
             var url;
             var params;
             if (currentWeather) {
@@ -51,7 +51,7 @@ class Digital5ServiceDelegate extends System.ServiceDelegate {
             var apiKey         = App.getApp().getProperty("DarkSkyApiKey");
             var currentWeather = App.getApp().getProperty("CurrentWeather");
             var dict;
-            if (apiKey.length() == 32) {
+            if (apiKey != null) {
                 if (currentWeather) {
                     var currently = data.get("currently");
                     dict = {

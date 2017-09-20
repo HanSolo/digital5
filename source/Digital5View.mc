@@ -802,7 +802,7 @@ class Digital5View extends Ui.WatchFace {
                 unitText = "mb";
                 break;
             case 13: // Weather
-                if (apiKey.length() > 0) {
+                if (apiKey != null) {
                     if (field == 4) { textX += 10; }
                     var icon = 7;
                     if (currentWeather) {
