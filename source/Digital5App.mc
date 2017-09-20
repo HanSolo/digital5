@@ -41,41 +41,40 @@ class Digital5App extends App.AppBase {
         return [new Digital5ServiceDelegate()]; 
     }
 
-    function onBackgroundData(dto) {
-        System.println(dto.toString());
-        if (data instanceof DTO) {
-            if (dto.msg.equals("FAIL")) {
-                
-            } else if (dto.msg.equals("WRONG KEY")) {
+    function onBackgroundData(data) {
+        if (data instanceof Dictionary) {
+            var msg = data.get("msg");
             
+            if (msg.equals("FAIL")) {
+                
+            } else if (msg.equals("WRONG KEY")) {
+            
+            } else if (msg.equals("CURRENTLY")) {
+                    App.getApp().setProperty("temperature", data.get("temp"));
+            } else if (msg.equals("DAILY")) {
+                    App.getApp().setProperty("tempMin", data.get("tempMin"));
+                    App.getApp().setProperty("tempMax", data.get("tempMax"));
+            }
+            // rain, snow, sleet, wind, fog, cloudy
+            var icon = data.get("icon");
+            if (icon == null) {
+                App.getApp().setProperty("icon", 7);
+            } else if (icon.equals("clear-day") || icon.equals("clear-night")) {
+                App.getApp().setProperty("icon", 0);
+            } else if (icon.equals("rain") || icon.equals("hail")) {
+                App.getApp().setProperty("icon", 1);
+            } else if (icon.equals("cloudy")) {
+                App.getApp().setProperty("icon", 2);
+            } else if (icon.equals("partly-cloudy-day") || icon.equals("partly-cloudy-night")) {
+                App.getApp().setProperty("icon", 3);
+            } else if (icon.equals("thunderstorm")) {
+                App.getApp().setProperty("icon", 4);
+            } else if (icon.equals("sleet")) {
+                App.getApp().setProperty("icon", 5);
+            } else if (icon.equals("snow")) {
+                App.getApp().setProperty("icon", 6);
             } else {
-                if (dto.msg.equals("CURRENTLY")) {
-                    App.getApp().setProperty("temperature", dto.temp);
-                } else {
-                    App.getApp().setProperty("tempMin", dto.tempMin);
-                    App.getApp().setProperty("tempMax", dto.tempMax);
-                }
-                // rain, snow, sleet, wind, fog, cloudy
-                var icon = dto.icon;
-                if (icon == null) {
-                    App.getApp().setProperty("icon", 7);
-                } else if (icon.equals("clear-day") || icon.equals("clear-night")) {
-                    App.getApp().setProperty("icon", 0);
-                } else if (icon.equals("rain") || icon.equals("hail")) {
-                    App.getApp().setProperty("icon", 1);
-                } else if (icon.equals("cloudy")) {
-                    App.getApp().setProperty("icon", 2);
-                } else if (icon.equals("partly-cloudy-day") || icon.equals("partly-cloudy-night")) {
-                    App.getApp().setProperty("icon", 3);
-                } else if (icon.equals("thunderstorm")) {
-                    App.getApp().setProperty("icon", 4);
-                } else if (icon.equals("sleet")) {
-                    App.getApp().setProperty("icon", 5);
-                } else if (icon.equals("snow")) {
-                    App.getApp().setProperty("icon", 6);
-                } else {
-                    App.getApp().setProperty("icon", 7);
-                }
+                App.getApp().setProperty("icon", 7);
             }
         }
     }

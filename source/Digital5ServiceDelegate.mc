@@ -43,22 +43,35 @@ class Digital5ServiceDelegate extends System.ServiceDelegate {
     function onReceive(responseCode, data) {
         if (responseCode == 200) {
             System.println(data);
-            if (data instanceof Lang.String && data.equals("Forbidden")) { 
-                Background.exit(new DTO(null, null, null, null, "WRONG KEY"));
+            if (data instanceof Lang.String && data.equals("Forbidden")) {
+                var dict = { "msg" => "WRONG KEY" };
+                Background.exit(dict);
             } else {
                 var currentWeather = App.getApp().getProperty("CurrentWeather");
                 if (currentWeather) {
                     var currently = data.get("currently");
-                    Background.exit(new DTO(currently.get("icon"), currently.get("temperature"), null, null, "CURRENTLY"));
+                    var dict = {
+                        "icon" => currently.get("icon"),
+                        "temp" => currently.get("temperature"),
+                        "msg"  => "DAILY"
+                    };
+                    Background.exit(dict);
                 } else {
                     var daily = data.get("daily");
                     var days  = daily.get("data");
                     var today = days[0];
-                    Background.exit(new DTO(daily.get("icon"), null, today.get("temperatureMin"), today.get("temperatureMax"), "DAILY"));
+                    var dict = {
+                        "icon"    => today.get("icon"),
+                        "minTemp" => today.get("temperatureMin"),
+                        "maxTemp" => today.get("temperatureMax"),
+                        "msg"     => "DAILY"
+                    };
+                    Background.exit(dict);
                 }
             }
         } else {
-            Background.exit(new DTO(null, null, null, null, "FAIL"));
+            var dict = { "msg" => "FAIL" };
+            Background.exit(dict);
         }
     }
 }
