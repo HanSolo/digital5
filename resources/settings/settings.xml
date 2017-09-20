@@ -335,6 +335,6 @@
     </setting>
     
     <setting propertyKey="@Properties.DarkSkyApiKey" title="@Strings.DarkSkyApiKey">
-    	<settingConfig type="alphanumeric" />
+    	<settingConfig type="alphanumeric" maxLength="32"/>
     </setting>
 </settings>
