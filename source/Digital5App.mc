@@ -27,7 +27,7 @@ class Digital5App extends App.AppBase {
         }
         
         sunRiseSet = new SunRiseSunSet();
-        
+
         view = new Digital5View();
         
         Background.registerForTemporalEvent(new Time.Duration(10 * 60));
@@ -89,10 +89,9 @@ class Digital5App extends App.AppBase {
     
     function updateLocation() {
         var location = Activity.getActivityInfo().currentLocation;
-            
         if (null != location) {
-            App.getApp().setProperty("UserLat", location.toDegrees()[0]);
-            App.getApp().setProperty("UserLng", location.toDegrees()[1]);
+            App.getApp().setProperty("UserLat", location.toDegrees()[0].toFloat());
+            App.getApp().setProperty("UserLng", location.toDegrees()[1].toFloat());
         }
     }
 }
