@@ -135,6 +135,8 @@
     <string id="Purple">El lila</string>
     <string id="Pink">El fucsia</string>
 	
+	<string id="ActiveKcalGoal">Objetivo el día act. kcal</string>
+	
 	<string id="UpperLeftField">Campo izquierdo superior</string>
 	<string id="UpperRightField">Campo derecho superior</string>
 	<string id="LowerLeftField">Campo izquierdo inferior</string>
@@ -155,6 +157,7 @@
     <string id="ActKcalAvg">Act. Kcal media</string>
     <string id="DeltaSteps">Incremento de pasos</string>
     <string id="Weather">El clima</string>
+    <string id="DeltaActiveKcalGoal">Incremento de act. kcal</string>
     
     <string id="DarkUpperBackground">Área de fondo superior oscura</string>
 

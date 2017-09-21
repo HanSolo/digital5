@@ -135,6 +135,8 @@
     <string id="Purple">Purple</string>
     <string id="Pink">Pink</string>
 	
+	<string id="ActiveKcalGoal">Daily act. kcal goal</string>
+	
 	<string id="UpperLeftField">Upper Left Field</string>
 	<string id="UpperRightField">Upper Right Field</string>
 	<string id="LowerLeftField">Lower Left Field</string>
@@ -155,6 +157,7 @@
     <string id="ActKcalAvg">Act. Kcal Avg</string>
     <string id="DeltaSteps">Delta Steps</string>
     <string id="Weather">Weather</string>
+    <string id="DeltaActiveKcalGoal">Delta act. kcal goal</string>
     
     <string id="DarkUpperBackground">Dark upper area background</string>
     

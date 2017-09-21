@@ -134,6 +134,8 @@
     <string id="DarkBlue">Dunkelblau</string>
     <string id="Purple">Lila</string>
     <string id="Pink">Pink</string>
+    
+    <string id="ActiveKcalGoal">Tagesziel akt. kcal</string>
 	
 	<string id="UpperLeftField">Oberes Linkes Feld</string>
 	<string id="UpperRightField">Oberes Rechtes Feld</string>
@@ -155,6 +157,7 @@
     <string id="ActKcalAvg">Akt. Kcal Durchschnitt</string>
     <string id="DeltaSteps">Differenz Schritte (Tagesziel)</string>
     <string id="Weather">Wetter</string>
+    <string id="DeltaActiveKcalGoal">Differenz akt. kcal (Tagesziel)</string>
     
     <string id="DarkUpperBackground">Dunkler Hintergrund für oberen Bereich</string>
     

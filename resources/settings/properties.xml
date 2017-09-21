@@ -51,6 +51,8 @@
     
     <property id="PressureOffset" type="float">0.0</property>
     
+    <property id="ActiveKcalGoal" type="number">0</property>
+    
     <property id="UpperLeftField" type="number">0</property>
     <property id="UpperRightField" type="number">1</property>
     <property id="LowerLeftField" type="number">3</property>

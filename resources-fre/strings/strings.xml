@@ -135,6 +135,8 @@
     <string id="Purple">Lilas</string>
     <string id="Pink">Rose vif</string>
 	
+	<string id="ActiveKcalGoal">La destination act. kcal du jour</string>
+	
 	<string id="UpperLeftField">Paneau supérieure gauche</string>
 	<string id="UpperRightField">Paneau supérieure à droite</string>
 	<string id="LowerLeftField">Panneau inférieur gauche</string>
@@ -152,9 +154,10 @@
     <string id="ActiveTimeWeek">Active Time Cette semaine</string>
     <string id="Floors">L'étage haut/en bas</string>
     <string id="Meters">Hauteur grimpée/descendue</string>
-    <string id="ActKcalAvg">Act. Kcal l'intersection</string>
+    <string id="ActKcalAvg">Act. kcal l'intersection</string>
     <string id="DeltaSteps">La différence á la destination du jour (étapes)</string>
     <string id="Weather">Le temps</string>
+    <string id="DeltaActiveKcalGoal">La différence act. kcal</string>
     
     <string id="DarkUpperBackground">Fond sombre pour la zone supérieure</string>
     

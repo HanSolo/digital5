@@ -192,6 +192,10 @@
     	<settingConfig type="numeric" />
     </setting>
         
+    <setting propertyKey="@Properties.ActiveKcalGoal" title="@Strings.ActiveKcalGoal">
+    	<settingConfig type="numeric" min="0" max="9999"/>
+    </setting>    
+        
     <setting propertyKey="@Properties.UpperLeftField" title="@Strings.UpperLeftField">
     	<settingConfig type="list">
     		<listEntry value="0">@Strings.Steps</listEntry>
@@ -208,6 +212,7 @@
     		<listEntry value="11">@Strings.ActKcalAvg</listEntry>
     		<listEntry value="12">@Strings.DeltaSteps</listEntry>
     		<listEntry value="13">@Strings.Weather</listEntry>
+    		<listEntry value="14">@Strings.DeltaActiveKcalGoal</listEntry>
     	</settingConfig>
     </setting>
     
@@ -227,6 +232,7 @@
     		<listEntry value="11">@Strings.ActKcalAvg</listEntry>
     		<listEntry value="12">@Strings.DeltaSteps</listEntry>
     		<listEntry value="13">@Strings.Weather</listEntry>
+    		<listEntry value="14">@Strings.DeltaActiveKcalGoal</listEntry>
     	</settingConfig>
     </setting>
     
@@ -239,6 +245,7 @@
     		<listEntry value="7">@Strings.ActiveTimeDay</listEntry>
     		<listEntry value="8">@Strings.ActiveTimeWeek</listEntry>
     		<listEntry value="9">@Strings.Floors</listEntry>
+    		<listEntry value="14">@Strings.DeltaActiveKcalGoal</listEntry>
     	</settingConfig>
     </setting>
     
@@ -251,6 +258,7 @@
     		<listEntry value="7">@Strings.ActiveTimeDay</listEntry>
     		<listEntry value="8">@Strings.ActiveTimeWeek</listEntry>
     		<listEntry value="9">@Strings.Floors</listEntry>
+    		<listEntry value="14">@Strings.DeltaActiveKcalGoal</listEntry>
     	</settingConfig>
     </setting>
     
@@ -268,6 +276,7 @@
     		<listEntry value="10">@Strings.Meters</listEntry>
     		<listEntry value="11">@Strings.ActKcalAvg</listEntry>
     		<listEntry value="13">@Strings.Weather</listEntry>
+    		<listEntry value="14">@Strings.DeltaActiveKcalGoal</listEntry>
         </settingConfig>
     </setting>
          

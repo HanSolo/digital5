@@ -26,6 +26,7 @@ class Digital5View extends Ui.WatchFace {
     enum { WOMAN, MEN }
     enum { UPPER_LEFT, UPPER_RIGHT, LOWER_LEFT, LOWER_RIGHT, BOTTOM_FIELD }
     enum { M, I, K, B, C, F }
+    enum { KCAL, ACTIVE_KCAL, ACTIVE_KCAL_REACHED }
     const BRIGHT_BLUE   = 0x0055ff;
     const BRIGHT_GREEN  = 0x55ff00;
     const BRIGHT_RED    = 0xff0055;
@@ -49,7 +50,7 @@ class Digital5View extends Ui.WatchFace {
     var systemStats;        
     var hrHistory, hr;
     var steps, stepGoal, deltaSteps, stepsReached;
-    var kcal, activeKcal, kcalReached;
+    var kcal, activeKcal, kcalReached, activeKcalReached;
     var bpm, showBpmZones, maxBpm, currentZone;
     var distanceUnit, distance;            
     var coloredStepText;
@@ -170,6 +171,7 @@ class Digital5View extends Ui.WatchFace {
         var minuteColor           = App.getApp().getProperty("MinuteColor").toNumber();
         var coloredBattery        = App.getApp().getProperty("ColoredBattery");
         var showSunriseSunset     = App.getApp().getProperty("SunriseSunset");
+        var activeKcalGoal        = App.getApp().getProperty("ActiveKcalGoal").toNumber();
         var gender;
         var userWeight;
         var userHeight;
@@ -184,11 +186,7 @@ class Digital5View extends Ui.WatchFace {
             gender     = profile.gender;
             userWeight = profile.weight / 1000.0;
             userHeight = profile.height;
-            userAge    = nowinfo.year - profile.birthYear;           
-            App.getApp().setProperty("Gender", gender);
-            if (userWeight > 0) { App.getApp().setProperty("Weight", userWeight); }
-            App.getApp().setProperty("Height", userHeight);
-            App.getApp().setProperty("Age", userAge);
+            userAge    = nowinfo.year - profile.birthYear;
         }
 
         // Mifflin-St.Jeor Formula (1990)
@@ -198,6 +196,7 @@ class Digital5View extends Ui.WatchFace {
         var kcalPerMinute = baseKcal / 1440;                                                                // base kcal per minute
         kcalReached       = kcal / baseKcal;
         activeKcal        = (kcal - (kcalPerMinute * (clockTime.hour * 60.0 + clockTime.min))).toNumber();  // active kcal
+        activeKcalReached = activeKcal - activeKcalGoal;
 
         // Heart Rate Zones
         maxBpm = (211.0 - 0.64 * userAge).toNumber(); // calculated after a study at NTNU (http://www.ntnu.edu/cerg/hrmax-info)
@@ -503,8 +502,8 @@ class Digital5View extends Ui.WatchFace {
         // UpperLeft
         switch(upperLeftField) {
             case 0: drawSteps(getXYPositions(UPPER_LEFT), dc, false); break;
-            case 1: drawCalories(getXYPositions(UPPER_LEFT), dc, false, UPPER_LEFT); break;
-            case 2: drawCalories(getXYPositions(UPPER_LEFT), dc, true, UPPER_LEFT); break;
+            case 1: drawCalories(getXYPositions(UPPER_LEFT), dc, KCAL, UPPER_LEFT); break;
+            case 2: drawCalories(getXYPositions(UPPER_LEFT), dc, ACTIVE_KCAL, UPPER_LEFT); break;
             case 3: drawHeartRate(getXYPositions(UPPER_LEFT), dc, UPPER_LEFT); break;
             case 4: drawDistance(getXYPositions(UPPER_LEFT), dc); break;
             case 5: drawWithUnit(getXYPositions(UPPER_LEFT), dc, 5, UPPER_LEFT); break;
@@ -516,13 +515,14 @@ class Digital5View extends Ui.WatchFace {
             case 11: drawActKcalAvg(getXYPositions(UPPER_LEFT), dc, UPPER_LEFT); break;
             case 12: drawSteps(getXYPositions(UPPER_LEFT), dc, true); break;
             case 13: drawWithUnit(getXYPositions(UPPER_LEFT), dc, 13, UPPER_LEFT); break;
+            case 14: drawCalories(getXYPositions(UPPER_LEFT), dc, ACTIVE_KCAL_REACHED, UPPER_LEFT); break;
         }
        
         // UpperRight
         switch(upperRightField) {
             case 0: drawSteps(getXYPositions(UPPER_RIGHT), dc, false); break;
-            case 1: drawCalories(getXYPositions(UPPER_RIGHT), dc, false, UPPER_RIGHT); break;
-            case 2: drawCalories(getXYPositions(UPPER_RIGHT), dc, true, UPPER_RIGHT); break;
+            case 1: drawCalories(getXYPositions(UPPER_RIGHT), dc, KCAL, UPPER_RIGHT); break;
+            case 2: drawCalories(getXYPositions(UPPER_RIGHT), dc, ACTIVE_KCAL, UPPER_RIGHT); break;
             case 3: drawHeartRate(getXYPositions(UPPER_RIGHT), dc, UPPER_RIGHT); break;
             case 4: drawDistance(getXYPositions(UPPER_RIGHT), dc); break;
             case 5: drawWithUnit(getXYPositions(UPPER_RIGHT), dc, 5, UPPER_RIGHT); break;
@@ -534,38 +534,41 @@ class Digital5View extends Ui.WatchFace {
             case 11: drawActKcalAvg(getXYPositions(UPPER_RIGHT), dc, UPPER_RIGHT); break;
             case 12: drawSteps(getXYPositions(UPPER_RIGHT), dc, true); break;
             case 13: drawWithUnit(getXYPositions(UPPER_RIGHT), dc, 13, UPPER_RIGHT); break;
+            case 14: drawCalories(getXYPositions(UPPER_RIGHT), dc, ACTIVE_KCAL_REACHED, UPPER_RIGHT); break;
         }
        
         // LowerLeft
         switch(lowerLeftField) {
             case 0: drawSteps(getXYPositions(LOWER_LEFT), dc, false); break;
-            case 1: drawCalories(getXYPositions(LOWER_LEFT), dc, false, LOWER_LEFT); break;
-            case 2: drawCalories(getXYPositions(LOWER_LEFT), dc, true, LOWER_LEFT); break;
+            case 1: drawCalories(getXYPositions(LOWER_LEFT), dc, KCAL, LOWER_LEFT); break;
+            case 2: drawCalories(getXYPositions(LOWER_LEFT), dc, ACTIVE_KCAL, LOWER_LEFT); break;
             case 3: drawHeartRate(getXYPositions(LOWER_LEFT), dc, LOWER_LEFT); break;
             case 4: drawDistance(getXYPositions(LOWER_LEFT), dc); break;
             case 7: drawActiveTime(getXYPositions(LOWER_LEFT), dc, true, LOWER_LEFT); break;
             case 8: drawActiveTime(getXYPositions(LOWER_LEFT), dc, false, LOWER_LEFT); break;
             case 9: drawFloors(getXYPositions(LOWER_LEFT), dc, LOWER_LEFT); break;
+            case 14: drawCalories(getXYPositions(LOWER_LEFT), dc, ACTIVE_KCAL_REACHED, LOWER_LEFT); break;
         }
        
         // LowerRight
         switch(lowerRightField) {
             case 0: drawSteps(getXYPositions(LOWER_RIGHT), dc, false); break;
-            case 1: drawCalories(getXYPositions(LOWER_RIGHT), dc, false, LOWER_RIGHT); break;
-            case 2: drawCalories(getXYPositions(LOWER_RIGHT), dc, true, LOWER_RIGHT); break;
+            case 1: drawCalories(getXYPositions(LOWER_RIGHT), dc, KCAL, LOWER_RIGHT); break;
+            case 2: drawCalories(getXYPositions(LOWER_RIGHT), dc, ACTIVE_KCAL, LOWER_RIGHT); break;
             case 3: drawHeartRate(getXYPositions(LOWER_RIGHT), dc, LOWER_RIGHT); break;
             case 4: drawDistance(getXYPositions(LOWER_RIGHT), dc); break;
             case 7: drawActiveTime(getXYPositions(LOWER_RIGHT), dc, true, LOWER_RIGHT); break;
             case 8: drawActiveTime(getXYPositions(LOWER_RIGHT), dc, false, LOWER_RIGHT); break;
             case 9: drawFloors(getXYPositions(LOWER_RIGHT), dc, LOWER_RIGHT); break;
+            case 14: drawCalories(getXYPositions(LOWER_RIGHT), dc, ACTIVE_KCAL_REACHED, LOWER_RIGHT); break;
         }
 
         // Bottom field
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
         
         switch(bottomField) {
-            case 1: drawCalories(getXYPositions(BOTTOM_FIELD), dc, false, BOTTOM_FIELD); break;
-            case 2: drawCalories(getXYPositions(BOTTOM_FIELD), dc, true, BOTTOM_FIELD); break;
+            case 1: drawCalories(getXYPositions(BOTTOM_FIELD), dc, KCAL, BOTTOM_FIELD); break;
+            case 2: drawCalories(getXYPositions(BOTTOM_FIELD), dc, ACTIVE_KCAL, BOTTOM_FIELD); break;
             case 3: drawHeartRate(getXYPositions(BOTTOM_FIELD), dc, BOTTOM_FIELD); break;
             case 4: 
                 drawWithUnit(getXYPositions(BOTTOM_FIELD), dc, 4, BOTTOM_FIELD);
@@ -608,6 +611,7 @@ class Digital5View extends Ui.WatchFace {
                 drawWithUnit(getXYPositions(BOTTOM_FIELD), dc, 13, BOTTOM_FIELD);
                 drawCharacter(dc, distanceUnit == 0 ? C : F, 0);
                 break;
+            case 14: drawCalories(getXYPositions(BOTTOM_FIELD), dc, ACTIVE_KCAL_REACHED, BOTTOM_FIELD); break;
         }
         onPartialUpdate(dc);
         updateLocation();
@@ -689,35 +693,43 @@ class Digital5View extends Ui.WatchFace {
         }
         dc.drawText(textX, textY, lcdFontDataFields ? digitalUpright24 : Graphics.FONT_XTINY, (showDeltaSteps ? deltaSteps * -1 : steps), Gfx.TEXT_JUSTIFY_RIGHT);
     }
-    function drawCalories(xyPositions, dc, isActiveKcal, field) {
+    function drawCalories(xyPositions, dc, kcalType, field) {
         var bmpX      = xyPositions[0];
         var bmpY      = xyPositions[1];
         var textX     = xyPositions[2];
         var textY     = xyPositions[3];
-        var fieldText = isActiveKcal ? (activeKcal < 0 ? "0" : activeKcal.toString()) : kcal.toString();
+        var fieldText = "";
         dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? burnedIconWhite : burnedIcon);
-        if (isActiveKcal) {
-            dc.setColor(fieldForegroundColor, fieldBackgroundColor);
-        } else {
-            if (coloredCalorieText) {
-                if (kcalReached > 3.0) {
-                    dc.setColor(Gfx.COLOR_PINK, fieldBackgroundColor);
-                } else if (kcalReached > 2.0) {
-                    dc.setColor(Gfx.COLOR_GREEN, fieldBackgroundColor);
-                } else if (kcalReached > 1.0) {
-                    dc.setColor(BRIGHT_BLUE, fieldBackgroundColor);
+        switch(kcalType) {
+            case KCAL:
+                if (coloredCalorieText) {
+                    if (kcalReached > 3.0) {
+                        dc.setColor(Gfx.COLOR_PINK, fieldBackgroundColor);
+                    } else if (kcalReached > 2.0) {
+                        dc.setColor(Gfx.COLOR_GREEN, fieldBackgroundColor);
+                    } else if (kcalReached > 1.0) {
+                        dc.setColor(BRIGHT_BLUE, fieldBackgroundColor);
+                    } else {
+                        dc.setColor(fieldForegroundColor, fieldBackgroundColor);
+                    }
                 } else {
                     dc.setColor(fieldForegroundColor, fieldBackgroundColor);
                 }
-            } else {
+                fieldText = kcal.toString();
+                break;
+            case ACTIVE_KCAL:
                 dc.setColor(fieldForegroundColor, fieldBackgroundColor);
-            }
+                fieldText = (activeKcal < 0 ? "0" : activeKcal.toString());
+                break;
+            case ACTIVE_KCAL_REACHED:
+                dc.setColor(activeKcalReached < 0 ? Gfx.COLOR_RED : fieldForegroundColor, fieldBackgroundColor);
+                fieldText = activeKcalReached.toString();
+                break;
         }
-
         if (lcdFontDataFields) {
-            dc.drawText(textX, textY, field < 4 ? digitalUpright24 : digitalUpright20, fieldText, Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(field < 4 ? textX : textX + 13, textY, field < 4 ? digitalUpright24 : digitalUpright20, fieldText, Gfx.TEXT_JUSTIFY_RIGHT);
         } else {
-            dc.drawText(textX, textY, Graphics.FONT_XTINY, fieldText, Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(field < 4 ? textX  :textX + 4, textY, Graphics.FONT_XTINY, fieldText, Gfx.TEXT_JUSTIFY_RIGHT);
         }
     }
     function drawHeartRate(xyPositions, dc, field) {       

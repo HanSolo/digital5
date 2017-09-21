@@ -135,6 +135,8 @@
     <string id="Purple">Lila</string>
     <string id="Pink">Rózsaszín</string>
 	
+	<string id="ActiveKcalGoal">Daily act. kcal goal</string>
+	
 	<string id="UpperLeftField">Bal felső mező</string>
 	<string id="UpperRightField">Jobb felső mező</string>
 	<string id="LowerLeftField">Bal alsó mező</string>
@@ -155,6 +157,7 @@
     <string id="ActKcalAvg">Aktív kalória átlag</string>
     <string id="DeltaSteps">Lépés delta</string>
     <string id="Weather">Időjárás</string>
+    <string id="DeltaActiveKcalGoal">Delta act. kcal goal</string>
     
     <string id="DarkUpperBackground">Sötét felső háttér</string>
     
