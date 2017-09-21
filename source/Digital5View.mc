@@ -25,6 +25,7 @@ class Digital5View extends Ui.WatchFace {
 
     enum { WOMAN, MEN }
     enum { UPPER_LEFT, UPPER_RIGHT, LOWER_LEFT, LOWER_RIGHT, BOTTOM_FIELD }
+    enum { M, I, K, B, C, F }
     const BRIGHT_BLUE   = 0x0055ff;
     const BRIGHT_GREEN  = 0x55ff00;
     const BRIGHT_RED    = 0xff0055;
@@ -190,7 +191,11 @@ class Digital5View extends Ui.WatchFace {
             gender     = profile.gender;
             userWeight = profile.weight / 1000.0;
             userHeight = profile.height;
-            userAge    = nowinfo.year - profile.birthYear;            
+            userAge    = nowinfo.year - profile.birthYear;           
+            App.getApp().setProperty("Gender", gender);
+            App.getApp().setProperty("Weight", userWeight);
+            App.getApp().setProperty("Height", userHeight);
+            App.getApp().setProperty("Age", userAge);
         }
 
         // Mifflin-St.Jeor Formula (1990)
@@ -568,40 +573,36 @@ class Digital5View extends Ui.WatchFace {
             case 1: drawCalories(getXYPositions(BOTTOM_FIELD), dc, false, BOTTOM_FIELD); break;
             case 2: drawCalories(getXYPositions(BOTTOM_FIELD), dc, true, BOTTOM_FIELD); break;
             case 3: drawHeartRate(getXYPositions(BOTTOM_FIELD), dc, BOTTOM_FIELD); break;
+            case 4: 
+                drawWithUnit(getXYPositions(BOTTOM_FIELD), dc, 4, BOTTOM_FIELD);
+                if (distanceUnit == 0) {
+                    drawCharacter(dc, K, 0);
+                    drawCharacter(dc, M, 6);
+                } else {
+                    drawCharacter(dc, M, 0);
+                    drawCharacter(dc, I, 0);
+                }
+                break;
             case 5: 
                 drawWithUnit(getXYPositions(BOTTOM_FIELD), dc, 5, BOTTOM_FIELD);
-                dc.setPenWidth(1);
-                // m
-                dc.drawLine(168, 218, 168, 223);
-                dc.drawLine(170, 218, 170, 223);
-                dc.drawLine(172, 218, 172, 223);
-                dc.drawLine(168, 218, 172, 218);
+                drawCharacter(dc, M, 0);
                 break;
             case 6:
                 drawWithUnit(getXYPositions(BOTTOM_FIELD), dc, 6, BOTTOM_FIELD);
-                dc.setPenWidth(1);
-                // m
-                dc.drawLine(168, 218, 168, 223);
-                dc.drawLine(170, 218, 170, 223);
-                dc.drawLine(172, 218, 172, 223);
-                dc.drawLine(168, 218, 172, 218);
-                // b
-                dc.drawLine(174, 215, 174, 223);
-                dc.drawLine(177, 218, 177, 223);
-                dc.drawLine(174, 218, 177, 218);
-                dc.drawLine(174, 222, 177, 222);
+                drawCharacter(dc, M, 0);
+                drawCharacter(dc, B, 0);
                 break;
             case 7: dc.drawText(120, 213, lcdFontDataFields ? digitalUpright20 : Graphics.FONT_XTINY, getActiveTimeText(true), Gfx.TEXT_JUSTIFY_CENTER); break;
             case 8: dc.drawText(120, 213, lcdFontDataFields ? digitalUpright20 : Graphics.FONT_XTINY, getActiveTimeText(false), Gfx.TEXT_JUSTIFY_CENTER); break;
             case 9:
                 drawFloors(getXYPositions(BOTTOM_FIELD), dc, BOTTOM_FIELD);
-                dc.fillPolygon([[63, 221], [75, 221], [68, 215]]);    // upIcon
-                dc.fillPolygon([[170, 216], [180, 216], [175, 221]]); // downIcon
+                dc.fillPolygon([[63, 221], [75, 221], [68, 215]]);    // up
+                dc.fillPolygon([[170, 216], [180, 216], [175, 221]]); // down
                 break;
             case 10:
                 drawMeters(getXYPositions(BOTTOM_FIELD), dc, BOTTOM_FIELD);
-                dc.fillPolygon([[63, 221], [75, 221], [68, 215]]);    // upIcon
-                dc.fillPolygon([[170, 216], [180, 216], [175, 221]]); // downIcon
+                dc.fillPolygon([[63, 221], [75, 221], [68, 215]]);    // up
+                dc.fillPolygon([[170, 216], [180, 216], [175, 221]]); // down
                 break;
             case 11:
                 drawActKcalAvg(getXYPositions(BOTTOM_FIELD), dc, BOTTOM_FIELD);
@@ -611,18 +612,7 @@ class Digital5View extends Ui.WatchFace {
                 break;
             case 13:
                 drawWithUnit(getXYPositions(BOTTOM_FIELD), dc, 13, BOTTOM_FIELD);
-                dc.setPenWidth(1);
-                if (distanceUnit == 0) {
-                    // C
-                    dc.drawLine(173, 216, 169, 216);
-                    dc.drawLine(169, 216, 169, 223);
-                    dc.drawLine(173, 223, 168, 223);
-                } else {
-                    // F
-                    dc.drawLine(173, 216, 169, 216);
-                    dc.drawLine(169, 216, 169, 223);
-                    dc.drawLine(172, 219, 168, 219);
-                }
+                drawCharacter(dc, distanceUnit == 0 ? C : F, 0);
                 break;
         }
         onPartialUpdate(dc);
@@ -777,15 +767,19 @@ class Digital5View extends Ui.WatchFace {
         }
     }
     function drawWithUnit(xyPositions, dc, sensor, field) {        
-        var textX      = xyPositions[2];
-        var textY      = xyPositions[3];
-        var unitLcdX   = xyPositions[4];
-        var unitLcdY   = xyPositions[5];
-        var unitX      = xyPositions[6];
-        var unitY      = xyPositions[7];
+        var textX    = xyPositions[2];
+        var textY    = xyPositions[3];
+        var unitLcdX = xyPositions[4];
+        var unitLcdY = xyPositions[5];
+        var unitX    = xyPositions[6];
+        var unitY    = xyPositions[7];
         var fieldText;
-        var unitText   = "";
+        var unitText = "";
         switch(sensor) {
+            case 4: // Distance
+                fieldText = distance > 99.99 ? distance.format("%.0f") : distance.format("%.1f");
+                unitText  = distanceUnit == 0 ? "km" : "mi";
+                break;
             case 5: // Altitude
                 var altHistory     = Sensor.getElevationHistory(null);        
                 var altitude       = altHistory.next();
@@ -1037,13 +1031,11 @@ class Digital5View extends Ui.WatchFace {
                 dc.fillCircle(x + 9, y + 11, 2);
                 dc.fillCircle(x + 13, y + 15, 2);
                 dc.fillCircle(x + 7, y + 18, 2);
-                break;
-                break;  
+                break; 
             
         }
         dc.setPenWidth(1);
     }
-    
     function drawCloud(dc, x, y) {
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
         dc.fillCircle(x + 11, y + 6, 6);
@@ -1055,6 +1047,41 @@ class Digital5View extends Ui.WatchFace {
         dc.fillCircle(x + 5, y + 9, 3);
         dc.fillRectangle(x + 5, y + 8, 12, 7);
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
+    }
+    function drawCharacter(dc, char, x) {
+        dc.setPenWidth(1);
+        switch(char) {
+            case M:
+                dc.drawLine(168 + x, 218, 168 + x, 223);
+                dc.drawLine(170 + x, 218, 170 + x, 223);
+                dc.drawLine(172 + x, 218, 172 + x, 223);
+                dc.drawLine(168 + x, 218, 172 + x, 218);
+                break;
+            case I:
+                dc.drawLine(176, 218, 176, 223);
+                break;
+            case K:
+                dc.drawLine(168, 215, 168, 223);
+                dc.drawLine(168, 220, 172, 216);
+                dc.drawLine(168, 219, 172, 223);
+                break;
+            case B:
+                dc.drawLine(174, 215, 174, 223);
+                dc.drawLine(177, 218, 177, 223);
+                dc.drawLine(174, 218, 177, 218);
+                dc.drawLine(174, 222, 177, 222);
+                break;
+            case C:
+                dc.drawLine(173, 216, 169, 216);
+                dc.drawLine(169, 216, 169, 223);
+                dc.drawLine(173, 223, 168, 223);
+                break;
+            case F:
+                dc.drawLine(173, 216, 169, 216);
+                dc.drawLine(169, 216, 169, 223);
+                dc.drawLine(172, 219, 168, 219);
+                break;
+        }
     }
     
     function drawTime(hourColor, minuteColor, font, dc) {
