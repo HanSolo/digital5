@@ -27,7 +27,7 @@ class Digital5App extends App.AppBase {
 
         view = new Digital5View();
         
-        Background.registerForTemporalEvent(new Time.Duration(10 * 60));
+        Background.registerForTemporalEvent(new Time.Duration(900)); // 15 min
         
         if( Toybox.WatchUi has :WatchFaceDelegate ) {
             return [view, new Digital5Delegate()];
@@ -37,7 +37,6 @@ class Digital5App extends App.AppBase {
     }
     
     function getServiceDelegate() {
-        updateLocation();
         return [new Digital5ServiceDelegate()]; 
     }
 
@@ -79,13 +78,5 @@ class Digital5App extends App.AppBase {
         App.getApp().setProperty("sunrise", (sunRiseSet.computeSunrise(true) / 3600000));
         App.getApp().setProperty("sunset", (sunRiseSet.computeSunrise(false) / 3600000));
         WatchUi.requestUpdate();
-    }
-    
-    function updateLocation() {
-        var location = Activity.getActivityInfo().currentLocation;
-        if (null != location) {
-            App.getApp().setProperty("UserLat", location.toDegrees()[0].toFloat());
-            App.getApp().setProperty("UserLng", location.toDegrees()[1].toFloat());
-        }
     }
 }

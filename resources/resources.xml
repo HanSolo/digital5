@@ -2,10 +2,6 @@
     <string id="AppName">Digital5</string>
 
     <bitmap id="LauncherIcon" 	  filename="drawables/launcher_icon.png" />
-    <bitmap id="alarm"        	  filename="drawables/alarm.png"><palette><color>FFFFFF</color></palette></bitmap>
-    <bitmap id="alarmBlack"   	  filename="drawables/alarmBlack.png"><palette><color>000000</color></palette></bitmap>
-    <bitmap id="alert"        	  filename="drawables/alert.png"><palette><color>FFFFFF</color></palette></bitmap>
-    <bitmap id="alertBlack"   	  filename="drawables/alertBlack.png"><palette><color>000000</color></palette></bitmap>
     <bitmap id="burned" 	  	  filename="drawables/burned.png"><palette><color>000000</color></palette></bitmap>
     <bitmap id="burnedWhite"  	  filename="drawables/burnedWhite.png"><palette><color>000000</color><color>FFFFFF</color></palette></bitmap>
     <bitmap id="steps"    	  	  filename="drawables/steps.png"><palette><color>000000</color></palette></bitmap>

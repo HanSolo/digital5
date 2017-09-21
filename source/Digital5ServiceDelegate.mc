@@ -15,8 +15,8 @@ class Digital5ServiceDelegate extends System.ServiceDelegate {
         var lat    = App.getApp().getProperty("UserLat").toFloat();
         var lng    = App.getApp().getProperty("UserLng").toFloat();
         if (System.getDeviceSettings().phoneConnected &&
-            apiKey.length() > 0 && 
-            (null != lat && null != lng)) {            
+            apiKey.length() > 0 &&
+            (null != lat && null != lng)) {
             makeRequest(lat, lng);
         }
     }

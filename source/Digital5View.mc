@@ -39,7 +39,6 @@ class Digital5View extends Ui.WatchFace {
     var sunsetText      = "--:--";
     var currentWeather;
     var digitalUpright72, digitalUpright26, digitalUpright24, digitalUpright20, digitalUpright16;
-    var alarmIcon, alarmIconBlack, alertIcon, alertIconBlack;
     var burnedIcon, burnedIconWhite, stepsIcon, stepsIconWhite;
      
     var width, height;
@@ -70,10 +69,6 @@ class Digital5View extends Ui.WatchFace {
         digitalUpright24 = Ui.loadResource(Rez.Fonts.digitalUpright24);
         digitalUpright20 = Ui.loadResource(Rez.Fonts.digitalUpright20);
         digitalUpright16 = Ui.loadResource(Rez.Fonts.digitalUpright16);
-        alarmIcon        = Ui.loadResource(Rez.Drawables.alarm);
-        alarmIconBlack   = Ui.loadResource(Rez.Drawables.alarmBlack);
-        alertIcon        = Ui.loadResource(Rez.Drawables.alert);
-        alertIconBlack   = Ui.loadResource(Rez.Drawables.alertBlack);
         burnedIcon       = Ui.loadResource(Rez.Drawables.burned);
         burnedIconWhite  = Ui.loadResource(Rez.Drawables.burnedWhite);
         stepsIcon        = Ui.loadResource(Rez.Drawables.steps);
@@ -111,10 +106,8 @@ class Digital5View extends Ui.WatchFace {
         lcdFontDataFields         = App.getApp().getProperty("LcdFontDataFields");
         showLeadingZero           = App.getApp().getProperty("ShowLeadingZero");
         
-        clockTime                 = Sys.getClockTime();
-        
+        clockTime                 = Sys.getClockTime();       
         sunRiseSet                = new SunRiseSunSet();
-        
         currentWeather            = App.getApp().getProperty("CurrentWeather");
          
         // General
@@ -193,7 +186,7 @@ class Digital5View extends Ui.WatchFace {
             userHeight = profile.height;
             userAge    = nowinfo.year - profile.birthYear;           
             App.getApp().setProperty("Gender", gender);
-            App.getApp().setProperty("Weight", userWeight);
+            if (userWeight > 0) { App.getApp().setProperty("Weight", userWeight); }
             App.getApp().setProperty("Height", userHeight);
             App.getApp().setProperty("Age", userAge);
         }
@@ -327,21 +320,23 @@ class Digital5View extends Ui.WatchFace {
             dc.drawRectangle(132, 11, 3, 3);            
         }
         
+        dc.setColor(upperForegroundColor, upperBackgroundColor);
+        
         // Do not disturb
         if (System.getDeviceSettings().doNotDisturb) { 
-            dc.setColor(upperForegroundColor, upperBackgroundColor);
             dc.drawCircle(153, 23, 7);
             dc.fillRectangle(150, 22, 7, 3);
         }
         
         // Alarm
-        if (alarmCount > 0) { dc.drawBitmap(169, 18, darkUpperBackground ? alarmIcon : alarmIconBlack); }
+        if (alarmCount > 0) {
+            dc.fillPolygon([[175, 17], [177, 19], [178, 21], [179, 25], [180, 26], [180, 27], [169, 27], [169, 26], [170, 25], [171, 21], [172, 19]]);
+            dc.fillPolygon([[173, 28], [175, 30], [177, 28]]);
+        }
                             
         // Sunrise/Sunset
         if (showSunriseSunset) {
             calcSunriseSunset();
-            
-            dc.setColor(upperForegroundColor, upperBackgroundColor);
             dc.fillPolygon([[45, 50], [57, 50], [50, 44]]);    // upIcon
             dc.fillPolygon([[184, 44], [194, 44], [188, 49]]); // downIcon
             if (lcdFont) {
@@ -421,14 +416,13 @@ class Digital5View extends Ui.WatchFace {
             if (moveBarLevel > Act.MOVE_BAR_LEVEL_MIN) { dc.setColor(Gfx.COLOR_RED, upperBackgroundColor); }
             dc.fillRectangle(29, 144, 73, 4);
             for (var i = 0 ; i < (moveBarLevel - 1) ; i++) { dc.fillRectangle(104 + (i * 27), 144, 25, 4); }
-            if (moveBarLevel == 5) { dc.drawBitmap(217, 141, darkUpperBackground ? alertIcon : alertIconBlack); }
         }
+        
         
         
         // ******************** TIME ******************************************
         if (lcdBackgroundVisible && lcdFont) {
-            dc.setColor(darkUpperBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, upperBackgroundColor);
-            
+            dc.setColor(darkUpperBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, upperBackgroundColor);           
             if (showLeadingZero) {
                 dc.drawText(centerX, 51, digitalUpright72, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
             } else {
@@ -616,8 +610,11 @@ class Digital5View extends Ui.WatchFace {
                 break;
         }
         onPartialUpdate(dc);
+        updateLocation();
     }
     
+    // ******************** DRAWING FUNCTIONS *********************************
+     
     function drawSeconds(dc) {
         var clockTime = Sys.getClockTime();
         dc.setColor(upperBackgroundColor, upperBackgroundColor);
@@ -1232,6 +1229,14 @@ class Digital5View extends Ui.WatchFace {
         } else {
             sunriseText = Lang.format("$1$:$2$$3$", [sunriseHH, sunriseMM, sunriseAmPm]);
             sunsetText  = Lang.format("$1$:$2$$3$", [sunsetHH, sunsetMM, sunsetAmPm]);
+        }
+    }
+    
+    function updateLocation() {
+        var location = Activity.getActivityInfo().currentLocation;
+        if (null != location) {
+            App.getApp().setProperty("UserLat", location.toDegrees()[0].toFloat());
+            App.getApp().setProperty("UserLng", location.toDegrees()[1].toFloat());
         }
     }
 }
