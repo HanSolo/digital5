@@ -259,6 +259,7 @@
             <listEntry value="1">@Strings.Calories</listEntry>
     		<listEntry value="2">@Strings.ActiveCalories</listEntry>
         	<listEntry value="3">@Strings.HeartRate</listEntry>
+        	<listEntry value="4">@Strings.Distance</listEntry>
             <listEntry value="5">@Strings.Altitude</listEntry>
     		<listEntry value="6">@Strings.Pressure</listEntry>
     		<listEntry value="7">@Strings.ActiveTimeDay</listEntry>
