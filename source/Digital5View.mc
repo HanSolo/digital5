@@ -1236,8 +1236,8 @@ class Digital5View extends Ui.WatchFace {
             sunsetHH    = sunsetHH == 0 ? sunsetHH : sunsetHH % 12;
         }
         if (showLeadingZero) {
-            sunriseText = Lang.format("$1$:$2$$3$", [sunriseHH.format("%02d"), sunriseMM.format("%02d"), sunriseAmPm]);
-            sunsetText  = Lang.format("$1$:$2$$3$", [sunsetHH.format("%02d"), sunsetMM.format("%02d"), sunsetAmPm]);
+            sunriseText = Lang.format("$1$:$2$$3$", [sunriseHH.format("%02d"), sunriseMM, sunriseAmPm]);
+            sunsetText  = Lang.format("$1$:$2$$3$", [sunsetHH.format("%02d"), sunsetMM, sunsetAmPm]);
         } else {
             sunriseText = Lang.format("$1$:$2$$3$", [sunriseHH, sunriseMM, sunriseAmPm]);
             sunsetText  = Lang.format("$1$:$2$$3$", [sunsetHH, sunsetMM, sunsetAmPm]);
