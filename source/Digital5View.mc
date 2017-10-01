@@ -304,19 +304,25 @@ class Digital5View extends Ui.WatchFace {
         } else {
             dc.setColor(charge < 20 ? BRIGHT_RED : upperForegroundColor, upperBackgroundColor); 
         }
-        dc.fillRectangle(108, 20 , 24.0 * charge / 100.0, 7);        
+        dc.fillRectangle(108, 20 , 24.0 * charge / 100.0, 7);
+        
         if (showChargePercentage) {
+        	var shouldDrawPercentage = false;
             if (showPercentageUnder20) {
                 if (charge <= 20) {
+                	shouldDrawPercentage = true;
                     dc.setColor(upperForegroundColor, upperBackgroundColor);
                 }
             } else {
+            	shouldDrawPercentage = true;
                 dc.setColor(upperForegroundColor, upperBackgroundColor);
             }
-            dc.drawText(128, 0, digitalUpright16, charge.toNumber(), Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawLine(129, 13, 135, 3);
-            dc.drawRectangle(129, 4, 3, 3);
-            dc.drawRectangle(132, 11, 3, 3);            
+            if (shouldDrawPercentage) {
+            	dc.drawText(128, 0, digitalUpright16, charge.toNumber(), Gfx.TEXT_JUSTIFY_RIGHT);
+            	dc.drawLine(129, 13, 135, 3);
+            	dc.drawRectangle(129, 4, 3, 3);
+            	dc.drawRectangle(132, 11, 3, 3);
+            }            
         }
         
         dc.setColor(upperForegroundColor, upperBackgroundColor);
