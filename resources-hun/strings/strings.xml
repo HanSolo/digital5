@@ -41,6 +41,8 @@
 	
 	<string id="LcdFontDataFields">Lcd betűtipus az adatmezőkön</string>
 	
+	<string id="BiggerBatteryFont">Akku betűméret nagyítása</string>
+	
 	<string id="DST">Nyári időszámítás</string>
 	
 	<string id="ShowHomeTimezone">Otthoni időzóna mutatása</string>

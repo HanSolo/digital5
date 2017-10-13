@@ -172,6 +172,7 @@ class Digital5View extends Ui.WatchFace {
         var coloredBattery        = App.getApp().getProperty("ColoredBattery");
         var showSunriseSunset     = App.getApp().getProperty("SunriseSunset");
         var activeKcalGoal        = App.getApp().getProperty("ActiveKcalGoal").toNumber();
+        var biggerBatteryFont     = App.getApp().getProperty("BiggerBatteryFont");
         var gender;
         var userWeight;
         var userHeight;
@@ -286,9 +287,24 @@ class Digital5View extends Ui.WatchFace {
         }
         
         // Battery
+        biggerBatteryFont = false;
+        showChargePercentage = true;
+        lcdFontDataFields = true;
+        var batteryOffsetX = 0;
+        var batteryOffsetY = 0;
+        if (showChargePercentage && biggerBatteryFont) {
+                batteryOffsetX = 4;
+                if (lcdFontDataFields) {
+                    batteryOffsetY = 4;
+                } else {
+                    batteryOffsetY = 9;
+                } 
+        }
+        
         dc.setColor(upperForegroundColor, upperBackgroundColor);        
-        dc.drawRectangle(106, 18, 28, 11);
-        dc.fillRectangle(134, 21, 2, 5);
+        dc.drawRectangle(106, 18 + batteryOffsetY, 28, 11);
+        dc.fillRectangle(134, 21 + batteryOffsetY, 2, 5);
+                
         if (coloredBattery) {
             if (charge > 80) {
                 dc.setColor(Gfx.COLOR_DK_GREEN, upperBackgroundColor);
@@ -304,7 +320,7 @@ class Digital5View extends Ui.WatchFace {
         } else {
             dc.setColor(charge < 20 ? BRIGHT_RED : upperForegroundColor, upperBackgroundColor); 
         }
-        dc.fillRectangle(108, 20 , 24.0 * charge / 100.0, 7);        
+        dc.fillRectangle(108, 20 + batteryOffsetY , 24.0 * charge / 100.0, 7);
         if (showChargePercentage) {
             if (showPercentageUnder20) {
                 if (charge <= 20) {
@@ -313,10 +329,14 @@ class Digital5View extends Ui.WatchFace {
             } else {
                 dc.setColor(upperForegroundColor, upperBackgroundColor);
             }
-            dc.drawText(128, 0, digitalUpright16, charge.toNumber(), Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawLine(129, 13, 135, 3);
-            dc.drawRectangle(129, 4, 3, 3);
-            dc.drawRectangle(132, 11, 3, 3);            
+            if (lcdFontDataFields) {
+                    dc.drawText(128 + batteryOffsetX, 0, biggerBatteryFont ? digitalUpright20 : digitalUpright16, charge.toNumber(), Gfx.TEXT_JUSTIFY_RIGHT);
+            } else {
+                dc.drawText(128 + batteryOffsetX, 0, Graphics.FONT_XTINY, charge.toNumber(), Gfx.TEXT_JUSTIFY_RIGHT);
+            }
+            dc.drawLine(129 + batteryOffsetX, 13 + batteryOffsetY, 135 + batteryOffsetX, 3 + batteryOffsetY);
+            dc.drawRectangle(129 + batteryOffsetX, 4 + batteryOffsetY, 3, 3);
+            dc.drawRectangle(132 + batteryOffsetX, 11 + batteryOffsetY, 3, 3);            
         }
         
         dc.setColor(upperForegroundColor, upperBackgroundColor);

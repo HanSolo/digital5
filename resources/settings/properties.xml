@@ -11,6 +11,8 @@
     
     <property id="LcdFontDataFields" type="boolean">true</property>
     
+    <property id="BiggerBatteryFont" type="boolean">false</property>
+    
     <property id="BpmZones" type="boolean">true</property>
     
     <property id="DST" type="boolean">true</property>

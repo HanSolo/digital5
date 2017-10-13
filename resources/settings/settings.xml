@@ -73,6 +73,10 @@
         <settingConfig type="boolean" />
     </setting>
     
+    <setting propertyKey="@Properties.BiggerBatteryFont" title="@Strings.BiggerBatteryFont">
+    		<settingConfig type="boolean" />
+    </setting>
+    
     <setting propertyKey="@Properties.BpmZones" title="@Strings.BpmZones">
         <settingConfig type="boolean" />
     </setting>
