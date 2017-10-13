@@ -17,10 +17,10 @@
 	<string id="Sun">VA </string>
 	<string id="Mon">HE </string>
 	<string id="Tue">KE </string>
-	<string id="Wed">SZE</string>
+	<string id="Wed">SZ </string>
 	<string id="Thu">CS </string>
 	<string id="Fri">PE </string>
-	<string id="Sat">SZO</string>
+	<string id="Sat">SZ </string>
 	
 	<string id="Jan">JAN</string>
 	<string id="Feb">FEB</string>
@@ -135,7 +135,7 @@
     <string id="Purple">Lila</string>
     <string id="Pink">Rózsaszín</string>
 	
-	<string id="ActiveKcalGoal">Daily act. kcal goal</string>
+	<string id="ActiveKcalGoal">Napi aktív kalória cél</string>
 	
 	<string id="UpperLeftField">Bal felső mező</string>
 	<string id="UpperRightField">Jobb felső mező</string>
@@ -157,7 +157,7 @@
     <string id="ActKcalAvg">Aktív kalória átlag</string>
     <string id="DeltaSteps">Lépés delta</string>
     <string id="Weather">Időjárás</string>
-    <string id="DeltaActiveKcalGoal">Delta act. kcal goal</string>
+    <string id="DeltaActiveKcalGoal">Delta aktív kalória cél</string>
     
     <string id="DarkUpperBackground">Sötét felső háttér</string>
     
