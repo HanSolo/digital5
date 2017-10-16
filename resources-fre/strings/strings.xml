@@ -41,8 +41,6 @@
 	
 	<string id="LcdFontDataFields">Police LCD pour le champ de données</string>
 	
-	<string id="BiggerBatteryFont">Police de batterie plus grande</string>
-	
 	<string id="DST">Heure d'été</string>
 	
 	<string id="ShowHomeTimezone">Afficher le fuseau horaire Domicile</string>

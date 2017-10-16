@@ -41,8 +41,6 @@
 	
 	<string id="LcdFontDataFields">Fuente Lcd para campos de datos</string>
 	
-	<string id="BiggerBatteryFont">Fuente de batería más grande</string>
-	
 	<string id="DST">Horario de Verano</string>
 	
 	<string id="ShowHomeTimezone">Mostrar zona horaria local</string>
