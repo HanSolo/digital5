@@ -286,15 +286,12 @@ class Digital5View extends Ui.WatchFace {
             dc.drawLine(93, 20, 85, 28);
         }
         
-        // Battery
-        biggerBatteryFont = false;
-        showChargePercentage = true;
-        lcdFontDataFields = true;
+        // Battery        
         var batteryOffsetX = 0;
         var batteryOffsetY = 0;
         if (showChargePercentage && biggerBatteryFont) {
                 batteryOffsetX = 4;
-                if (lcdFontDataFields) {
+                if (lcdFont) {
                     batteryOffsetY = 4;
                 } else {
                     batteryOffsetY = 9;
