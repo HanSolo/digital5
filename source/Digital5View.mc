@@ -1256,6 +1256,9 @@ class Digital5View extends Ui.WatchFace {
         var sunsetHH    = Math.floor(sunset).toNumber();
         var sunsetMM    = Math.floor((sunset-Math.floor(sunset))*60).toNumber();
         var sunsetAmPm  = "";
+        
+        if (sunriseMM < 10) { sunriseMM = "0" + sunriseMM; }
+        if (sunsetMM < 10) { sunsetMM = "0" + sunsetMM; }
         if (!is24Hour) {
             sunriseAmPm = sunriseHH < 12 ? "A" : "P";
             sunsetAmPm  = sunsetHH < 12 ? "A" : "P";
