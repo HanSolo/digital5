@@ -27,17 +27,18 @@ class Digital5View extends Ui.WatchFace {
     enum { UPPER_LEFT, UPPER_RIGHT, LOWER_LEFT, LOWER_RIGHT, BOTTOM_FIELD }
     enum { M, I, K, B, C, F }
     enum { KCAL, ACTIVE_KCAL, ACTIVE_KCAL_REACHED }
-    const BRIGHT_BLUE   = 0x0055ff;
-    const BRIGHT_GREEN  = 0x55ff00;
-    const BRIGHT_RED    = 0xff0055;
-    const YELLOW        = 0xffff00;
-    const BPM_COLORS    = [ 0x0000FF, 0x00AA00, 0x00FF00, 0xFFAA00, 0xFF0000 ];
-    const STEP_COLORS   = [ 0x550000, Gfx.COLOR_DK_RED, Gfx.COLOR_RED, Gfx.COLOR_ORANGE, Gfx.COLOR_YELLOW, YELLOW, 0xaaff00, 0x55ff55, BRIGHT_GREEN, Gfx.COLOR_GREEN ];
-    const DAY_COUNT     = [ 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 ];
-    var weekdays        = new [7];
-    var months          = new [12];
-    var sunriseText     = "--:--";
-    var sunsetText      = "--:--";
+    const BRIGHT_BLUE      = 0x0055ff;
+    const BRIGHT_GREEN     = 0x55ff00;
+    const BRIGHT_RED       = 0xff0055;
+    const YELLOW           = 0xffff00;
+    const BPM_COLORS       = [ 0x0000FF, 0x00AA00, 0x00FF00, 0xFFAA00, 0xFF0000 ];
+    const STEP_COLORS      = [ 0x550000, Gfx.COLOR_DK_RED, Gfx.COLOR_RED, Gfx.COLOR_ORANGE, Gfx.COLOR_YELLOW, YELLOW, 0xaaff00, 0x55ff55, BRIGHT_GREEN, Gfx.COLOR_GREEN ];
+    const DARK_STEP_COLORS = [ 0x550000, Gfx.COLOR_DK_RED, Gfx.COLOR_RED, Gfx.COLOR_ORANGE, Gfx.COLOR_YELLOW, 0xaaaa00, 0x55aa00, 0x55aa55, 0x00aa55, 0x00aa00 ];
+    const DAY_COUNT        = [ 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334 ];
+    var weekdays           = new [7];
+    var months             = new [12];
+    var sunriseText        = "--:--";
+    var sunsetText         = "--:--";
     var currentWeather;
     var digitalUpright72, digitalUpright26, digitalUpright24, digitalUpright20, digitalUpright16;
     var burnedIcon, burnedIconWhite, stepsIcon, stepsIconWhite;
@@ -375,7 +376,11 @@ class Digital5View extends Ui.WatchFace {
             var endIndex      = (10.0 * stepsReached).toNumber();
             var stopAngleLeft = (184.0 - 59.0 * stepsReached).toNumber();
             stopAngleLeft     = stopAngleLeft < 130.0 ? 130.0 : stopAngleLeft;        
-            dc.setColor(endIndex > 0 ? STEP_COLORS[endIndex - 1] : Gfx.COLOR_TRANSPARENT, upperBackgroundColor);
+            if (darkUpperBackground) {
+                dc.setColor(endIndex > 0 ? STEP_COLORS[endIndex - 1] : Gfx.COLOR_TRANSPARENT, upperBackgroundColor);
+            } else {
+                dc.setColor(endIndex > 0 ? DARK_STEP_COLORS[endIndex - 1] : Gfx.COLOR_TRANSPARENT, upperBackgroundColor);
+            }
             for(var i = 0; i < endIndex ; i++) {            
                 var startAngleLeft  = 184 - (i * 6);
                 dc.drawArc(centerX, centerY, 117, 0, startAngleLeft, startAngleLeft + 5);
@@ -699,7 +704,11 @@ class Digital5View extends Ui.WatchFace {
             if (coloredStepText) {
                 stepsReached = stepsReached > 1.0 ? 1.0 : stepsReached;
                 var endIndex = (10.0 * stepsReached).toNumber();
-                dc.setColor(endIndex > 0 ? STEP_COLORS[endIndex - 1] : Gfx.COLOR_BLACK, fieldBackgroundColor);
+                if (darkUpperBackground) {
+                    dc.setColor(endIndex > 0 ? STEP_COLORS[endIndex - 1] : Gfx.COLOR_BLACK, fieldBackgroundColor);
+                } else {
+                    dc.setColor(endIndex > 0 ? DARK_STEP_COLORS[endIndex - 1] : Gfx.COLOR_BLACK, fieldBackgroundColor);
+                }
             } else {
                 dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
             }
