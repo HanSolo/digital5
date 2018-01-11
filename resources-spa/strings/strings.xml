@@ -176,4 +176,8 @@
     <string id="CurrentWeather">El clima real (seleccionado)/ a diaro (no seleccionado)</string>
 	
 	<string id="DarkSkyApiKey">DarkSky API Key (El clima)</string>
+	
+	<string id="TempUnit">Unidad de temperatura</string>
+	<string id="Celsius">Celsius</string>
+	<string id="Fahrenheit">Fahrenheit</string>
 </strings>

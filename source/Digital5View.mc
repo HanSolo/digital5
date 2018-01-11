@@ -53,7 +53,8 @@ class Digital5View extends Ui.WatchFace {
     var steps, stepGoal, deltaSteps, stepsReached;
     var kcal, activeKcal, kcalReached, activeKcalReached;
     var bpm, showBpmZones, maxBpm, currentZone;
-    var distanceUnit, distance;            
+    var distanceUnit, distance;     
+    var tempUnit;       
     var coloredStepText;
     var coloredCalorieText;
     var upperLeftField, upperRightField, lowerLeftField, lowerRightField, bottomField;
@@ -131,6 +132,7 @@ class Digital5View extends Ui.WatchFace {
         bpm                       = (hr.heartRate != Act.INVALID_HR_SAMPLE && hr.heartRate > 0) ? hr.heartRate : 0;
         showBpmZones              = App.getApp().getProperty("BpmZones");
         distanceUnit              = Sys.getDeviceSettings().distanceUnits;
+        tempUnit                  = App.getApp().getProperty("TempUnit");
         distance                  = distanceUnit == 0 ? actinfo.distance * 0.00001 : actinfo.distance * 0.00001 * 0.621371;
         coloredStepText           = App.getApp().getProperty("ColorizeStepText");
         coloredCalorieText        = App.getApp().getProperty("ColorizeCalorieText");
@@ -627,7 +629,7 @@ class Digital5View extends Ui.WatchFace {
                 break;
             case 13:
                 drawWithUnit(getXYPositions(BOTTOM_FIELD), dc, 13, BOTTOM_FIELD);
-                drawCharacter(dc, distanceUnit == 0 ? C : F, 0);
+                drawCharacter(dc, tempUnit == 0 ? C : F, 0);
                 break;
             case 14: drawCalories(getXYPositions(BOTTOM_FIELD), dc, ACTIVE_KCAL_REACHED, BOTTOM_FIELD); break;
         }
@@ -835,7 +837,7 @@ class Digital5View extends Ui.WatchFace {
                             fieldText = "--/--";
                             unitText  = "E";
                         } else {
-                            if (distanceUnit == 1) { temp = temp * 1.8 + 32; }
+                            if (tempUnit == 1) { temp = temp * 1.8 + 32; }
                             icon = App.getApp().getProperty("icon");
                             var bmpX  = xyPositions[0];
                             var bmpY  = xyPositions[1];
@@ -848,7 +850,7 @@ class Digital5View extends Ui.WatchFace {
                             fieldText = "--/--";
                             unitText  = "E";
                         } else {
-                            if (distanceUnit == 1) {
+                            if (tempUnit == 1) {
                                 tempMin = tempMin * 1.8 + 32;
                                 tempMax = tempMax * 1.8 + 32;
                             }

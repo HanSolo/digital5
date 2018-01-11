@@ -161,39 +161,39 @@
     </setting>
 
     <setting propertyKey="@Properties.ShowStepBar" title="@Strings.ShowStepBar">
-    	<settingConfig type="boolean" />
+    		<settingConfig type="boolean" />
     </setting>
     
     <setting propertyKey="@Properties.ShowCalorieBar" title="@Strings.ShowCalorieBar">
-    	<settingConfig type="boolean" />
+    		<settingConfig type="boolean" />
     </setting>
     
     <setting propertyKey="@Properties.ColoredBattery" title="@Strings.ColoredBattery">
-    	<settingConfig type="boolean" />
+    		<settingConfig type="boolean" />
     </setting>
     
     <setting propertyKey="@Properties.ColorizeStepText" title="@Strings.ColorizeStepText">
-    	<settingConfig type="boolean" />
+    		<settingConfig type="boolean" />
     </setting>
     
     <setting propertyKey="@Properties.ColorizeCalorieText" title="@Strings.ColorizeCalorieText">
-    	<settingConfig type="boolean" />
+    		<settingConfig type="boolean" />
     </setting>
     
     <setting propertyKey="@Properties.SecondsAlwaysOn" title="@Strings.SecondsAlwaysOn">
-    	<settingConfig type="boolean" />
+    		<settingConfig type="boolean" />
     </setting>
     
     <setting propertyKey="@Properties.AltitudeOffset" title="@Strings.AltitudeOffset">
-    	<settingConfig type="numeric" />
+    		<settingConfig type="numeric" />
     </setting>
     
     <setting propertyKey="@Properties.PressureOffset" title="@Strings.PressureOffset">
-    	<settingConfig type="numeric" />
+    		<settingConfig type="numeric" />
     </setting>
         
     <setting propertyKey="@Properties.ActiveKcalGoal" title="@Strings.ActiveKcalGoal">
-    	<settingConfig type="numeric" min="0" max="9999"/>
+    		<settingConfig type="numeric" min="0" max="9999"/>
     </setting>    
         
     <setting propertyKey="@Properties.UpperLeftField" title="@Strings.UpperLeftField">
@@ -264,11 +264,11 @@
     
     <setting propertyKey="@Properties.BottomField" title="@Strings.BottomField">
         <settingConfig type="list">
-            <listEntry value="1">@Strings.Calories</listEntry>
+        <listEntry value="1">@Strings.Calories</listEntry>
     		<listEntry value="2">@Strings.ActiveCalories</listEntry>
         	<listEntry value="3">@Strings.HeartRate</listEntry>
         	<listEntry value="4">@Strings.Distance</listEntry>
-            <listEntry value="5">@Strings.Altitude</listEntry>
+        <listEntry value="5">@Strings.Altitude</listEntry>
     		<listEntry value="6">@Strings.Pressure</listEntry>
     		<listEntry value="7">@Strings.ActiveTimeDay</listEntry>
     		<listEntry value="8">@Strings.ActiveTimeWeek</listEntry>
@@ -281,15 +281,15 @@
     </setting>
          
     <setting propertyKey="@Properties.UserLat" title="@Strings.UserLat">
-    	<settingConfig type="numeric" required="true" />
+    		<settingConfig type="numeric" required="true" />
     </setting>
     
     <setting propertyKey="@Properties.UserLng" title="@Strings.UserLng">
-    	<settingConfig type="numeric" required="true" />
+    		<settingConfig type="numeric" required="true" />
     </setting>
     
     <setting propertyKey="@Properties.SunriseSunset" title="@Strings.SunriseSunset">
-    	<settingConfig type="boolean" />
+    		<settingConfig type="boolean" />
     </setting>
     
     <setting propertyKey="@Properties.CurrentTimezoneOffset" title="@Strings.CurrentTimezoneOffset" prompt="@Strings.CurrentTimezoneOffset">
@@ -341,10 +341,18 @@
     </setting>
     
     <setting propertyKey="@Properties.CurrentWeather" title="@Strings.CurrentWeather">
-    	<settingConfig type="boolean" />
+    		<settingConfig type="boolean" />
     </setting>
     
     <setting propertyKey="@Properties.DarkSkyApiKey" title="@Strings.DarkSkyApiKey">
-    	<settingConfig type="alphanumeric" maxLength="32"/>
+    		<settingConfig type="alphanumeric" maxLength="32"/>
     </setting>
+    
+    <setting propertyKey="@Properties.TempUnit" title="@Strings.TempUnit">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.Celsius</listEntry>
+            <listEntry value="1">@Strings.Fahrenheit</listEntry>
+        </settingConfig>
+    </setting>
+    
 </settings>

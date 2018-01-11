@@ -176,4 +176,8 @@
     <string id="CurrentWeather">Jelenlegi (kiválasztott)/ Napi (nem kiválasztott) időjárás</string>
     
     <string id="DarkSkyApiKey">DarkSky API Kulcs (Időjárás)</string>
+    
+    <string id="TempUnit">Hőmérséklet-egység</string>
+	<string id="Celsius">Celsius</string>
+	<string id="Fahrenheit">Fahrenheit</string>
 </strings>

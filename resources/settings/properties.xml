@@ -76,4 +76,6 @@
     <property id="CurrentWeather" type="boolean">true</property>
     
     <property id="DarkSkyApiKey" type="string"></property>
+    
+    <property id="TempUnit" type="number">0</property>
 </properties>

@@ -176,4 +176,8 @@
     <string id="CurrentWeather">Le temps courante (adopté)/ pa jour (non adopté)</string>
     
     <string id="DarkSkyApiKey">DarkSky API Key (Le temps)</string>
+    
+    <string id="TempUnit">Unité de température</string>
+	<string id="Celsius">Celsius</string>
+	<string id="Fahrenheit">Fahrenheit</string>
 </strings>
