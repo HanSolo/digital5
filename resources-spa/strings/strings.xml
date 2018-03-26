@@ -180,4 +180,8 @@
 	<string id="TempUnit">Unidad de temperatura</string>
 	<string id="Celsius">Celsius</string>
 	<string id="Fahrenheit">Fahrenheit</string>
+	
+	<string id="AltUnit">Unidad de altura</string>
+	<string id="Meter">Metros</string>
+	<string id="Feet">Zócalo</string>
 </strings>

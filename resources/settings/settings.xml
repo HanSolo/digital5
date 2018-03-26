@@ -355,4 +355,11 @@
         </settingConfig>
     </setting>
     
+    <setting propertyKey="@Properties.AltUnit" title="@Strings.AltUnit">
+        <settingConfig type="list">
+            <listEntry value="0">@Strings.Meter</listEntry>
+            <listEntry value="1">@Strings.Feet</listEntry>
+        </settingConfig>
+    </setting>
+    
 </settings>

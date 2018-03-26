@@ -25,7 +25,7 @@ class Digital5View extends Ui.WatchFace {
 
     enum { WOMAN, MEN }
     enum { UPPER_LEFT, UPPER_RIGHT, LOWER_LEFT, LOWER_RIGHT, BOTTOM_FIELD }
-    enum { M, I, K, B, C, F }
+    enum { M, I, K, B, C, F, T }
     enum { KCAL, ACTIVE_KCAL, ACTIVE_KCAL_REACHED }
     const BRIGHT_BLUE      = 0x0055ff;
     const BRIGHT_GREEN     = 0x55ff00;
@@ -54,7 +54,8 @@ class Digital5View extends Ui.WatchFace {
     var kcal, activeKcal, kcalReached, activeKcalReached;
     var bpm, showBpmZones, maxBpm, currentZone;
     var distanceUnit, distance;     
-    var tempUnit;       
+    var tempUnit;
+    var altUnit;
     var coloredStepText;
     var coloredCalorieText;
     var upperLeftField, upperRightField, lowerLeftField, lowerRightField, bottomField;
@@ -133,6 +134,7 @@ class Digital5View extends Ui.WatchFace {
         showBpmZones              = App.getApp().getProperty("BpmZones");
         distanceUnit              = Sys.getDeviceSettings().distanceUnits;
         tempUnit                  = App.getApp().getProperty("TempUnit");
+        altUnit                   = App.getApp().getProperty("AltUnit");
         distance                  = distanceUnit == 0 ? actinfo.distance * 0.00001 : actinfo.distance * 0.00001 * 0.621371;
         coloredStepText           = App.getApp().getProperty("ColorizeStepText");
         coloredCalorieText        = App.getApp().getProperty("ColorizeCalorieText");
@@ -601,8 +603,13 @@ class Digital5View extends Ui.WatchFace {
                 }
                 break;
             case 5: 
-                drawWithUnit(getXYPositions(BOTTOM_FIELD), dc, 5, BOTTOM_FIELD);
-                drawCharacter(dc, M, 0);
+                drawWithUnit(getXYPositions(BOTTOM_FIELD), dc, 5, BOTTOM_FIELD);                
+                if (altUnit == 0) {
+                    drawCharacter(dc, M, 0);
+                } else {
+                    drawCharacter(dc, F, 0);
+                    drawCharacter(dc, T, 0);
+                }
                 break;
             case 6:
                 drawWithUnit(getXYPositions(BOTTOM_FIELD), dc, 6, BOTTOM_FIELD);
@@ -817,8 +824,16 @@ class Digital5View extends Ui.WatchFace {
                 var altHistory     = Sensor.getElevationHistory(null);        
                 var altitude       = altHistory.next();
                 var altitudeOffset = App.getApp().getProperty("AltitudeOffset").toFloat();
-                fieldText = null == altitude ? "-" : (altitude.data.toFloat() + altitudeOffset).format("%.0f");
-                unitText  = "m";
+                if (null == altitude) {
+                    fieldText = "-";
+                } else {
+                    if (altUnit == 0) {
+                        fieldText = (altitude.data.toFloat() + altitudeOffset).format("%.0f");
+                    } else {
+                        fieldText = ((altitude.data.toFloat() + altitudeOffset) / 0.3048).format("%.0f");
+                    }
+                }
+                unitText = altUnit == 0 ? "m" : "ft";
                 break;
             case 6: // Pressure
                 var pressureHistory = Sensor.getPressureHistory(null);
@@ -1114,6 +1129,10 @@ class Digital5View extends Ui.WatchFace {
                 dc.drawLine(169, 216, 169, 223);
                 dc.drawLine(172, 219, 168, 219);
                 break;
+            case T:
+                dc.drawLine(177, 216, 177, 223);
+                dc.drawLine(175, 216, 180, 216);
+                break;    
         }
     }
     

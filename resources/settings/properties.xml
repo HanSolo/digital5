@@ -78,4 +78,6 @@
     <property id="DarkSkyApiKey" type="string"></property>
     
     <property id="TempUnit" type="number">0</property>
+    
+    <property id="AltUnit" type="number">0</property>
 </properties>

@@ -180,4 +180,8 @@
     <string id="TempUnit">Hőmérséklet-egység</string>
 	<string id="Celsius">Celsius</string>
 	<string id="Fahrenheit">Fahrenheit</string>
+	
+	<string id="AltUnit">Magasság-egység</string>
+	<string id="Meter">Méter</string>
+	<string id="Feet">Láb</string>
 </strings>
