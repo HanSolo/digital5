@@ -1394,7 +1394,7 @@ class Digital5View extends Ui.WatchFace {
     	return originXLoc + margin;
     }
     
-    function centerLcdFontForBottomField(text, originXLoc, hasBitmap) {
+    function centerLcdTextForBottomField(text, originXLoc, hasBitmap) {
     	var margin = 2;
     	var len = text.length();
     	
