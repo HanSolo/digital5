@@ -758,10 +758,13 @@ class Digital5View extends Ui.WatchFace {
                 fieldText = activeKcalReached.toString();
                 break;
         }
+
         if (lcdFontDataFields) {
-            dc.drawText(field < 4 ? textX : textX + 13, textY, field < 4 ? digitalUpright24 : digitalUpright20, fieldText, getTextJustification(field));
+        	textX = (field == BOTTOM_FIELD) ? centerLcdTextForBottomField(fieldText, textX, true) : textX;
+            dc.drawText(textX, textY, field < 4 ? digitalUpright24 : digitalUpright20, fieldText, getTextJustification(field));
         } else {
-            dc.drawText(field < 4 ? textX  :textX + 4, textY, Graphics.FONT_XTINY, fieldText, getTextJustification(field));
+        	textX = (field == BOTTOM_FIELD) ? centerTextForBottomField(fieldText, textX, true) : textX;
+            dc.drawText(textX, textY, Graphics.FONT_XTINY, fieldText, getTextJustification(field));
         }
     }
     
@@ -784,10 +787,14 @@ class Digital5View extends Ui.WatchFace {
         }
              
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
+        
+        var fieldText = bpm > 0 ? bpm.toString() : "";
         if (lcdFontDataFields) {
-            dc.drawText(textX, textY, field < 4 ? digitalUpright24 : digitalUpright20, (bpm > 0 ? bpm.toString() : ""), getTextJustification(field));
+        	textX = (field == BOTTOM_FIELD) ? centerLcdTextForBottomField(fieldText, textX, true) : textX;
+            dc.drawText(textX, textY, field < 4 ? digitalUpright24 : digitalUpright20, fieldText, getTextJustification(field));
         } else {
-            dc.drawText(textX, textY, Graphics.FONT_XTINY, (bpm > 0 ? bpm.toString() : ""), getTextJustification(field));
+        	textX = (field == BOTTOM_FIELD) ? centerTextForBottomField(fieldText, textX, true) : textX;
+            dc.drawText(textX, textY, Graphics.FONT_XTINY, fieldText, getTextJustification(field));
         }
     }
     
@@ -887,11 +894,14 @@ class Digital5View extends Ui.WatchFace {
                 }
                 break;
         }
+        
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
         if (lcdFontDataFields) {
+        	textX = (field == BOTTOM_FIELD) ? centerLcdTextForBottomField(fieldText, textX, false) : textX;
             dc.drawText(textX, textY, field < 4 ? digitalUpright24 : digitalUpright20, fieldText, getTextJustification(field));
             dc.drawText(unitLcdX, unitLcdY, digitalUpright16, unitText, getUnitJustification(field));
         } else {
+        	textX = (field == BOTTOM_FIELD) ? centerTextForBottomField(fieldText, textX, false) : textX;
             dc.drawText(textX, textY, Graphics.FONT_XTINY, fieldText, getTextJustification(field));
             dc.drawText(unitX, unitY, Graphics.FONT_XTINY, unitText, getUnitJustification(field));
         }
@@ -921,19 +931,12 @@ class Digital5View extends Ui.WatchFace {
         var bmpY     = xyPositions[1];
         var textX    = xyPositions[2];
         var textY    = xyPositions[3];
-
-        switch (field) {
-            case 0: break;
-            case 1: bmpX +=2; textX += lcdFontDataFields ? 8 : 12; break;
-            case 2: break;
-            case 3: bmpX +=2; textX += lcdFontDataFields ? 8 : 12; break;
-            case 4: textX = 120; break;
-        }
+        
         var floorsClimbed   = actinfo.floorsClimbed;
         var floorsDescended = actinfo.floorsDescended;
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
         // draw stairs icon
-        if (field < 4) {
+        if (field < BOTTOM_FIELD) {
             dc.setPenWidth(1);
             dc.drawLine(bmpX + 3, bmpY + 15, bmpX + 6, bmpY + 15);
             dc.drawLine(bmpX + 6, bmpY + 15, bmpX + 6, bmpY + 12);
@@ -945,10 +948,15 @@ class Digital5View extends Ui.WatchFace {
             dc.drawLine(bmpX + 15, bmpY + 6, bmpX + 15, bmpY + 3);
             dc.drawLine(bmpX + 15, bmpY + 3, bmpX + 18, bmpY + 3);
         }
+        
+        var fieldText = floorsClimbed.toString() + "/" + floorsDescended.toString();
+        
         if (lcdFontDataFields) {
-            dc.drawText(textX, textY, field < 4 ? digitalUpright24 : digitalUpright20, (floorsClimbed.toString() + "/" + floorsDescended.toString()), getTextJustification(field));
+        	textX = (field == BOTTOM_FIELD) ? centerLcdTextForBottomField(fieldText, textX, false) : textX;
+            dc.drawText(textX, textY, field < BOTTOM_FIELD ? digitalUpright24 : digitalUpright20, fieldText, getTextJustification(field));
         } else {
-            dc.drawText(textX, textY, Graphics.FONT_XTINY, (floorsClimbed.toString() + "/" + floorsDescended.toString()), getTextJustification(field));
+        	textX = (field == BOTTOM_FIELD) ? centerTextForBottomField(fieldText, textX, false) : textX;
+            dc.drawText(textX, textY, Graphics.FONT_XTINY, fieldText, getTextJustification(field));
         }
     }
     
@@ -961,14 +969,17 @@ class Digital5View extends Ui.WatchFace {
         var unitY           = xyPositions[7];
         var metersClimbed   = actinfo.metersClimbed.format("%0d");
         var metersDescended = actinfo.metersDescended.format("%0d");
+        var fieldText 		= metersClimbed.toString() + "/" + metersDescended.toString();
 
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
         if (lcdFontDataFields) {
-            dc.drawText(textX, textY, field < 4 ? digitalUpright24 : digitalUpright20, metersClimbed.toString() + "/" + metersDescended.toString(), getTextJustification(field));
-            if (field < 4) { dc.drawText(unitLcdX, unitLcdY, digitalUpright16, "m", getUnitJustification(field)); }
+        	textX = (field == BOTTOM_FIELD) ? centerLcdTextForBottomField(fieldText, textX, false) : textX;
+            dc.drawText(textX, textY, field < BOTTOM_FIELD ? digitalUpright24 : digitalUpright20, fieldText, getTextJustification(field));
+            if (field < BOTTOM_FIELD) { dc.drawText(unitLcdX, unitLcdY, digitalUpright16, "m", getUnitJustification(field)); }
         } else {
-            dc.drawText(textX, textY, Graphics.FONT_XTINY, metersClimbed.toString() + " / " + metersDescended.toString(), getTextJustification(field));
-            if (field < 4) { dc.drawText(unitX, unitY, Graphics.FONT_XTINY, "m", getUnitJustification(field)); }
+        	textX = (field == BOTTOM_FIELD) ? centerTextForBottomField(fieldText, textX, false) : textX;
+            dc.drawText(textX, textY, Graphics.FONT_XTINY, fieldText, getTextJustification(field));
+            if (field < BOTTOM_FIELD) { dc.drawText(unitX, unitY, Graphics.FONT_XTINY, "m", getUnitJustification(field)); }
         }
     }
     
@@ -978,16 +989,19 @@ class Digital5View extends Ui.WatchFace {
         var textX    = xyPositions[2];
         var textY    = xyPositions[3];
 
-        if (field == 4) { 
-            textX = 120; 
-        } else {
+        if (field != BOTTOM_FIELD) { 
             dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? burnedIconWhite : burnedIcon);
         }
+        
+        var fieldText = getActKcalAvg(activeKcal).toString();
+        
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
         if (lcdFontDataFields) {
-            dc.drawText(textX, textY, field < 4 ? digitalUpright24 : digitalUpright20, getActKcalAvg(activeKcal), getTextJustification(field));
+        	textX = (field == BOTTOM_FIELD) ? centerLcdTextForBottomField(fieldText, textX, false) : textX;
+            dc.drawText(textX, textY, field < BOTTOM_FIELD ? digitalUpright24 : digitalUpright20, fieldText, getTextJustification(field));
         } else {
-            dc.drawText(textX, textY, Graphics.FONT_XTINY, getActKcalAvg(activeKcal), getTextJustification(field));
+        	textX = (field == BOTTOM_FIELD) ? centerTextForBottomField(fieldText, textX, false) : textX;
+            dc.drawText(textX, textY, Graphics.FONT_XTINY, fieldText, getTextJustification(field));
         }
     }
     
@@ -1176,11 +1190,11 @@ class Digital5View extends Ui.WatchFace {
             case 1: // UPPER RIGHT
                 bmpX     = 207; 
                 bmpY     = 157;
-                textX    = lcdFontDataFields ? 126 : 120;
+                textX    = lcdFontDataFields ? 126 : 124;
                 textY    = lcdFontDataFields ? 153 : 152;
                 unitLcdX = 224;
                 unitLcdY = 160;
-                unitX    = 200;
+                unitX    = 220;
                 unitY    = 152;
                 break;
             case 2: // LOWER LEFT
@@ -1196,23 +1210,23 @@ class Digital5View extends Ui.WatchFace {
             case 3: // LOWER RIGHT
                 bmpX     = 187; 
                 bmpY     = 187;
-                textX    = lcdFontDataFields ? 126 : 120;
+                textX    = lcdFontDataFields ? 126 : 124;
                 textY    = lcdFontDataFields ? 184 : 183;
                 unitLcdX = 204;
                 unitLcdY = 190;
-                unitX    = 180;
+                unitX    = 198;
                 unitY    = 183;
                 break;
             case 4: // BOTTOM_FIELD
-                bmpX     = 85;
+                bmpX     = 80;
                 bmpY     = 216;
-                textX    = 150;
-                textY    = 213;
+                textX    = lcdFontDataFields ? 104 : 108;
+                textY    = lcdFontDataFields ? 215 : 213;
                 unitLcdX = 0;
                 unitLcdY = 0;
                 unitX    = 0;
                 unitY    = 0;
-                break;    
+                break;
         }
         return [ bmpX, bmpY, textX, textY, unitLcdX, unitLcdY, unitX, unitY ];
     }
@@ -1323,7 +1337,7 @@ class Digital5View extends Ui.WatchFace {
     	} else if (field == UPPER_RIGHT || field == LOWER_RIGHT) {
     		justification = Gfx.TEXT_JUSTIFY_LEFT;
     	} else {
-    		justification = Gfx.TEXT_JUSTIFY_CENTER;
+    		justification = Gfx.TEXT_JUSTIFY_LEFT;
     	}
     	
     	return justification;
@@ -1341,5 +1355,79 @@ class Digital5View extends Ui.WatchFace {
     	}
     	
     	return justification;
+    }
+
+    function centerTextForBottomField(text, originXLoc, hasBitmap) {
+    	var margin = 2;
+    	var len = text.length();
+    	
+    	if (len == 1) {
+    	
+    		margin = 8;
+    		
+		} else if (len == 2) {
+		
+			margin = 2;
+			
+    	} else if (len == 4) {
+    	
+    		margin = hasBitmap ? 0 : -10;
+    		
+		} else if (len == 5) {
+		
+			margin = hasBitmap ? -4 : -4;
+			
+		} else if (len == 6) {
+		
+			margin = hasBitmap ? 0 : -20;
+			
+		} else if (len == 7) {
+		
+			margin = hasBitmap ? 0 : -25;
+			
+    	} else {
+    	
+    		margin = 2;
+    		
+    	}
+    	
+    	return originXLoc + margin;
+    }
+    
+    function centerLcdFontForBottomField(text, originXLoc, hasBitmap) {
+    	var margin = 2;
+    	var len = text.length();
+    	
+    	if (len == 1) {
+    	
+    		margin = 10;
+    		
+		} else if (len == 2) {
+		
+			margin = 4;
+			
+    	} else if (len == 4) {
+    	
+    		margin = hasBitmap ? 0 : -10;
+    		
+		} else if (len == 5) {
+			
+			margin = hasBitmap ? -8 : -15;
+			
+		} else if (len == 6) {
+		
+			margin = hasBitmap ? 0 : -20;
+			
+		} else if (len == 7) {
+		
+			margin = hasBitmap ? 0 : -30;
+			
+    	} else {
+    	
+    		margin = 2;
+    		
+    	}
+    	
+    	return originXLoc + margin;
     }
 }
