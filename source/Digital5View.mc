@@ -62,7 +62,7 @@ class Digital5View extends Ui.WatchFace {
     var darkUpperBackground, upperBackgroundColor, upperForegroundColor;
     var darkFieldBackground, fieldBackgroundColor, fieldForegroundColor;
     var deviceName, apiKey;
-      
+
     function initialize() {
         WatchFace.initialize();
     }
@@ -151,7 +151,7 @@ class Digital5View extends Ui.WatchFace {
         fieldForegroundColor      = darkFieldBackground ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK;
         apiKey                    = App.getApp().getProperty("DarkSkyApiKey");
         
-        var charge                = systemStats.battery;
+        var charge                = systemStats.battery + 0.5;
         var showChargePercentage  = App.getApp().getProperty("ShowChargePercentage");
         var showPercentageUnder20 = App.getApp().getProperty("ShowPercentageUnder20");
         var dayOfWeek             = nowinfo.day_of_week;
