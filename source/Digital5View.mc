@@ -1138,7 +1138,7 @@ class Digital5View extends Ui.WatchFace {
     
     function drawTime(hourColor, minuteColor, font, dc) {
         var hh   = clockTime.hour;
-        var hour = is24Hour ? hh : (hh == 12) ? hh : (hh % 12);
+        var hour = is24Hour ? hh : (hh == 12) ? hh : (hh % 12 == 0 ? 12 : hh % 12);
         var y = deviceName.equals("vivoactive3") ? 44 : 56;
         dc.setColor(hourColor, Gfx.COLOR_TRANSPARENT);
         dc.drawText(centerX - 6, lcdFont ? 51 : y, font, hour.format(showLeadingZero ? "%02d" : "%01d"), Gfx.TEXT_JUSTIFY_RIGHT);
