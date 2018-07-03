@@ -2,5 +2,6 @@
 	<exclude file="../source/vivoactive3.mc"/>
   	<exclude file="../source/fenix5x.mc"/>
   	<exclude file="../source/fr935.mc"/>
-  	<exclude file="../source/d2charlie.mc"/>  
+  	<exclude file="../source/d2charlie.mc"/>
+  	<exclude file="../source/fenix5xplus.mc"/>  
 </build>

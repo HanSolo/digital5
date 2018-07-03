@@ -40,6 +40,8 @@
 	<string id="LcdFont">Lcd font</string>
 	
 	<string id="LcdFontDataFields">Lcd font for datafields</string>
+	
+	<string id="BiggerBatteryFont">Bigger battery font</string>
 		
 	<string id="DST">Daylight Saving Time (home location)</string>
 	

@@ -1,3 +1,9 @@
 # Do not hand edit this file. To make changes right click
 # on the project and select "Configure Monkey Barrels".
 
+fr935.excludeAnnotations = d2charlie;fenix5;fenix5x;fenix5xplus;vivoactive3
+d2charlie.excludeAnnotations = fr935;fenix5;fenix5x;fenix5xplus;vivoactive3
+fenix5.excludeAnnotations = fr935;d2charlie;fenix5x;fenix5xplus;vivoactive3
+fenix5x.excludeAnnotations = fr935;d2charlie;fenix5;fenix5xplus;vivoactive3
+fenix5xplus.excludeAnnotations = fr935;d2charlie;fenix5;fenix5x;vivoactive3
+vivoactive3.excludeAnnotations = fr935;d2charlie;fenix5;fenix5x;fenix5xplus

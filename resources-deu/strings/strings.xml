@@ -41,6 +41,8 @@
 	
 	<string id="LcdFontDataFields">LCD Schriftart für Datenfelder</string>
 	
+	<string id="BiggerBatteryFont">Größere Schriftart für Batterie</string>
+	
 	<string id="DST">Sommerzeit</string>
 	
 	<string id="ShowHomeTimezone">Heimat Zeitzone anzeigen</string>
