@@ -360,7 +360,7 @@ class Digital5View extends Ui.WatchFace {
                 dc.drawText(59, 36, digitalUpright16, sunriseText, Gfx.TEXT_JUSTIFY_LEFT);
                 dc.drawText(181, 36, digitalUpright16, sunsetText, Gfx.TEXT_JUSTIFY_RIGHT);
             } else {
-                var y = deviceName.equals("Vivoactive 3") ? 32 : 28;
+                var y = (deviceName.equals("vivoactive3") || deviceName.equals("vivoactive3m")) ? 32 : 28;
                 dc.drawText(57, y, Graphics.FONT_XTINY, sunriseText, Gfx.TEXT_JUSTIFY_LEFT);
                 dc.drawText(182, y, Graphics.FONT_XTINY, sunsetText, Gfx.TEXT_JUSTIFY_RIGHT);
             }
@@ -1139,7 +1139,7 @@ class Digital5View extends Ui.WatchFace {
     function drawTime(hourColor, minuteColor, font, dc) {
         var hh   = clockTime.hour;
         var hour = is24Hour ? hh : (hh == 12) ? hh : (hh % 12 == 0 ? 12 : hh % 12);
-        var y = deviceName.equals("vivoactive3") ? 44 : 56;
+        var y = (deviceName.equals("vivoactive3") || deviceName.equals("vivoactive3m")) ? 44 : 56;
         dc.setColor(hourColor, Gfx.COLOR_TRANSPARENT);
         dc.drawText(centerX - 6, lcdFont ? 51 : y, font, hour.format(showLeadingZero ? "%02d" : "%01d"), Gfx.TEXT_JUSTIFY_RIGHT);
         dc.setColor(upperForegroundColor, Gfx.COLOR_TRANSPARENT);
@@ -1320,7 +1320,7 @@ class Digital5View extends Ui.WatchFace {
 
     function getDeviceName() {
         if (deviceName == null) {
-            deviceName = Ui.loadResource(Rez.Strings.DeviceName);
+            deviceName = Ui.loadResource(Rez.Strings.deviceName);
         }
         return deviceName;
     }

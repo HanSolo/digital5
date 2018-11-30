@@ -1,10 +1,10 @@
 project.manifest = manifest.xml
 
 
-
-vivoactive3.sourcePath = source;source-vivoactive3
-fr935.sourcePath       = source;source-fr935
-d2charlie.sourcePath   = source;source-d2charlie
-fenix5.sourcePath      = source;source-fenix5
-fenix5x.sourcePath     = source;source-fenix5x
-fenix5xplus.sourcePath = source;source-fenix5xplus
+vivoactive3.sourcePath  = source;source-vivoactive3
+vivoactive3m.sourcePath = source;source-vivoactive3m
+fr935.sourcePath        = source;source-fr935
+d2charlie.sourcePath    = source;source-d2charlie
+fenix5.sourcePath       = source;source-fenix5
+fenix5x.sourcePath      = source;source-fenix5x
+fenix5xplus.sourcePath  = source;source-fenix5xplus
