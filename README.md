@@ -1,5 +1,7 @@
 # Garmin Connect IQ fenix 5 watch face: Digital 5
 
+ATTENTION: THIS WATCH FACE WON’T BE UPDATED ANY LONGER!!!
+
 ![Overview](https://www.dropbox.com/s/9uc7ojnt97x7otv/Digital5Overview.png)
 
 A simple digital watch face for the Garmin fenix 5x which shows the following data:
