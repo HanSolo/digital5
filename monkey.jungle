@@ -1,6 +1,7 @@
 project.manifest = manifest.xml
 
 
+
 vivoactive3.sourcePath  = source;source-vivoactive3
 vivoactive3m.sourcePath = source;source-vivoactive3m
 fr935.sourcePath        = source;source-fr935

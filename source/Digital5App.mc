@@ -5,7 +5,7 @@ using Toybox.System;
 using Toybox.Time;
 using Toybox.Time.Gregorian;
 
-class Digital5App extends App.AppBase {
+class Digital5ReloadedApp extends App.AppBase {
     hidden var view;
     hidden var sunRiseSet;
 

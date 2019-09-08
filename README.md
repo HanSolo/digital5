@@ -1,8 +1,12 @@
-# Garmin Connect IQ fenix 5 watch face: Digital 5
+# Garmin Connect IQ fenix 5 watch face: Digital 5 Reloaded
 
-ATTENTION: THIS WATCH FACE WON’T BE UPDATED ANY LONGER!!!
+**History**
 
-![Overview](https://www.dropbox.com/s/9uc7ojnt97x7otv/Digital5Overview.png)
+Digital5 was a Garmin Connect IQ watch face, created for the fenix 5 range. Its developer, [Gerrit Grunwald](https://twitter.com/hansolo_), discontinued working on this watch face earlier this year. I still think it was one of the better faces, striking a balance between number of "data" fields, and readability.
+
+I've decided to take over the project, and call it "Digital5Reloaded" - of course this is with the permission of Gerrit. Thanks!
+
+**Overview**
 
 A simple digital watch face for the Garmin fenix 5x which shows the following data:
 - date 
@@ -14,7 +18,7 @@ A simple digital watch face for the Garmin fenix 5x which shows the following da
 - steps
 - steps needed to reach daily goal
 - calories burned
-- active calories burned (calcluated after Mifflin-St.Jeor Formula (1990))
+- active calories burned ([calculated after Mifflin-St.Jeor Formula (1990)](https://www.ncbi.nlm.nih.gov/pubmed/2305711))
 - distance
 - move bar
 - last measured heart rate
@@ -25,9 +29,7 @@ A simple digital watch face for the Garmin fenix 5x which shows the following da
 - active time of the last week
 - active time of today
 - sunrise and sunset ([calculated after Sunrise/Sunset Algorithm](http://williams.best.vwh.net/sunrise_sunset_algorithm.htm))
-- weather
-
-([Powered by Dark Sky](https://darksky.net/poweredby/))
+- weather ([Powered by Dark Sky](https://darksky.net/poweredby/), requires Dark Sky API key (free))
 
 The LCD background can be switched off and the heart rate zone could be visualized by colors.
 On the left side it will show the daily step goal in a colored bar (is the bar green then the daily stepgoal is reached). On the right side it shows the burned calories where the bar is blue as long as you have not reached your daily base calorie consumption, it will turn green when the burned calories are higher than your daily base calorie consumption. Are the burned calories more than 2x the base calorie consumption the bar will turn pink. 
@@ -59,25 +61,29 @@ All segments pink   = 3x base calories burned
 
 The sunrise/sunset is calculated by an algorithm found at http://williams.best.vwh.net/sunrise_sunset_algorithm.htm.
 To be able to calculate the sunrise/sunset you have to put in the current location (latitude, longitude) and the current
-timezone you are in. If you have daylight saving time in your current timezone please check the "Daylight saving time (current location)" checkbox.
+time zone you are in. If you have daylight saving time in your current time zone please check the "Daylight saving time (current location)" checkbox.
 
-ATTENTION:
-Instead of giving negative reviews please file an issue at the [github issuetracker](https://github.com/HanSolo/digital5/issues) when you encounter problems.
-By using the issue tracker you can describe your problem and I can try to reproduce and fix it, thanks.
+
+
+**Weather** 
 
 To make use of the Weather feature you need your own Dark Sky API key,
 to get one please follow the steps below:
 
-1) Go to the [DarkSky website](https://darksky.net/dev/)
+1. Go to the [DarkSky website](https://darksky.net/dev/)
 
-2) Create your own account and you'll see a 32 character key
+2. Create your own account and you'll see a 32 character key
 
-3) This key you need to put in the watch face settings either on your phone or via Garmin Express.
+3. This key you need to put in the watch face settings either on your phone or via Garmin Express.
 
-4) Make sure you have the coordinates of your current location (latitude, longitude) put in the settings
+4. Make sure you have the coordinates of your current location (latitude, longitude) put in the settings
 
 At the moment the weather update is done every 15 minutes.
 
-You can choose between daily or current weather information where the daily weather will show you an icon for
-today and the min and max temperature for today. The current weather information will show you an icon for the 
-current weather and the current temperature.
+
+You can choose between daily or current weather information where the daily weather will show you an icon for today and the min and max temperature for today. The current weather information will show you an icon for the current weather and the current temperature.
+
+
+
+**Reporting issues**
+Please use the [github issuetracker](https://github.com/erikvb/Digital5Reloaded/issues) when you encounter problems. By using the issue tracker you can describe your problem and I can try to reproduce and fix it, thanks.
