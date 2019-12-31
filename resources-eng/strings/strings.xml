@@ -46,6 +46,7 @@
 	<string id="DST">Daylight Saving Time (home location)</string>
 	
 	<string id="ShowHomeTimezone">Show Home Timezone</string>
+	<string id="ShowHomeDate">Show Home Date</string>
 	
 	<string id="HomeTimezoneOffset">Timezone (home location)</string>
 	

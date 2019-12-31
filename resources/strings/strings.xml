@@ -43,9 +43,10 @@
 	
 	<string id="BiggerBatteryFont">Bigger battery font</string>
 	
-	<string id="DST">Daylight Saving Time</string>
+	<string id="DST">Daylight Saving Time (home location)</string>
 	
-	<string id="ShowHomeTimezone">Show Home Timezone</string>
+	<string id="ShowHomeTimezone">Show Home Time</string>
+	<string id="ShowHomeDate">Show Home Date</string>
 	
 	<string id="HomeTimezoneOffset">Timezone (home location)</string>
 	

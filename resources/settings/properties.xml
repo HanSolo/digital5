@@ -6,18 +6,13 @@
     <property id="Age"    type="number">47</property>
     
     <property id="LcdBackground" type="boolean">false</property>
-    
-    <property id="LcdFont" type="boolean">true</property>
-    
-    <property id="LcdFontDataFields" type="boolean">true</property>
-        
+          
     <property id="BpmZones" type="boolean">true</property>
-    
-    <property id="DST" type="boolean">true</property>
-    
+
+    <property id="ShowHomeDate" type="boolean">false</property>
     <property id="ShowHomeTimezone" type="boolean">false</property>
-    
     <property id="HomeTimezoneOffset" type="number">3600</property>
+    <property id="DST" type="boolean">true</property>
     
     <property id="DateFormat" type="number">0</property>
     

@@ -46,6 +46,7 @@
 	<string id="DST">Sommerzeit</string>
 	
 	<string id="ShowHomeTimezone">Heimat Zeitzone anzeigen</string>
+	<string id="ShowHomeDate">Heimat Datum anzeigen</string>
 	
 	<string id="HomeTimezoneOffset">Heimat Zeitzone</string>
 	

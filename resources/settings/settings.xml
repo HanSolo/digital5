@@ -65,19 +65,15 @@
         <settingConfig type="boolean" />
     </setting>
     
-    <setting propertyKey="@Properties.LcdFont" title="@Strings.LcdFont">
-        <settingConfig type="boolean" />
-    </setting>
-    
-    <setting propertyKey="@Properties.LcdFontDataFields" title="@Strings.LcdFontDataFields">
-        <settingConfig type="boolean" />
-    </setting>
-    
     <setting propertyKey="@Properties.BpmZones" title="@Strings.BpmZones">
         <settingConfig type="boolean" />
     </setting>
     
     <setting propertyKey="@Properties.DST" title="@Strings.DST">
+        <settingConfig type="boolean" />
+    </setting>
+
+    <setting propertyKey="@Properties.ShowHomeDate" title="@Strings.ShowHomeDate">
         <settingConfig type="boolean" />
     </setting>
     
@@ -264,11 +260,12 @@
     
     <setting propertyKey="@Properties.BottomField" title="@Strings.BottomField">
         <settingConfig type="list">
-        <listEntry value="1">@Strings.Calories</listEntry>
+    		<listEntry value="0">@Strings.Steps</listEntry>
+         	<listEntry value="1">@Strings.Calories</listEntry>
     		<listEntry value="2">@Strings.ActiveCalories</listEntry>
         	<listEntry value="3">@Strings.HeartRate</listEntry>
         	<listEntry value="4">@Strings.Distance</listEntry>
-        <listEntry value="5">@Strings.Altitude</listEntry>
+        	<listEntry value="5">@Strings.Altitude</listEntry>
     		<listEntry value="6">@Strings.Pressure</listEntry>
     		<listEntry value="7">@Strings.ActiveTimeDay</listEntry>
     		<listEntry value="8">@Strings.ActiveTimeWeek</listEntry>

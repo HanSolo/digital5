@@ -46,6 +46,7 @@
 	<string id="DST">Nyári időszámítás</string>
 	
 	<string id="ShowHomeTimezone">Otthoni időzóna mutatása</string>
+	<string id="ShowHomeDate">Az otthoni dátum megjelenítése</string>
 	
 	<string id="HomeTimezoneOffset">Otthoni időzóna</string>
 	

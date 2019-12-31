@@ -15,18 +15,40 @@ using Toybox.SensorHistory as Sensor;
 
 
 class Digital5View extends Ui.WatchFace {
+	var debug = false;
     var is24Hour;
     var secondsAlwaysOn;
-    var lcdFont;
-    var lcdFontDataFields;
     var showLeadingZero;
     var clockTime;
     var sunRiseSet;
 
-    enum { WOMAN, MEN }
-    enum { UPPER_LEFT, UPPER_RIGHT, LOWER_LEFT, LOWER_RIGHT, BOTTOM_FIELD }
-    enum { M, I, K, B, C, F, T }
-    enum { KCAL, ACTIVE_KCAL, ACTIVE_KCAL_REACHED }
+    enum { 
+        WOMAN = 0, 
+        MEN = 1
+    }
+    
+    enum { 
+        UPPER_LEFT = 0, 
+        UPPER_RIGHT = 1, 
+        LOWER_LEFT = 2, 
+        LOWER_RIGHT = 3, 
+        BOTTOM_FIELD = 4 
+    }
+    
+    enum { 
+        M = 0, 
+        I = 1, 
+        K = 2, 
+        B = 3, 
+        C = 4, 
+        F = 5, 
+        T = 6 
+    }
+    enum { 
+        KCAL = 0, 
+        ACTIVE_KCAL = 1, 
+        ACTIVE_KCAL_REACHED = 2 
+    }
     const BRIGHT_BLUE      = 0x0055ff;
     const BRIGHT_GREEN     = 0x55ff00;
     const BRIGHT_RED       = 0xff0055;
@@ -42,9 +64,12 @@ class Digital5View extends Ui.WatchFace {
     var currentWeather;
     var digitalUpright72, digitalUpright26, digitalUpright24, digitalUpright20, digitalUpright16;
     var burnedIcon, burnedIconWhite, stepsIcon, stepsIconWhite;
-
+    var alarmIcon, alarmIconWhite;
     var width, height;
     var centerX, centerY;
+    var upperFieldHeightPercentage, fieldHeightPercentage;
+    var dataFieldsTop, dataFieldsTopPadding;
+    var fieldHeight;
     var midnightInfo;
     var nowinfo;
     var actinfo;
@@ -55,13 +80,16 @@ class Digital5View extends Ui.WatchFace {
     var bpm, showBpmZones, maxBpm, currentZone;
     var distanceUnit, distance;
     var tempUnit;
-    var altUnit;
-    var coloredStepText;
+    var batteryIconOffsetX;
+
     var coloredCalorieText;
     var upperLeftField, upperRightField, lowerLeftField, lowerRightField, bottomField;
     var darkUpperBackground, upperBackgroundColor, upperForegroundColor;
     var darkFieldBackground, fieldBackgroundColor, fieldForegroundColor;
-    var deviceName, apiKey;
+    var apiKey;
+    var secondsFont = 0;
+    var secondsYPosition = 0;
+    
 
     function initialize() {
         WatchFace.initialize();
@@ -73,30 +101,45 @@ class Digital5View extends Ui.WatchFace {
         digitalUpright24 = Ui.loadResource(Rez.Fonts.digitalUpright24);
         digitalUpright20 = Ui.loadResource(Rez.Fonts.digitalUpright20);
         digitalUpright16 = Ui.loadResource(Rez.Fonts.digitalUpright16);
-        burnedIcon       = Ui.loadResource(Rez.Drawables.burned);
-        burnedIconWhite  = Ui.loadResource(Rez.Drawables.burnedWhite);
-        stepsIcon        = Ui.loadResource(Rez.Drawables.steps);
-        stepsIconWhite   = Ui.loadResource(Rez.Drawables.stepsWhite);
-        weekdays[0]      = Ui.loadResource(Rez.Strings.Sun);
-        weekdays[1]      = Ui.loadResource(Rez.Strings.Mon);
-        weekdays[2]      = Ui.loadResource(Rez.Strings.Tue);
-        weekdays[3]      = Ui.loadResource(Rez.Strings.Wed);
-        weekdays[4]      = Ui.loadResource(Rez.Strings.Thu);
-        weekdays[5]      = Ui.loadResource(Rez.Strings.Fri);
-        weekdays[6]      = Ui.loadResource(Rez.Strings.Sat);
-        months[0]        = Ui.loadResource(Rez.Strings.Jan);
-        months[1]        = Ui.loadResource(Rez.Strings.Feb);
-        months[2]        = Ui.loadResource(Rez.Strings.Mar);
-        months[3]        = Ui.loadResource(Rez.Strings.Apr);
-        months[4]        = Ui.loadResource(Rez.Strings.May);
-        months[5]        = Ui.loadResource(Rez.Strings.Jun);
-        months[6]        = Ui.loadResource(Rez.Strings.Jul);
-        months[7]        = Ui.loadResource(Rez.Strings.Aug);
-        months[8]        = Ui.loadResource(Rez.Strings.Sep);
-        months[9]        = Ui.loadResource(Rez.Strings.Oct);
-        months[10]       = Ui.loadResource(Rez.Strings.Nov);
-        months[11]       = Ui.loadResource(Rez.Strings.Dec);
-        deviceName       = getDeviceName();
+        burnedIcon = Ui.loadResource(Rez.Drawables.burned);
+        burnedIconWhite = Ui.loadResource(Rez.Drawables.burnedWhite);
+        stepsIcon = Ui.loadResource(Rez.Drawables.steps);
+        stepsIconWhite = Ui.loadResource(Rez.Drawables.stepsWhite);
+        weekdays[0] = Ui.loadResource(Rez.Strings.Sun);
+        weekdays[1] = Ui.loadResource(Rez.Strings.Mon);
+        weekdays[2] = Ui.loadResource(Rez.Strings.Tue);
+        weekdays[3] = Ui.loadResource(Rez.Strings.Wed);
+        weekdays[4] = Ui.loadResource(Rez.Strings.Thu);
+        weekdays[5] = Ui.loadResource(Rez.Strings.Fri);
+        weekdays[6] = Ui.loadResource(Rez.Strings.Sat);
+        months[0] = Ui.loadResource(Rez.Strings.Jan);
+        months[1] = Ui.loadResource(Rez.Strings.Feb);
+        months[2] = Ui.loadResource(Rez.Strings.Mar);
+        months[3] = Ui.loadResource(Rez.Strings.Apr);
+        months[4] = Ui.loadResource(Rez.Strings.May);
+        months[5] = Ui.loadResource(Rez.Strings.Jun);
+        months[6] = Ui.loadResource(Rez.Strings.Jul);
+        months[7] = Ui.loadResource(Rez.Strings.Aug);
+        months[8] = Ui.loadResource(Rez.Strings.Sep);
+        months[9] = Ui.loadResource(Rez.Strings.Oct);
+        months[10] = Ui.loadResource(Rez.Strings.Nov);
+        months[11] = Ui.loadResource(Rez.Strings.Dec);
+        
+        width = dc.getWidth();
+        height = dc.getHeight();
+        centerX = width * 0.5;
+        centerY = height * 0.5;
+        batteryIconOffsetX = 0;
+        upperFieldHeightPercentage = 0.625;
+        dataFieldsTop = height * upperFieldHeightPercentage;
+        dataFieldsTopPadding = 7;
+        fieldHeightPercentage = 0.125;
+        fieldHeight = fieldHeightPercentage * height;
+        
+        distanceUnit  = Sys.getDeviceSettings().distanceUnits;
+        
+        if (debug) {System.println("width: " + width + ", height: " + height);}
+        
     }
 
     function onUpdate(dc) {
@@ -106,37 +149,8 @@ class Digital5View extends Ui.WatchFace {
 
         is24Hour                  = Sys.getDeviceSettings().is24Hour;
         secondsAlwaysOn           = App.getApp().getProperty("SecondsAlwaysOn");
-        lcdFont                   = App.getApp().getProperty("LcdFont");
-        lcdFontDataFields         = App.getApp().getProperty("LcdFontDataFields");
         showLeadingZero           = App.getApp().getProperty("ShowLeadingZero");
-
-        clockTime                 = Sys.getClockTime();
-        sunRiseSet                = new SunRiseSunSet();
-        currentWeather            = App.getApp().getProperty("CurrentWeather");
-
-        // General
-        width                     = dc.getWidth();
-        height                    = dc.getHeight();
-        centerX                   = width * 0.5;
-        centerY                   = height * 0.5;
-        midnightInfo              = Greg.info(Time.today(), Time.FORMAT_SHORT);
-        nowinfo                   = Greg.info(Time.now(), Time.FORMAT_SHORT);
-        actinfo                   = Act.getInfo();
-        systemStats               = Sys.getSystemStats();
-        hrHistory                 = Act.getHeartRateHistory(null, true);
-        hr                        = hrHistory.next();
-        steps                     = actinfo.steps;
-        stepGoal                  = actinfo.stepGoal;
-        deltaSteps                = stepGoal - steps;
-        stepsReached              = steps.toDouble() / stepGoal;
-        kcal                      = actinfo.calories;
-        bpm                       = (hr.heartRate != Act.INVALID_HR_SAMPLE && hr.heartRate > 0) ? hr.heartRate : 0;
-        showBpmZones              = App.getApp().getProperty("BpmZones");
-        distanceUnit              = Sys.getDeviceSettings().distanceUnits;
         tempUnit                  = App.getApp().getProperty("TempUnit");
-        altUnit                   = App.getApp().getProperty("AltUnit");
-        distance                  = distanceUnit == 0 ? actinfo.distance * 0.00001 : actinfo.distance * 0.00001 * 0.621371;
-        coloredStepText           = App.getApp().getProperty("ColorizeStepText");
         coloredCalorieText        = App.getApp().getProperty("ColorizeCalorieText");
         upperLeftField            = App.getApp().getProperty("UpperLeftField").toNumber();
         upperRightField           = App.getApp().getProperty("UpperRightField").toNumber();
@@ -150,34 +164,48 @@ class Digital5View extends Ui.WatchFace {
         fieldBackgroundColor      = darkFieldBackground ? Gfx.COLOR_BLACK : Gfx.COLOR_WHITE;
         fieldForegroundColor      = darkFieldBackground ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK;
         apiKey                    = App.getApp().getProperty("DarkSkyApiKey");
+        showBpmZones              = App.getApp().getProperty("BpmZones");
 
-        var charge                = systemStats.battery + 0.5;
-        var showChargePercentage  = App.getApp().getProperty("ShowChargePercentage");
-        var showPercentageUnder20 = App.getApp().getProperty("ShowPercentageUnder20");
-        var dayOfWeek             = nowinfo.day_of_week;
+        clockTime                 = Sys.getClockTime();
+        sunRiseSet                = new SunRiseSunSet();
+        currentWeather            = App.getApp().getProperty("CurrentWeather");
+        var showMoveBar           = App.getApp().getProperty("ShowMoveBar");
+
+        // General
+        midnightInfo              = Greg.info(Time.today(), Time.FORMAT_SHORT);
+        nowinfo                   = Greg.info(Time.now(), Time.FORMAT_SHORT);
+        actinfo                   = Act.getInfo();
+        systemStats               = Sys.getSystemStats();
+        hrHistory                 = Act.getHeartRateHistory(null, true);
+        hr                        = hrHistory.next();
+        steps                     = actinfo.steps;
+        stepGoal                  = actinfo.stepGoal;
+        deltaSteps                = stepGoal - steps;
+        stepsReached              = steps.toDouble() / stepGoal;
+        kcal                      = actinfo.calories;
+        bpm                       = (hr.heartRate != Act.INVALID_HR_SAMPLE && hr.heartRate > 0) ? hr.heartRate : 0;
+        distance                  = distanceUnit == 0 ? actinfo.distance * 0.00001 : actinfo.distance * 0.00001 * 0.621371;
+
         var lcdBackgroundVisible  = App.getApp().getProperty("LcdBackground");
-        var connected             = Sys.getDeviceSettings().phoneConnected;
         var profile               = UserProfile.getProfile();
-        var notificationCount     = Sys.getDeviceSettings().notificationCount;
         var alarmCount            = Sys.getDeviceSettings().alarmCount;
         var dst                   = App.getApp().getProperty("DST");
         var timezoneOffset        = clockTime.timeZoneOffset;
         var showHomeTimezone      = App.getApp().getProperty("ShowHomeTimezone");
         var homeTimezoneOffset    = dst ? App.getApp().getProperty("HomeTimezoneOffset") + 3600 : App.getApp().getProperty("HomeTimezoneOffset");
-        var onTravel              = timezoneOffset != homeTimezoneOffset;
+        var onTravel              = (timezoneOffset != homeTimezoneOffset) && showHomeTimezone;
+        var dayOfWeek             = nowinfo.day_of_week;
         var dayMonth              = App.getApp().getProperty("DateFormat") == 0;
         var dateFormat            = dayMonth ? "$1$.$2$" : "$2$/$1$";
         var monthAsText           = App.getApp().getProperty("MonthAsText");
         var showCalendarWeek      = App.getApp().getProperty("ShowCalendarWeek");
-        var showMoveBar           = App.getApp().getProperty("ShowMoveBar");
         var showStepBar           = App.getApp().getProperty("ShowStepBar");
         var showCalorieBar        = App.getApp().getProperty("ShowCalorieBar");
         var hourColor             = App.getApp().getProperty("HourColor").toNumber();
         var minuteColor           = App.getApp().getProperty("MinuteColor").toNumber();
-        var coloredBattery        = App.getApp().getProperty("ColoredBattery");
         var showSunriseSunset     = App.getApp().getProperty("SunriseSunset");
         var activeKcalGoal        = App.getApp().getProperty("ActiveKcalGoal").toNumber();
-        var biggerBatteryFont     = App.getApp().getProperty("BiggerBatteryFont");
+        
         var gender;
         var userWeight;
         var userHeight;
@@ -227,72 +255,74 @@ class Digital5View extends Ui.WatchFace {
         // Draw Background
         dc.setPenWidth(1);
         dc.setColor(upperBackgroundColor, Gfx.COLOR_TRANSPARENT);
-        dc.fillRectangle(0, 0, width, 151);
+        dc.fillRectangle(0, 0, width, dataFieldsTop + 1);
 
         if (darkFieldBackground) {
             dc.setColor(fieldBackgroundColor, Gfx.COLOR_TRANSPARENT);
-            dc.fillRectangle(0, 151, width, 89);
+            dc.fillRectangle(0, dataFieldsTop + 1, width, 3 * fieldHeight);
 
             dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);
-            dc.fillRectangle(0, 151, width, 2);
-            dc.fillRectangle(0, 180, width, 2);
-            dc.fillRectangle(0, 211, width, 2);
-            dc.fillRectangle(119, 151, 2, 60);
+            dc.fillRectangle(0, dataFieldsTop + 1, width, 2); // top separator line
+            dc.fillRectangle(0, dataFieldsTop + fieldHeight, width, 2); // middle separator line
+            dc.fillRectangle(0, dataFieldsTop + 2 * fieldHeight, width, 2); // bottom separator line
+            dc.fillRectangle(centerX - 1, dataFieldsTop + 1, 2, 2 * fieldHeight); // vertical separator line
         } else {
             dc.setColor(fieldBackgroundColor, Gfx.COLOR_TRANSPARENT);
-            dc.fillRectangle(0, 151, width, 89);
+            dc.fillRectangle(0, dataFieldsTop + 1, width, 3 * fieldHeight);
 
             dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
-            dc.fillRectangle(0, 149, width, 2);
+            dc.fillRectangle(0, dataFieldsTop - 1, width, 2); // top separator line
 
             dc.setColor(Gfx.COLOR_DK_GRAY, Gfx.COLOR_TRANSPARENT);
-            dc.drawLine(0, 151, width, 151);
+            dc.drawLine(0, dataFieldsTop + 1, width, dataFieldsTop + 1); // top separator line
             dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);
-            dc.drawLine(0, 152, width, 152);
+            dc.drawLine(0, dataFieldsTop + 2, width, dataFieldsTop + 2); // top separator line shadow
 
             dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
-            dc.fillRectangle(0, 179, width, 2);
+            dc.fillRectangle(0, dataFieldsTop + fieldHeight - 1, width, 2); // middle separator line
 
             dc.setColor(Gfx.COLOR_DK_GRAY, Gfx.COLOR_TRANSPARENT);
-            dc.drawLine(0, 181, width, 181);
+            dc.drawLine(0, dataFieldsTop + fieldHeight + 1, width, dataFieldsTop + fieldHeight + 1); // middle separator line
             dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);
-            dc.drawLine(0, 182, width, 182);
+            dc.drawLine(0, dataFieldsTop + fieldHeight + 2, width, dataFieldsTop + fieldHeight + 2); // middle separator line shadow
 
             dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
-            dc.fillRectangle(0, 210, width, 2);
+            dc.fillRectangle(0, dataFieldsTop + 2 * fieldHeight, width, 2);
 
             dc.setColor(Gfx.COLOR_DK_GRAY, Gfx.COLOR_TRANSPARENT);
-            dc.drawLine(0, 212, width, 212);
+            dc.drawLine(0, dataFieldsTop + 2 * fieldHeight + 2, width, dataFieldsTop + 2 * fieldHeight + 2);
             dc.setColor(Gfx.COLOR_LT_GRAY, Gfx.COLOR_TRANSPARENT);
-            dc.drawLine(0, 213, width, 213);
+            dc.drawLine(0, dataFieldsTop + 2 * fieldHeight + 3, width, dataFieldsTop + 2 * fieldHeight + 3);
 
             dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
-            dc.fillRectangle(119, 150, 2, 60);
-        }
+            dc.fillRectangle(centerX - 1, dataFieldsTop, 2, 2 * fieldHeight); // bottom field
+        }    
 
-        if (showPercentageUnder20 and charge < 20) { showChargePercentage = true; }
+        // draw Battery
+        var biggerBatteryFont = App.getApp().getProperty("BiggerBatteryFont");
+        var showChargePercentage = App.getApp().getProperty("ShowChargePercentage");
+        var showPercentageUnder20 = App.getApp().getProperty("ShowPercentageUnder20");
+        var charge = systemStats.battery + 0.5;
+        var coloredBattery = App.getApp().getProperty("ColoredBattery");
+        showChargePercentage = showPercentageUnder20 && charge < 20;
+        
+        if (debug) {System.println("charge: " + charge + ", showPercentageUnder20: " + showPercentageUnder20 + ", showChargePercentage: " + showChargePercentage);}
 
-        var iconOffsetX;
-        // Battery
         if (showChargePercentage) {
-            iconOffsetX = charge < 100 ? (lcdFont ? 4 : 5) : 0;
+            batteryIconOffsetX = 7;
             // Charge Text
             dc.setColor(upperForegroundColor, upperBackgroundColor);
-            if (lcdFont) {
-                dc.drawText(140 - iconOffsetX, 1, digitalUpright20, charge.toNumber(), Gfx.TEXT_JUSTIFY_RIGHT);
-            } else {
-                dc.drawText(140 - iconOffsetX, -2, Graphics.FONT_XTINY, charge.toNumber(), Gfx.TEXT_JUSTIFY_RIGHT);
-            }
+            dc.drawText(centerX, 1, digitalUpright20, charge.toNumber(), Gfx.TEXT_JUSTIFY_CENTER);
 
             // Percentage Sign
-            dc.drawLine(142 - iconOffsetX, 16, 148 - iconOffsetX, 6);
-            dc.drawRectangle(142 - iconOffsetX, 7, 3, 3);
-            dc.drawRectangle(145 - iconOffsetX, 14, 3, 3);
+            dc.drawLine(centerX + 20 - batteryIconOffsetX, 16, centerX + 28 - batteryIconOffsetX, 6);
+            dc.drawRectangle(centerX + 20 - batteryIconOffsetX, 7, 3, 3);
+            dc.drawRectangle(centerX + 26 - batteryIconOffsetX, 14, 3, 3);
 
             // Vertical Battery
             dc.setColor(upperForegroundColor, upperBackgroundColor);
-            dc.drawRectangle(98 + iconOffsetX, 4, 8, 16);
-            dc.fillRectangle(100 + iconOffsetX, 3, 4, 1);
+            dc.drawRectangle(centerX - 27 + batteryIconOffsetX, 4, 8, 16);
+            dc.fillRectangle(centerX - 25 + batteryIconOffsetX, 3, 4, 1);
 
             if (coloredBattery) {
                 setBatteryColor(charge, dc);
@@ -300,71 +330,69 @@ class Digital5View extends Ui.WatchFace {
                 dc.setColor(charge < 20 ? BRIGHT_RED : upperForegroundColor, upperBackgroundColor);
             }
             var chargeHeight = clamp(1, 12, 12.0 * charge / 100.0).toNumber();
-            dc.fillRectangle(100 + iconOffsetX, clamp(6, 18, 18 - chargeHeight), 4, chargeHeight);
+            dc.fillRectangle(centerX - 25 + batteryIconOffsetX, clamp(6, 18, 18 - chargeHeight), 4, chargeHeight);
         } else {
-            iconOffsetX = lcdFont ? 4 : 5;
+            batteryIconOffsetX = 4;
 
             // Horizontal Battery
             dc.setColor(upperForegroundColor, upperBackgroundColor);
-            dc.drawRectangle(106, 8, 28, 11);
-            dc.fillRectangle(134, 11, 2, 5);
+            dc.drawRectangle(centerX - 14, 8, 28, 11);
+            dc.fillRectangle(centerX + 14, 11, 2, 5);
             if (coloredBattery) {
                 setBatteryColor(charge, dc);
             } else {
                 dc.setColor(charge < 20 ? BRIGHT_RED : upperForegroundColor, upperBackgroundColor);
             }
-            dc.fillRectangle(108, 10 , clamp (1, 24, 24.0 * charge / 100.0), 7);
-        }
+            dc.fillRectangle(centerX - 12, 10 , clamp (1, 24, 24.0 * charge / 100.0), 7);
+        }    
 
-        // Notification
+        // draw notification
+        var notificationCount = Sys.getDeviceSettings().notificationCount;
         if (notificationCount > 0) {
+             var startX = centerX - 55 - batteryIconOffsetX;
+            var startY = 18;
+ 
+         if (debug) {System.println("startX: " + startX + ", startY: " + startY);}
+ 
             dc.setColor(darkUpperBackground ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK, upperBackgroundColor);
-            dc.fillRectangle(58, 18, 18, 11);
+            dc.fillRectangle(startX, startY, 18, 11);
             dc.setColor(darkUpperBackground ? Gfx.COLOR_BLACK : Gfx.COLOR_WHITE, upperBackgroundColor);
-            dc.drawLine(59, 18, 67, 26);
-            dc.drawLine(74, 18, 66, 26);
-            dc.drawLine(58, 29, 64, 23);
-            dc.drawLine(75, 29, 69, 23);
+            dc.drawLine(startX + 1, startY, startX  + 9, startY + 8);
+            dc.drawLine(startX + 16, startY, startX  + 8, startY + 8);
+            dc.drawLine(startX, startY + 11, startX  + 6, startY + 5);
+            dc.drawLine(startX + 17, startY + 11, startX  + 11, startY + 5);
         }
 
-        // BLE
+        // draw bluetooth
+        var connected = Sys.getDeviceSettings().phoneConnected;
+        
         if (connected) {
+            var startX = centerX - 30 - batteryIconOffsetX;
+            var startY = 12;
             dc.setColor(upperForegroundColor, upperBackgroundColor);
-            dc.drawLine(83 + iconOffsetX, 12, 90 + iconOffsetX, 19);
-            dc.drawLine(90 + iconOffsetX, 19, 86 + iconOffsetX, 23);
-            dc.drawLine(86 + iconOffsetX, 23, 86 + iconOffsetX, 10);
-            dc.drawLine(86 + iconOffsetX, 10, 90 + iconOffsetX, 14);
-            dc.drawLine(90 + iconOffsetX, 14, 82 + iconOffsetX, 22);
-        }
-
+            dc.drawLine(startX, startY, startX + 7, startY + 7);
+            dc.drawLine(startX + 7, 19, startX + 3, startY + 11);
+            dc.drawLine(startX + 3, 23, startX + 3, startY - 2);
+            dc.drawLine(startX + 3, startY - 2, startX + 7, startY + 2);
+            dc.drawLine(startX + 7, startY + 2, startX -1, startY + 10);
+        }     
+        
+        // Draw Do not disturb
         dc.setColor(upperForegroundColor, upperBackgroundColor);
-
-        // Do not disturb
         if (System.getDeviceSettings().doNotDisturb) {
-            dc.drawCircle(161 - iconOffsetX, 17, 7);
-            dc.fillRectangle(158 - iconOffsetX, 16, 7, 3);
+            var noDisturbX = centerX + 28 + batteryIconOffsetX;
+            dc.drawCircle(noDisturbX, 17, 7);
+            dc.fillRectangle(noDisturbX - 3, 16, 7, 3);
         }
 
-        // Alarm
+        // Draw Alarm
         if (alarmCount > 0) {
-            dc.fillPolygon([[178, 17], [180, 19], [181, 21], [182, 25], [183, 26], [183, 27], [172, 27], [172, 26], [173, 25], [174, 21], [175, 19]]);
-            dc.fillPolygon([[176, 28], [178, 30], [180, 28]]);
+            var alarmX = centerX + 42 + batteryIconOffsetX;
+            dc.fillPolygon([[alarmX + 6, 17], [alarmX + 9, 21], [alarmX + 10, 25], [alarmX + 11, 26], [alarmX + 11, 27], [alarmX, 27], [alarmX, 26], [alarmX + 1, 25], [alarmX + 2, 21], [alarmX + 3, 19]]);
+            dc.fillPolygon([[alarmX + 4, 28], [alarmX + 6, 30], [alarmX + 8, 28]]);
         }
 
-        // Sunrise/Sunset
-        if (showSunriseSunset) {
-            calcSunriseSunset();
-            dc.fillPolygon([[45, 50], [57, 50], [50, 44]]);    // upIcon
-            dc.fillPolygon([[184, 44], [194, 44], [188, 49]]); // downIcon
-            if (lcdFont) {
-                dc.drawText(59, 36, digitalUpright16, sunriseText, Gfx.TEXT_JUSTIFY_LEFT);
-                dc.drawText(181, 36, digitalUpright16, sunsetText, Gfx.TEXT_JUSTIFY_RIGHT);
-            } else {
-                var y = (deviceName.equals("vivoactive3") || deviceName.equals("vivoactive3m")) ? 32 : 28;
-                dc.drawText(57, y, Graphics.FONT_XTINY, sunriseText, Gfx.TEXT_JUSTIFY_LEFT);
-                dc.drawText(182, y, Graphics.FONT_XTINY, sunsetText, Gfx.TEXT_JUSTIFY_RIGHT);
-            }
-        }
+        var arcRadius = centerX - 3;
 
         // Step Bar background
         if (showStepBar) {
@@ -372,7 +400,7 @@ class Digital5View extends Ui.WatchFace {
             dc.setColor(darkUpperBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, upperBackgroundColor);
             for(var i = 0; i < 10 ; i++) {
                 var startAngleLeft  = 130 + (i * 6);
-                dc.drawArc(centerX, centerY, 117, 0, startAngleLeft, startAngleLeft + 5);
+                dc.drawArc(centerX, centerY, arcRadius, 0, startAngleLeft, startAngleLeft + 5);
             }
 
             // Step Goal Bar
@@ -387,7 +415,7 @@ class Digital5View extends Ui.WatchFace {
             }
             for(var i = 0; i < endIndex ; i++) {
                 var startAngleLeft  = 184 - (i * 6);
-                dc.drawArc(centerX, centerY, 117, 0, startAngleLeft, startAngleLeft + 5);
+                dc.drawArc(centerX, centerY, arcRadius, 0, startAngleLeft, startAngleLeft + 5);
             }
         }
 
@@ -404,7 +432,7 @@ class Digital5View extends Ui.WatchFace {
             }
             for(var i = 0; i < 10 ; i++) {
                 var startAngleRight = -10 + (i * 6);
-                dc.drawArc(centerX, centerY, 117, 0, startAngleRight, startAngleRight + 5);
+                dc.drawArc(centerX, centerY, arcRadius, 0, startAngleRight, startAngleRight + 5);
             }
 
             // KCal Goal Bar
@@ -428,217 +456,195 @@ class Digital5View extends Ui.WatchFace {
             }
         }
 
-        // Move Bar
+        // draw Move Bar
         if (showMoveBar) {
             var moveBarLevel = actinfo.moveBarLevel;
+           
+            var moveBarLength = .75 * width;
+            var moveBarLeft = (width - moveBarLength) / 2;
+            var moveBarLeftPart = moveBarLength * 0.388888889;
+            var moveBarRightStart = moveBarLeftPart + moveBarLeft + 2;
+            var moveBarRightPart = moveBarLength * 0.138888889;
+            var moveBarX = dataFieldsTop - 6;
+            
+            if (debug) {System.println("moveBarLength: " + moveBarLength + "moveBarLeft: " + moveBarLeft + "moveBarLeftPart: " + moveBarLeftPart + "moveBarRightStart: " + moveBarRightStart + "moveBarRightPart: " + moveBarRightPart + "moveBarX: " + moveBarX);}
+            
             dc.setColor(darkUpperBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, upperBackgroundColor);
-            dc.fillRectangle(29, 144, 73, 4);
-            for (var i = 0 ; i < 4 ; i++) { dc.fillRectangle(104 + (i * 27), 144, 25, 4); }
-            if (moveBarLevel > Act.MOVE_BAR_LEVEL_MIN) { dc.setColor(Gfx.COLOR_RED, upperBackgroundColor); }
-            dc.fillRectangle(29, 144, 73, 4);
-            for (var i = 0 ; i < (moveBarLevel - 1) ; i++) { dc.fillRectangle(104 + (i * 27), 144, 25, 4); }
-        }
 
-
-
-        // ******************** TIME ******************************************
-        if (lcdBackgroundVisible && lcdFont) {
-            dc.setColor(darkUpperBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, upperBackgroundColor);
-            if (showLeadingZero) {
-                dc.drawText(centerX, 51, digitalUpright72, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
-            } else {
-                if (is24Hour) {
-                    dc.drawText(centerX, 51, digitalUpright72, clockTime.hour < 10 ? "8:88" : "88:88", Gfx.TEXT_JUSTIFY_CENTER);
-                } else {
-                    dc.drawText(centerX, 51, digitalUpright72, (clockTime.hour < 10 || clockTime.hour > 12) ? "8:88" : "88:88", Gfx.TEXT_JUSTIFY_CENTER);
-                }
+            dc.fillRectangle(moveBarLeft, moveBarX, moveBarLeftPart, 4);
+            for (var i = 0 ; i < 4 ; i++) { 
+                dc.fillRectangle(moveBarRightStart + (i * (moveBarRightPart + 2)), moveBarX, moveBarRightPart, 4); 
+            }
+            
+            if (moveBarLevel > Act.MOVE_BAR_LEVEL_MIN) { 
+                dc.setColor(Gfx.COLOR_RED, upperBackgroundColor); 
+            }
+            
+            dc.fillRectangle(moveBarLeft, moveBarX, moveBarLeftPart, 4);
+            
+            for (var i = 0 ; i < (moveBarLevel - 1) ; i++) {
+                dc.fillRectangle(moveBarRightStart + (i * (moveBarRightPart + 2)), moveBarX, moveBarRightPart, 4); 
             }
         }
-        if (is24Hour) {
-            drawTime(hourColor, minuteColor, lcdFont ? digitalUpright72 : Graphics.FONT_NUMBER_HOT, dc);
-        } else {
-            var amPm = clockTime.hour < 12 ? "am" : "pm";
-            if (lcdFont) {
-                drawTime(hourColor, minuteColor, digitalUpright72, dc);
-                dc.drawText(195, 93, digitalUpright20, amPm, Gfx.TEXT_JUSTIFY_LEFT);
-            } else {
-                drawTime(hourColor, minuteColor, Graphics.FONT_NUMBER_HOT, dc);
-                dc.drawText(191, 87, Graphics.FONT_XTINY, amPm, Gfx.TEXT_JUSTIFY_LEFT);
-            }
-        }
-
-
-        // ******************** DATE ******************************************
-
-        // KW
-        if (showCalendarWeek) {
-            var calendarWeekText = Ui.loadResource(Rez.Strings.CalendarWeek);
-            dc.drawText((lcdFont ? 43 : 50), (lcdFont ? 71 : 66), lcdFont ? digitalUpright20 : Graphics.FONT_XTINY, (calendarWeekText), Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawText((lcdFont ? 43 : 50), (lcdFont ? 93 : 87), lcdFont ? digitalUpright20 : Graphics.FONT_XTINY, (getWeekOfYear(nowinfo)), Gfx.TEXT_JUSTIFY_RIGHT);
-        }
-
+        
         // Date and home timezone
         dc.setColor(upperForegroundColor, upperBackgroundColor);
-        var dateYPosition = showMoveBar ? 116 : 119;
-        dateYPosition = lcdFont ? dateYPosition : dateYPosition - 2;
-        if (onTravel && showHomeTimezone) {
-            var homeDayOfWeek  = dayOfWeek - 1;
-            var homeDay        = nowinfo.day;
-            var homeMonth      = nowinfo.month;
-            var currentSeconds = clockTime.hour * 3600 + clockTime.min * 60 + clockTime.sec;
-            var utcSeconds     = currentSeconds - clockTime.timeZoneOffset;// - (dst ? 3600 : 0);
-            var homeSeconds    = utcSeconds + homeTimezoneOffset;
-            if (dst) { homeSeconds = homeTimezoneOffset > 0 ? homeSeconds : homeSeconds - 3600; }
-            var homeHour       = ((homeSeconds / 3600)).toNumber() % 24l;
-            var homeMinute     = ((homeSeconds - (homeHour.abs() * 3600)) / 60) % 60;
-            if (homeHour < 0) {
-                homeHour += 24;
-                homeDay--;
-                if (homeDay == 0) {
-                    homeMonth--;
-                    if (homeMonth == 0) { homeMonth = 12; }
-                    homeDay = daysOfMonth(homeMonth);
+        var dateTimeFont = digitalUpright26;
+        var dateTimefontSize = Graphics.getFontHeight(dateTimeFont);
+        var dateYPosition = dataFieldsTop - 9  - dateTimefontSize;
+        var dateXPosition = centerX - 99;
+        var dateTimeText = calcHomeDateTime();
+
+        // draw Time
+        var timeFont = digitalUpright72 ;
+        var timeFontSize = Graphics.getFontHeight(timeFont);
+        var timeYPosition = dateYPosition - timeFontSize + 10;
+        secondsFont = digitalUpright20;
+        secondsYPosition = dateYPosition - Graphics.getFontHeight(secondsFont);
+        
+        if (lcdBackgroundVisible) {
+            dc.setColor(darkUpperBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, upperBackgroundColor);
+            if (showLeadingZero) {
+                dc.drawText(centerX, timeYPosition, digitalUpright72, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
+            } else {
+                if (is24Hour) {
+                    dc.drawText(centerX, timeYPosition, digitalUpright72, clockTime.hour < 10 ? "8:88" : "88:88", Gfx.TEXT_JUSTIFY_CENTER);
+                } else {
+                    dc.drawText(centerX, timeYPosition, digitalUpright72, (clockTime.hour < 10 || clockTime.hour > 12) ? "8:88" : "88:88", Gfx.TEXT_JUSTIFY_CENTER);
                 }
-                homeDayOfWeek--;
-                if (homeDayOfWeek < 0) { homeDayOfWeek = 6; }
             }
-            if (homeMinute < 0) { homeMinute += 60; }
-            var ampm = is24Hour ? "" : homeHour < 12 ? "A" : "P";
-            homeHour = is24Hour ? homeHour : (homeHour == 12) ? homeHour : (homeHour % 12);
-            var weekdayText    = weekdays[homeDayOfWeek];
-            var dateText       = dayMonth ?  nowinfo.day.format(showLeadingZero ? "%02d" : "%01d") + " " + months[homeMonth - 1] : months[homeMonth - 1] + " " + nowinfo.day.format(showLeadingZero ? "%02d" : "%01d");
-            var dateNumberText = Lang.format(dateFormat, [homeDay.format(showLeadingZero ? "%02d" : "%01d"), homeMonth.format(showLeadingZero ? "%02d" : "%01d")]);
-            var timeText       = Lang.format("$1$:$2$", [homeHour.format(showLeadingZero ? "%02d" : "%01d"), homeMinute.format("%02d")]) + ampm;
-            dc.drawText(28, dateYPosition, lcdFont ? digitalUpright26 : Graphics.FONT_XTINY, weekdayText + (monthAsText ? dateText : dateNumberText), Gfx.TEXT_JUSTIFY_LEFT);
-            dc.drawText(216, dateYPosition, lcdFont ? digitalUpright26 : Graphics.FONT_XTINY, timeText, Gfx.TEXT_JUSTIFY_RIGHT);
-        } else {
-            var weekdayText    = weekdays[dayOfWeek - 1];
-            var dateText       = dayMonth ?  nowinfo.day.format(showLeadingZero ? "%02d" : "%01d") + " " + months[nowinfo.month - 1] : months[nowinfo.month - 1] + " " + nowinfo.day.format(showLeadingZero ? "%02d" : "%01d");
-            var dateNumberText = Lang.format(dateFormat, [nowinfo.day.format(showLeadingZero ? "%02d" : "%01d"), nowinfo.month.format(showLeadingZero ? "%02d" : "%01d")]);
-            dc.drawText(centerX, dateYPosition, lcdFont ? digitalUpright26 : Graphics.FONT_XTINY, weekdayText + (monthAsText ? dateText : dateNumberText), Gfx.TEXT_JUSTIFY_CENTER);
+        }
+        drawTime(hourColor, minuteColor, timeFont, dc, timeYPosition);
+        if (!is24Hour) {
+            var amPm = clockTime.hour < 12 ? "am" : "pm";
+            dc.drawText(195, 93, digitalUpright20, amPm, Gfx.TEXT_JUSTIFY_LEFT);
+        }
+
+        // draw Date
+        if (onTravel) {
+            dc.drawText(dateXPosition, dateYPosition, dateTimeFont, dateTimeText[0], Gfx.TEXT_JUSTIFY_LEFT);
+            dc.drawText(width - dateXPosition, dateYPosition, dateTimeFont, dateTimeText[1], Gfx.TEXT_JUSTIFY_RIGHT);
+        } 
+        else {
+            dc.drawText(centerX, dateYPosition, dateTimeFont, dateTimeText[0], Gfx.TEXT_JUSTIFY_CENTER);
+        }
+
+
+        // draw Calendar Week
+        if (showCalendarWeek) {
+            var calendarWeekText = Ui.loadResource(Rez.Strings.CalendarWeek);
+            dc.drawText(centerX - 77, secondsYPosition - Graphics.getFontHeight(digitalUpright20), digitalUpright20, (calendarWeekText), Gfx.TEXT_JUSTIFY_RIGHT);
+            dc.drawText(centerX - 77, secondsYPosition, digitalUpright20, (getWeekOfYear(nowinfo)), Gfx.TEXT_JUSTIFY_RIGHT);
+        }
+
+        // draw Sunrise/Sunset
+        if (showSunriseSunset) {
+            var notificationsBottomY = 30;
+            var sunRiseY = (timeYPosition - notificationsBottomY) / 2 + notificationsBottomY;
+            calcSunriseSunset();
+            drawArrow(dc, centerX - 70, sunRiseY, 0);
+            drawArrow(dc, centerX + 60, sunRiseY, 1);
+            dc.drawText(centerX - 50, sunRiseY - 5, digitalUpright16, sunriseText, Gfx.TEXT_JUSTIFY_LEFT);
+            dc.drawText(centerX + 55 , sunRiseY - 5, digitalUpright16, sunsetText, Gfx.TEXT_JUSTIFY_RIGHT);
         }
 
 
         // ******************** DATA FIELDS ***********************************
 
+        var xyPositions = getXYPositions(UPPER_LEFT);
         // UpperLeft
         switch(upperLeftField) {
-            case 0: drawSteps(getXYPositions(UPPER_LEFT), dc, false); break;
-            case 1: drawCalories(getXYPositions(UPPER_LEFT), dc, KCAL, UPPER_LEFT); break;
-            case 2: drawCalories(getXYPositions(UPPER_LEFT), dc, ACTIVE_KCAL, UPPER_LEFT); break;
-            case 3: drawHeartRate(getXYPositions(UPPER_LEFT), dc, UPPER_LEFT); break;
-            case 4: drawDistance(getXYPositions(UPPER_LEFT), dc); break;
-            case 5: drawWithUnit(getXYPositions(UPPER_LEFT), dc, 5, UPPER_LEFT); break;
-            case 6: drawWithUnit(getXYPositions(UPPER_LEFT), dc, 6, UPPER_LEFT); break;
-            case 7: drawActiveTime(getXYPositions(UPPER_LEFT), dc, true, UPPER_LEFT); break;
-            case 8: drawActiveTime(getXYPositions(UPPER_LEFT), dc, false, UPPER_LEFT); break;
-            case 9: drawFloors(getXYPositions(UPPER_LEFT), dc, UPPER_LEFT); break;
-            case 10: drawMeters(getXYPositions(UPPER_LEFT), dc, UPPER_LEFT); break;
-            case 11: drawActKcalAvg(getXYPositions(UPPER_LEFT), dc, UPPER_LEFT); break;
-            case 12: drawSteps(getXYPositions(UPPER_LEFT), dc, true); break;
-            case 13: drawWithUnit(getXYPositions(UPPER_LEFT), dc, 13, UPPER_LEFT); break;
-            case 14: drawCalories(getXYPositions(UPPER_LEFT), dc, ACTIVE_KCAL_REACHED, UPPER_LEFT); break;
+            case 0: drawSteps(xyPositions, dc, false, UPPER_LEFT); break;
+            case 1: drawCalories(xyPositions, dc, KCAL, UPPER_LEFT); break;
+            case 2: drawCalories(xyPositions, dc, ACTIVE_KCAL, UPPER_LEFT); break;
+            case 3: drawHeartRate(xyPositions, dc, UPPER_LEFT); break;
+            case 4: drawWithUnit(xyPositions, dc, 4, UPPER_LEFT); break;
+            case 5: drawWithUnit(xyPositions, dc, 5, UPPER_LEFT); break;
+            case 6: drawWithUnit(xyPositions, dc, 6, UPPER_LEFT); break;
+            case 7: drawActiveTime(xyPositions, dc, true, UPPER_LEFT); break;
+            case 8: drawActiveTime(xyPositions, dc, false, UPPER_LEFT); break;
+            case 9: drawFloors(xyPositions, dc, UPPER_LEFT); break;
+            case 10: drawMeters(xyPositions, dc, UPPER_LEFT); break;
+            case 11: drawActKcalAvg(xyPositions, dc, UPPER_LEFT); break;
+            case 12: drawSteps(xyPositions, dc, true); break;
+            case 13: drawWithUnit(xyPositions, dc, 13, UPPER_LEFT); break;
+            case 14: drawCalories(xyPositions, dc, ACTIVE_KCAL_REACHED, UPPER_LEFT); break;
         }
 
+        xyPositions = getXYPositions(UPPER_RIGHT);
         // UpperRight
         switch(upperRightField) {
-            case 0: drawSteps(getXYPositions(UPPER_RIGHT), dc, false); break;
-            case 1: drawCalories(getXYPositions(UPPER_RIGHT), dc, KCAL, UPPER_RIGHT); break;
-            case 2: drawCalories(getXYPositions(UPPER_RIGHT), dc, ACTIVE_KCAL, UPPER_RIGHT); break;
-            case 3: drawHeartRate(getXYPositions(UPPER_RIGHT), dc, UPPER_RIGHT); break;
-            case 4: drawDistance(getXYPositions(UPPER_RIGHT), dc); break;
-            case 5: drawWithUnit(getXYPositions(UPPER_RIGHT), dc, 5, UPPER_RIGHT); break;
-            case 6: drawWithUnit(getXYPositions(UPPER_RIGHT), dc, 6, UPPER_RIGHT); break;
-            case 7: drawActiveTime(getXYPositions(UPPER_RIGHT), dc, true, UPPER_RIGHT); break;
-            case 8: drawActiveTime(getXYPositions(UPPER_RIGHT), dc, false, UPPER_RIGHT); break;
-            case 9: drawFloors(getXYPositions(UPPER_RIGHT), dc, UPPER_RIGHT); break;
-            case 10: drawMeters(getXYPositions(UPPER_RIGHT), dc, UPPER_RIGHT); break;
-            case 11: drawActKcalAvg(getXYPositions(UPPER_RIGHT), dc, UPPER_RIGHT); break;
-            case 12: drawSteps(getXYPositions(UPPER_RIGHT), dc, true); break;
-            case 13: drawWithUnit(getXYPositions(UPPER_RIGHT), dc, 13, UPPER_RIGHT); break;
-            case 14: drawCalories(getXYPositions(UPPER_RIGHT), dc, ACTIVE_KCAL_REACHED, UPPER_RIGHT); break;
+            case 0: drawSteps(xyPositions, dc, false, UPPER_LEFT); break;
+            case 1: drawCalories(xyPositions, dc, KCAL, UPPER_RIGHT); break;
+            case 2: drawCalories(xyPositions, dc, ACTIVE_KCAL, UPPER_RIGHT); break;
+            case 3: drawHeartRate(xyPositions, dc, UPPER_RIGHT); break;
+            case 4: drawWithUnit(xyPositions, dc, 4, UPPER_RIGHT); break;
+            case 5: drawWithUnit(xyPositions, dc, 5, UPPER_RIGHT); break;
+            case 6: drawWithUnit(xyPositions, dc, 6, UPPER_RIGHT); break;
+            case 7: drawActiveTime(xyPositions, dc, true, UPPER_RIGHT); break;
+            case 8: drawActiveTime(xyPositions, dc, false, UPPER_RIGHT); break;
+            case 9: drawFloors(xyPositions, dc, UPPER_RIGHT); break;
+            case 10: drawMeters(xyPositions, dc, UPPER_RIGHT); break;
+            case 11: drawActKcalAvg(xyPositions, dc, UPPER_RIGHT); break;
+            case 12: drawSteps(xyPositions, dc, true); break;
+            case 13: drawWithUnit(xyPositions, dc, 13, UPPER_RIGHT); break;
+            case 14: drawCalories(xyPositions, dc, ACTIVE_KCAL_REACHED, UPPER_RIGHT); break;
         }
 
+        xyPositions = getXYPositions(LOWER_LEFT);
         // LowerLeft
         switch(lowerLeftField) {
-            case 0: drawSteps(getXYPositions(LOWER_LEFT), dc, false); break;
-            case 1: drawCalories(getXYPositions(LOWER_LEFT), dc, KCAL, LOWER_LEFT); break;
-            case 2: drawCalories(getXYPositions(LOWER_LEFT), dc, ACTIVE_KCAL, LOWER_LEFT); break;
-            case 3: drawHeartRate(getXYPositions(LOWER_LEFT), dc, LOWER_LEFT); break;
-            case 4: drawDistance(getXYPositions(LOWER_LEFT), dc); break;
-            case 7: drawActiveTime(getXYPositions(LOWER_LEFT), dc, true, LOWER_LEFT); break;
-            case 8: drawActiveTime(getXYPositions(LOWER_LEFT), dc, false, LOWER_LEFT); break;
-            case 9: drawFloors(getXYPositions(LOWER_LEFT), dc, LOWER_LEFT); break;
-            case 14: drawCalories(getXYPositions(LOWER_LEFT), dc, ACTIVE_KCAL_REACHED, LOWER_LEFT); break;
+            case 0: drawSteps(xyPositions, dc, false, UPPER_LEFT); break;
+            case 1: drawCalories(xyPositions, dc, KCAL, LOWER_LEFT); break;
+            case 2: drawCalories(xyPositions, dc, ACTIVE_KCAL, LOWER_LEFT); break;
+            case 3: drawHeartRate(xyPositions, dc, LOWER_LEFT); break;
+            case 4: drawWithUnit(xyPositions, dc, 4, LOWER_LEFT); break;
+            case 6: drawWithUnit(xyPositions, dc, 6, LOWER_LEFT); break;
+            case 7: drawActiveTime(xyPositions, dc, true, LOWER_LEFT); break;
+            case 8: drawActiveTime(xyPositions, dc, false, LOWER_LEFT); break;
+            case 9: drawFloors(xyPositions, dc, LOWER_LEFT); break;
+            case 14: drawCalories(xyPositions, dc, ACTIVE_KCAL_REACHED, LOWER_LEFT); break;
         }
 
+        xyPositions = getXYPositions(LOWER_RIGHT);
         // LowerRight
         switch(lowerRightField) {
-            case 0: drawSteps(getXYPositions(LOWER_RIGHT), dc, false); break;
-            case 1: drawCalories(getXYPositions(LOWER_RIGHT), dc, KCAL, LOWER_RIGHT); break;
-            case 2: drawCalories(getXYPositions(LOWER_RIGHT), dc, ACTIVE_KCAL, LOWER_RIGHT); break;
-            case 3: drawHeartRate(getXYPositions(LOWER_RIGHT), dc, LOWER_RIGHT); break;
-            case 4: drawDistance(getXYPositions(LOWER_RIGHT), dc); break;
-            case 7: drawActiveTime(getXYPositions(LOWER_RIGHT), dc, true, LOWER_RIGHT); break;
-            case 8: drawActiveTime(getXYPositions(LOWER_RIGHT), dc, false, LOWER_RIGHT); break;
-            case 9: drawFloors(getXYPositions(LOWER_RIGHT), dc, LOWER_RIGHT); break;
-            case 14: drawCalories(getXYPositions(LOWER_RIGHT), dc, ACTIVE_KCAL_REACHED, LOWER_RIGHT); break;
+            case 0: drawSteps(xyPositions, dc, false, UPPER_LEFT); break;
+            case 1: drawCalories(xyPositions, dc, KCAL, LOWER_RIGHT); break;
+            case 2: drawCalories(xyPositions, dc, ACTIVE_KCAL, LOWER_RIGHT); break;
+            case 3: drawHeartRate(xyPositions, dc, LOWER_RIGHT); break;
+            case 4: drawWithUnit(xyPositions, dc, 4, LOWER_RIGHT); break;
+            case 6: drawWithUnit(xyPositions, dc, 6, LOWER_RIGHT); break;
+            case 7: drawActiveTime(xyPositions, dc, true, LOWER_RIGHT); break;
+            case 8: drawActiveTime(xyPositions, dc, false, LOWER_RIGHT); break;
+            case 9: drawFloors(xyPositions, dc, LOWER_RIGHT); break;
+            case 14: drawCalories(xyPositions, dc, ACTIVE_KCAL_REACHED, LOWER_RIGHT); break;
         }
 
         // Bottom field
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
+        xyPositions = getXYPositions(BOTTOM_FIELD);
 
         switch(bottomField) {
-            case 1: drawCalories(getXYPositions(BOTTOM_FIELD), dc, KCAL, BOTTOM_FIELD); break;
-            case 2: drawCalories(getXYPositions(BOTTOM_FIELD), dc, ACTIVE_KCAL, BOTTOM_FIELD); break;
-            case 3: drawHeartRate(getXYPositions(BOTTOM_FIELD), dc, BOTTOM_FIELD); break;
-            case 4:
-                drawWithUnit(getXYPositions(BOTTOM_FIELD), dc, 4, BOTTOM_FIELD);
-                if (distanceUnit == 0) {
-                    drawCharacter(dc, K, 0);
-                    drawCharacter(dc, M, 6);
-                } else {
-                    drawCharacter(dc, M, 0);
-                    drawCharacter(dc, I, 0);
-                }
-                break;
-            case 5:
-                drawWithUnit(getXYPositions(BOTTOM_FIELD), dc, 5, BOTTOM_FIELD);
-                if (altUnit == 0) {
-                    drawCharacter(dc, M, 0);
-                } else {
-                    drawCharacter(dc, F, 0);
-                    drawCharacter(dc, T, 0);
-                }
-                break;
-            case 6:
-                drawWithUnit(getXYPositions(BOTTOM_FIELD), dc, 6, BOTTOM_FIELD);
-                drawCharacter(dc, M, 0);
-                drawCharacter(dc, B, 0);
-                break;
-            case 7: dc.drawText(120, 213, lcdFontDataFields ? digitalUpright20 : Graphics.FONT_XTINY, getActiveTimeText(true), Gfx.TEXT_JUSTIFY_CENTER); break;
-            case 8: dc.drawText(120, 213, lcdFontDataFields ? digitalUpright20 : Graphics.FONT_XTINY, getActiveTimeText(false), Gfx.TEXT_JUSTIFY_CENTER); break;
-            case 9:
-                drawFloors(getXYPositions(BOTTOM_FIELD), dc, BOTTOM_FIELD);
-                dc.fillPolygon([[63, 221], [75, 221], [68, 215]]);    // up
-                dc.fillPolygon([[170, 216], [180, 216], [175, 221]]); // down
-                break;
-            case 10:
-                drawMeters(getXYPositions(BOTTOM_FIELD), dc, BOTTOM_FIELD);
-                dc.fillPolygon([[63, 221], [75, 221], [68, 215]]);    // up
-                dc.fillPolygon([[170, 216], [180, 216], [175, 221]]); // down
-                break;
+            case 0: drawSteps(xyPositions, dc, false, BOTTOM_FIELD); break;
+            case 1: drawCalories(xyPositions, dc, KCAL, BOTTOM_FIELD); break;
+            case 2: drawCalories(xyPositions, dc, ACTIVE_KCAL, BOTTOM_FIELD); break;
+            case 3: drawHeartRate(xyPositions, dc, BOTTOM_FIELD); break;
+            case 4: drawWithUnit(xyPositions, dc, 4, BOTTOM_FIELD); break;
+            case 5: drawWithUnit(xyPositions, dc, 5, BOTTOM_FIELD); break;
+            case 6: drawWithUnit(xyPositions, dc, 6, BOTTOM_FIELD); break;
+            case 7: drawActiveTime(xyPositions, dc, true, BOTTOM_FIELD); break;
+            case 8: drawActiveTime(xyPositions, dc, false, BOTTOM_FIELD); break;
+            case 9: drawFloors(xyPositions, dc, BOTTOM_FIELD); break;
+            case 10: drawMeters(xyPositions, dc, BOTTOM_FIELD); break;
             case 11:
-                drawActKcalAvg(getXYPositions(BOTTOM_FIELD), dc, BOTTOM_FIELD);
+                drawActKcalAvg(xyPositions, dc, BOTTOM_FIELD);
                 dc.setPenWidth(2);
                 dc.drawCircle(69, 220, 4);
                 dc.drawLine(65, 224, 74, 215);
                 break;
-            case 13:
-                drawWithUnit(getXYPositions(BOTTOM_FIELD), dc, 13, BOTTOM_FIELD);
-                drawCharacter(dc, tempUnit == 0 ? C : F, 0);
-                break;
-            case 14: drawCalories(getXYPositions(BOTTOM_FIELD), dc, ACTIVE_KCAL_REACHED, BOTTOM_FIELD); break;
+            case 13: drawWithUnit(xyPositions, dc, 13, BOTTOM_FIELD); break;
+            case 14: drawCalories(xyPositions, dc, ACTIVE_KCAL_REACHED, BOTTOM_FIELD); break;
         }
         onPartialUpdate(dc);
         updateLocation();
@@ -647,30 +653,21 @@ class Digital5View extends Ui.WatchFace {
     // ******************** DRAWING FUNCTIONS *********************************
 
     function drawSeconds(dc) {
+        var xBase = centerX + 70 + 3;
         var clockTime = Sys.getClockTime();
         dc.setColor(upperBackgroundColor, upperBackgroundColor);
         if (is24Hour) {
-            if (lcdFont) {
-                dc.fillRectangle(195, 96, 25, 15);
-                dc.setClip(195, 96, 25, 15);
-            } else {
-                dc.fillRectangle(191, 93, 21, 17);
-                dc.setClip(191, 93, 21, 17);
-            }
+            dc.fillRectangle(xBase, secondsYPosition, 25, Graphics.getFontHeight(secondsFont));
+            dc.setClip(xBase, secondsYPosition, 25, Graphics.getFontHeight(secondsFont));
             dc.setColor(upperForegroundColor, upperBackgroundColor);
-            dc.drawText((lcdFont ? 195 : 191), (lcdFont ? 93 : 87), lcdFont ? digitalUpright20 : Graphics.FONT_XTINY, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
-        } else {
-            if (lcdFont) {
-                dc.fillRectangle(195, 75, 25, 15);
-                dc.setClip(195, 75, 25, 15);
-            } else {
-                dc.fillRectangle(191, 74, 21, 17);
-                dc.setClip(191, 74, 21, 17);
-            }
+            dc.drawText(xBase, secondsYPosition, secondsFont, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
+        } 
+        else {
+            dc.fillRectangle(xBase, 75, 25, Graphics.getFontHeight(secondsFont));
+            dc.setClip(xBase, 75, 25, Graphics.getFontHeight(secondsFont));
             dc.setColor(upperForegroundColor, upperBackgroundColor);
-            dc.drawText((lcdFont ? 195 : 191), (lcdFont ? 71 : 68), lcdFont ? digitalUpright20 : Graphics.FONT_XTINY, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
+            dc.drawText(xBase, secondsYPosition, secondsFont, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
         }
-        //dc.clearClip(); // does not work here, instead clear clip at the beginning on onUpdate()
     }
 
     function daysOfMonth(month) {
@@ -700,30 +697,32 @@ class Digital5View extends Ui.WatchFace {
         }
     }
 
-    function drawSteps(xyPositions, dc, showDeltaSteps) {
+    function drawSteps(xyPositions, dc, showDeltaSteps, field) {
         var bmpX  = xyPositions[0];
         var bmpY  = xyPositions[1];
         var textX = xyPositions[2];
         var textY = xyPositions[3];
+        var coloredStepText = App.getApp().getProperty("ColorizeStepText");
 
         dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? stepsIconWhite : stepsIcon);
         if (showDeltaSteps) {
-            dc.setColor(deltaSteps > 0 ? BRIGHT_RED : Gfx.COLOR_BLACK, fieldBackgroundColor);
+            dc.setColor(deltaSteps > 0 ? BRIGHT_RED : fieldForegroundColor, fieldBackgroundColor);
         } else {
             if (coloredStepText) {
                 stepsReached = stepsReached > 1.0 ? 1.0 : stepsReached;
                 var endIndex = (10.0 * stepsReached).toNumber();
-                if (darkUpperBackground) {
-                    dc.setColor(endIndex > 0 ? STEP_COLORS[endIndex - 1] : Gfx.COLOR_BLACK, fieldBackgroundColor);
+                if (darkFieldBackground) {
+                    dc.setColor(endIndex > 0 ? STEP_COLORS[endIndex - 1] : fieldForegroundColor, fieldBackgroundColor);
                 } else {
-                    dc.setColor(endIndex > 0 ? DARK_STEP_COLORS[endIndex - 1] : Gfx.COLOR_BLACK, fieldBackgroundColor);
+                    dc.setColor(endIndex > 0 ? DARK_STEP_COLORS[endIndex - 1] : fieldForegroundColor, fieldBackgroundColor);
                 }
             } else {
                 dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
             }
         }
-        dc.drawText(textX, textY, lcdFontDataFields ? digitalUpright24 : Graphics.FONT_XTINY, (showDeltaSteps ? deltaSteps * -1 : steps), Gfx.TEXT_JUSTIFY_RIGHT);
+        dc.drawText(textX, textY, GetFieldFont(field, false), (showDeltaSteps ? deltaSteps * -1 : steps), Gfx.TEXT_JUSTIFY_RIGHT);
     }
+    
     function drawCalories(xyPositions, dc, kcalType, field) {
         var bmpX      = xyPositions[0];
         var bmpY      = xyPositions[1];
@@ -757,12 +756,9 @@ class Digital5View extends Ui.WatchFace {
                 fieldText = activeKcalReached.toString();
                 break;
         }
-        if (lcdFontDataFields) {
-            dc.drawText(field < 4 ? textX : textX + 13, textY, field < 4 ? digitalUpright24 : digitalUpright20, fieldText, Gfx.TEXT_JUSTIFY_RIGHT);
-        } else {
-            dc.drawText(field < 4 ? textX  :textX + 4, textY, Graphics.FONT_XTINY, fieldText, Gfx.TEXT_JUSTIFY_RIGHT);
-        }
+        dc.drawText(field != BOTTOM_FIELD ? textX : textX + 13, textY, GetFieldFont(field, false), fieldText, Gfx.TEXT_JUSTIFY_RIGHT);
     }
+
     function drawHeartRate(xyPositions, dc, field) {
         var bmpX  = xyPositions[0];
         var bmpY  = xyPositions[1];
@@ -776,36 +772,16 @@ class Digital5View extends Ui.WatchFace {
         dc.fillPolygon([[bmpX + 2, bmpY + 9], [bmpX + 10, bmpY + 5], [bmpX + 18, bmpY + 9], [bmpX + 17, bmpY + 12], [bmpX + 10, bmpY + 18], [bmpX + 5, bmpY + 12]]);
 
         if (bpm >= maxBpm) {
-            dc.setColor(darkFieldBackground ? Gfx.COLOR_BLACK : Gfx.COLOR_WHITE, Gfx.COLOR_TRANSPARENT);
+            dc.setColor(fieldForegroundColor, Gfx.COLOR_TRANSPARENT);
             dc.fillRectangle(bmpX + 10, bmpY + 5, 2, 5);
             dc.fillRectangle(bmpX + 10, bmpY + 12, 2, 2);
         }
 
-        dc.setColor(fieldForegroundColor, fieldBackgroundColor);
-        if (lcdFontDataFields) {
-            dc.drawText(textX, textY, field < 4 ? digitalUpright24 : digitalUpright20, (bpm > 0 ? bpm.toString() : ""), Gfx.TEXT_JUSTIFY_RIGHT);
-        } else {
-            dc.drawText(textX, textY, Graphics.FONT_XTINY, (bpm > 0 ? bpm.toString() : ""), Gfx.TEXT_JUSTIFY_RIGHT);
-        }
+         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
+         dc.drawText(textX, textY, GetFieldFont(field, false), (bpm > 0 ? bpm.toString() : ""), Gfx.TEXT_JUSTIFY_RIGHT);
+
     }
-    function drawDistance(xyPositions, dc) {
-        var bmpX     = xyPositions[0];
-        var bmpY     = xyPositions[1];
-        var textX    = xyPositions[2];
-        var textY    = xyPositions[3];
-        var unitLcdX = xyPositions[4];
-        var unitLcdY = xyPositions[5];
-        var unitX    = xyPositions[6];
-        var unitY    = xyPositions[7];
-        dc.setColor(fieldForegroundColor, fieldBackgroundColor);
-        if (lcdFontDataFields) {
-            dc.drawText(textX, textY, digitalUpright24, distance > 99.99 ? distance.format("%.0f") : distance.format("%.1f"), Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawText(unitLcdX, unitLcdY, digitalUpright16, distanceUnit == 0 ? "km" : "mi", Gfx.TEXT_JUSTIFY_LEFT);
-        } else {
-            dc.drawText(textX, textY, Graphics.FONT_XTINY, distance > 99.99 ? distance.format("%.0f") : distance.format("%.1f"), Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawText(unitX, unitY, Graphics.FONT_XTINY, distanceUnit == 0 ? "km" : "mi", Gfx.TEXT_JUSTIFY_LEFT);
-        }
-    }
+
     function drawWithUnit(xyPositions, dc, sensor, field) {
         var textX    = xyPositions[2];
         var textY    = xyPositions[3];
@@ -815,6 +791,7 @@ class Digital5View extends Ui.WatchFace {
         var unitY    = xyPositions[7];
         var fieldText;
         var unitText = "";
+        
         switch(sensor) {
             case 4: // Distance
                 fieldText = distance > 99.99 ? distance.format("%.0f") : distance.format("%.1f");
@@ -827,13 +804,13 @@ class Digital5View extends Ui.WatchFace {
                 if (null == altitude) {
                     fieldText = "-";
                 } else {
-                    if (altUnit == 0) {
+                    if (distanceUnit == 0) {
                         fieldText = (altitude.data.toFloat() + altitudeOffset).format("%.0f");
                     } else {
                         fieldText = ((altitude.data.toFloat() + altitudeOffset) / 0.3048).format("%.0f");
                     }
                 }
-                unitText = altUnit == 0 ? "m" : "ft";
+                unitText = distanceUnit == 0 ? "m" : "ft";
                 break;
             case 6: // Pressure
                 var pressureHistory = Sensor.getPressureHistory(null);
@@ -844,13 +821,12 @@ class Digital5View extends Ui.WatchFace {
                 break;
             case 13: // Weather
                 if (apiKey.length() > 0) {
-                    if (field == 4) { textX += 10; }
+                    if (field == BOTTOM_FIELD) { textX += 10; }
                     var icon = 7;
                     if (currentWeather) {
                         var temp = App.getApp().getProperty("temp");
                         if (null == temp) {
                             fieldText = "--/--";
-                            unitText  = "E";
                         } else {
                             if (tempUnit == 1) { temp = temp * 1.8 + 32; }
                             icon = App.getApp().getProperty("icon");
@@ -863,7 +839,6 @@ class Digital5View extends Ui.WatchFace {
                         var tempMax = App.getApp().getProperty("tempMax");
                         if (null == tempMin || null == tempMax) {
                             fieldText = "--/--";
-                            unitText  = "E";
                         } else {
                             if (tempUnit == 1) {
                                 tempMin = tempMin * 1.8 + 32;
@@ -875,22 +850,100 @@ class Digital5View extends Ui.WatchFace {
                             fieldText = tempMin.format("%.0f") + "/" + tempMax.format("%.0f");
                         }
                     }
-                    drawWeatherSymbol(field, icon, dc);
+                    drawWeatherSymbol(field, icon, dc, xyPositions);
                 } else {
                     fieldText = "--/--";
-                    unitText  = "E";
                 }
+                unitText = tempUnit == 0 ? "C" : "F";
                 break;
         }
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
-        if (lcdFontDataFields) {
-            dc.drawText(textX, textY, field < 4 ? digitalUpright24 : digitalUpright20, fieldText, Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawText(unitLcdX, unitLcdY, digitalUpright16, unitText, Gfx.TEXT_JUSTIFY_LEFT);
-        } else {
-            dc.drawText(textX, textY, Graphics.FONT_XTINY, fieldText, Gfx.TEXT_JUSTIFY_RIGHT);
-            dc.drawText(unitX, unitY, Graphics.FONT_XTINY, unitText, Gfx.TEXT_JUSTIFY_LEFT);
+        dc.drawText(textX, textY, GetFieldFont(field, false), fieldText, Gfx.TEXT_JUSTIFY_RIGHT);
+        drawUnitText(xyPositions, dc, unitText, field);
+    }
+    
+    function drawUnitText(xyPositions, dc, unitText, field){
+        var unitLcdX = xyPositions[4];
+        var unitLcdY = xyPositions[5];
+        var unitX    = xyPositions[6];
+        var unitY    = xyPositions[7];
+        if (debug) {System.println("unitText: " + unitText + ", field: " + field);}
+        if (field == BOTTOM_FIELD){
+            switch(unitText.toLower()){
+            case "km":
+                drawCharacter(xyPositions, dc, K, 0);
+                drawCharacter(xyPositions, dc, M, 6);
+                break;
+            case "mi":
+                drawCharacter(xyPositions, dc, M, 0);
+                drawCharacter(xyPositions, dc, I, 0);
+                break;
+            case "m":
+                drawCharacter(xyPositions, dc, M, -5);
+                break;
+            case "ft":
+                drawCharacter(xyPositions, dc, F, 0);
+                drawCharacter(xyPositions, dc, T, 0);
+                break;
+            case "mb":
+                drawCharacter(xyPositions, dc, M, 0);
+                drawCharacter(xyPositions, dc, B, 0);
+                break;
+            case "c":
+                drawCharacter(xyPositions, dc, C, 6);
+                break;
+            case "f":
+                drawCharacter(xyPositions, dc, F, 6);
+                break;
+            }          
+            return;
+        }
+        
+        dc.drawText(unitLcdX, unitLcdY, GetFieldFont(field, true), unitText, Gfx.TEXT_JUSTIFY_LEFT);
+    }
+
+    function drawCharacter(xyPositions,dc, char, x) {
+        dc.setPenWidth(1);
+        var bmpX = xyPositions[0] + 84 + x;
+        var bmpY = xyPositions[1];
+        switch(char) {
+            case M:
+                dc.drawLine(bmpX - 1, bmpY + 2, bmpX - 1, bmpY + 7);
+                dc.drawLine(bmpX + 1, bmpY + 2, bmpX + 1, bmpY + 7);
+                dc.drawLine(bmpX + 3, bmpY + 2, bmpX + 3, bmpY + 7);
+                dc.drawLine(bmpX - 1, bmpY + 2, bmpX + 3, bmpY + 2);
+                break;
+            case I:
+                dc.drawLine(bmpX + 7, bmpY + 2, bmpX + 7, bmpY + 7);
+                break;
+            case K:
+                dc.drawLine(bmpX - 1, bmpY - 1, bmpX - 1, bmpY + 7);
+                dc.drawLine(bmpX - 1, bmpY + 4, bmpX + 3, bmpY);
+                dc.drawLine(bmpX - 1, bmpY + 3, bmpX + 3, bmpY + 7);
+                break;
+            case B:
+                dc.drawLine(bmpX + 5, bmpY - 1, bmpX + 5, bmpY + 7);
+                dc.drawLine(bmpX + 8, bmpY + 2, bmpX + 8, bmpY + 7);
+                dc.drawLine(bmpX + 5, bmpY + 2, bmpX + 8, bmpY + 2);
+                dc.drawLine(bmpX + 5, bmpY + 6, bmpX + 8, bmpY + 6);
+                break;
+            case C:
+                dc.drawLine(bmpX + 4, bmpY, bmpX, bmpY);
+                dc.drawLine(bmpX, bmpY, bmpX, bmpY + 8);
+                dc.drawLine(bmpX + 4, bmpY + 7, bmpX, bmpY + 7);
+                break;
+            case F:
+                dc.drawLine(bmpX + 4, bmpY, bmpX, bmpY);
+                dc.drawLine(bmpX, bmpY, bmpX, bmpY + 8);
+                dc.drawLine(bmpX + 3, bmpY + 3, bmpX - 1, bmpY + 3);
+                break;
+            case T:
+                dc.drawLine(bmpX + 8, bmpY, bmpX + 8, bmpY + 7);
+                dc.drawLine(bmpX + 6, bmpY, bmpX + 11, bmpY);
+                break;
         }
     }
+    
     function drawActiveTime(xyPositions, dc, isDay, field) {
         var textX    = xyPositions[2];
         var textY    = xyPositions[3];
@@ -899,21 +952,15 @@ class Digital5View extends Ui.WatchFace {
         var unitX    = xyPositions[6];
         var unitY    = xyPositions[7];
         var horAlign = Gfx.TEXT_JUSTIFY_RIGHT;
+        
         switch (field) {
-            case 0: break;
-            case 1: textX -= lcdFontDataFields ? 76 : 72; horAlign = Gfx.TEXT_JUSTIFY_LEFT; break;
-            case 2: break;
-            case 3: break; //textX -= lcdFontDataFields ? 55 : 51; horAlign = Gfx.TEXT_JUSTIFY_LEFT; break;
+            case UPPER_RIGHT: textX -= 76; horAlign = Gfx.TEXT_JUSTIFY_LEFT; break;
         }
         var activeTimeText = getActiveTimeText(isDay);
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
-        if (lcdFontDataFields) {
-            dc.drawText(textX, textY, digitalUpright24, activeTimeText, horAlign);
-            dc.drawText(unitLcdX, unitLcdY, digitalUpright16, isDay ? "D" : "W", Gfx.TEXT_JUSTIFY_LEFT);
-        } else {
-            dc.drawText(textX, textY, Graphics.FONT_XTINY, activeTimeText, horAlign);
-            dc.drawText(unitX, unitY, Graphics.FONT_XTINY, isDay ? "D" : "W", Gfx.TEXT_JUSTIFY_LEFT);
-        }
+        dc.drawText(textX, textY, GetFieldFont(field, false), activeTimeText, horAlign);
+        drawUnitText(xyPositions, dc, isDay ? "D" : "W", field);
+
     }
     function drawFloors(xyPositions, dc, field) {
         var bmpX     = xyPositions[0];
@@ -922,17 +969,22 @@ class Digital5View extends Ui.WatchFace {
         var textY    = xyPositions[3];
         var horAlign = Gfx.TEXT_JUSTIFY_RIGHT;
         switch (field) {
-            case 0: break;
-            case 1: bmpX +=2; textX += lcdFontDataFields ? 8 : 12; break;
-            case 2: break;
-            case 3: bmpX +=2; textX += lcdFontDataFields ? 8 : 12; break;
-            case 4: textX = 120; horAlign = Gfx.TEXT_JUSTIFY_CENTER; break;
+            case UPPER_RIGHT: bmpX +=2; textX +=  8; break;
+            case LOWER_RIGHT: bmpX +=2; textX +=  8; break;
+            case BOTTOM_FIELD: textX = 120; horAlign = Gfx.TEXT_JUSTIFY_CENTER; break;
         }
         var floorsClimbed   = actinfo.floorsClimbed;
         var floorsDescended = actinfo.floorsDescended;
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
         // draw stairs icon
-        if (field < 4) {
+        if (field == BOTTOM_FIELD) 
+        {
+             drawArrow(dc, bmpX, bmpY, 0);
+             drawArrow(dc, .66 * width, bmpY, 1);
+             horAlign = Gfx.TEXT_JUSTIFY_CENTER;
+             textX = centerX;
+        }
+        else {
             dc.setPenWidth(1);
             dc.drawLine(bmpX + 3, bmpY + 15, bmpX + 6, bmpY + 15);
             dc.drawLine(bmpX + 6, bmpY + 15, bmpX + 6, bmpY + 12);
@@ -944,13 +996,12 @@ class Digital5View extends Ui.WatchFace {
             dc.drawLine(bmpX + 15, bmpY + 6, bmpX + 15, bmpY + 3);
             dc.drawLine(bmpX + 15, bmpY + 3, bmpX + 18, bmpY + 3);
         }
-        if (lcdFontDataFields) {
-            dc.drawText(textX, textY, field < 4 ? digitalUpright24 : digitalUpright20, (floorsClimbed.toString() + "/" + floorsDescended.toString()), horAlign);
-        } else {
-            dc.drawText(textX, textY, Graphics.FONT_XTINY, (floorsClimbed.toString() + "/" + floorsDescended.toString()), horAlign);
-        }
+        dc.drawText(textX, textY, GetFieldFont(field, false), (floorsClimbed.toString() + "/" + floorsDescended.toString()), horAlign);
     }
+    
     function drawMeters(xyPositions, dc, field) {
+        var bmpX     = xyPositions[0];
+        var bmpY     = xyPositions[1];
         var textX           = xyPositions[2];
         var textY           = xyPositions[3];
         var unitLcdX        = xyPositions[4];
@@ -960,59 +1011,65 @@ class Digital5View extends Ui.WatchFace {
         var metersClimbed   = actinfo.metersClimbed.format("%0d");
         var metersDescended = actinfo.metersDescended.format("%0d");
         var horAlign        = Gfx.TEXT_JUSTIFY_RIGHT;
-        if (field == 4) { textX = 120; horAlign = Gfx.TEXT_JUSTIFY_CENTER; }
+        if (field == BOTTOM_FIELD) { textX = 120; horAlign = Gfx.TEXT_JUSTIFY_CENTER; }
         switch (field) {
-            case 0: break;
-            case 1: unitLcdX += 8; unitX += 4; textX += lcdFontDataFields ? 8 : 4; break; //horAlign = Gfx.TEXT_JUSTIFY_LEFT; break;
-            case 2: break;
-            case 3: unitLcdX += 8; unitX += 4; textX += lcdFontDataFields ? 8 : 4; break; //horAlign = Gfx.TEXT_JUSTIFY_LEFT; break;
-            case 4: textX = 120; horAlign = Gfx.TEXT_JUSTIFY_CENTER; break;
+            case UPPER_RIGHT: 
+                unitLcdX += 8; 
+                unitX += 4; 
+                textX += 8; 
+                break; 
+            case LOWER_RIGHT: 
+                unitLcdX += 8; 
+                unitX += 4; 
+                textX += 8; 
+                break; 
+            case BOTTOM_FIELD: 
+                textX = width /2; 
+                horAlign = Gfx.TEXT_JUSTIFY_CENTER; 
+                break;
         }
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
-        if (lcdFontDataFields) {
-            dc.drawText(textX, textY, field < 4 ? digitalUpright24 : digitalUpright20, metersClimbed.toString() + "/" + metersDescended.toString(), horAlign);
-            if (field < 4) { dc.drawText(unitLcdX, unitLcdY, digitalUpright16, "m", Gfx.TEXT_JUSTIFY_LEFT); }
-        } else {
-            dc.drawText(textX, textY, Graphics.FONT_XTINY, metersClimbed.toString() + " / " + metersDescended.toString(), horAlign);
-            if (field < 4) { dc.drawText(unitX, unitY, Graphics.FONT_XTINY, "m", Gfx.TEXT_JUSTIFY_LEFT); }
+        dc.drawText(textX, textY, GetFieldFont(field, false), metersClimbed.toString() + "/" + metersDescended.toString(), horAlign);
+        drawUnitText(xyPositions, dc, "m", field);
+        
+        if (field == BOTTOM_FIELD){
+            drawArrow(dc, bmpX, bmpY, 0);
+             drawArrow(dc, width - bmpX, bmpY, 1);
         }
     }
+    
+    function drawArrow(dc, x, y, direction){
+        
+        var horSize = 12;
+        var vertSize = 6;
+        if (direction == 0){
+            dc.fillPolygon([[x, y + vertSize ], [x + horSize, y + vertSize], [x + horSize / 2, y]]); //(left bottom , right bottom , top)
+            return;
+        }
+        dc.fillPolygon([[x, y], [x + horSize, y], [x + horSize / 2, y + vertSize]]); //(left top  , right top , bottom)
+        
+    }
+    
     function drawActKcalAvg(xyPositions, dc, field) {
         var bmpX     = xyPositions[0];
         var bmpY     = xyPositions[1];
         var textX    = xyPositions[2];
         var textY    = xyPositions[3];
         var horAlign = Gfx.TEXT_JUSTIFY_RIGHT;
-        if (field == 4) {
+        if (field == BOTTOM_FIELD) {
             textX = 120;
             horAlign = Gfx.TEXT_JUSTIFY_CENTER;
         } else {
             dc.drawBitmap(bmpX, bmpY, darkFieldBackground ? burnedIconWhite : burnedIcon);
         }
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
-        if (lcdFontDataFields) {
-            dc.drawText(textX, textY, field < 4 ? digitalUpright24 : digitalUpright20, getActKcalAvg(activeKcal), horAlign);
-        } else {
-            dc.drawText(textX, textY, Graphics.FONT_XTINY, getActKcalAvg(activeKcal), horAlign);
-        }
+        dc.drawText(textX, textY, GetFieldFont(field, false), getActKcalAvg(activeKcal), horAlign);
     }
-    function drawWeatherSymbol(field, icon, dc) {
-        var x;
-        var y;
-        switch(field) {
-            case UPPER_LEFT:
-                x = 16;
-                y = 157;
-                break;
-            case UPPER_RIGHT:
-                x = 207;
-                y = 157;
-                break;
-            case BOTTOM_FIELD:
-                x = 85;
-                y = 216;
-                break;
-        }
+    
+    function drawWeatherSymbol(field, icon, dc, xyPositions) {
+        var x = xyPositions[0];
+        var y = xyPositions[1];
+
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
         dc.setPenWidth(2);
         switch(icon) {
@@ -1080,10 +1137,10 @@ class Digital5View extends Ui.WatchFace {
                 dc.fillCircle(x + 13, y + 15, 2);
                 dc.fillCircle(x + 7, y + 18, 2);
                 break;
-
         }
         dc.setPenWidth(1);
     }
+    
     function drawCloud(dc, x, y) {
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
         dc.fillCircle(x + 11, y + 6, 6);
@@ -1096,56 +1153,16 @@ class Digital5View extends Ui.WatchFace {
         dc.fillRectangle(x + 5, y + 8, 12, 7);
         dc.setColor(fieldForegroundColor, fieldBackgroundColor);
     }
-    function drawCharacter(dc, char, x) {
-        dc.setPenWidth(1);
-        switch(char) {
-            case M:
-                dc.drawLine(168 + x, 218, 168 + x, 223);
-                dc.drawLine(170 + x, 218, 170 + x, 223);
-                dc.drawLine(172 + x, 218, 172 + x, 223);
-                dc.drawLine(168 + x, 218, 172 + x, 218);
-                break;
-            case I:
-                dc.drawLine(176, 218, 176, 223);
-                break;
-            case K:
-                dc.drawLine(168, 215, 168, 223);
-                dc.drawLine(168, 220, 172, 216);
-                dc.drawLine(168, 219, 172, 223);
-                break;
-            case B:
-                dc.drawLine(174, 215, 174, 223);
-                dc.drawLine(177, 218, 177, 223);
-                dc.drawLine(174, 218, 177, 218);
-                dc.drawLine(174, 222, 177, 222);
-                break;
-            case C:
-                dc.drawLine(173, 216, 169, 216);
-                dc.drawLine(169, 216, 169, 223);
-                dc.drawLine(173, 223, 168, 223);
-                break;
-            case F:
-                dc.drawLine(173, 216, 169, 216);
-                dc.drawLine(169, 216, 169, 223);
-                dc.drawLine(172, 219, 168, 219);
-                break;
-            case T:
-                dc.drawLine(177, 216, 177, 223);
-                dc.drawLine(175, 216, 180, 216);
-                break;
-        }
-    }
 
-    function drawTime(hourColor, minuteColor, font, dc) {
+    function drawTime(hourColor, minuteColor, font, dc, timeYPosition) {
         var hh   = clockTime.hour;
         var hour = is24Hour ? hh : (hh == 12) ? hh : (hh % 12 == 0 ? 12 : hh % 12);
-        var y = (deviceName.equals("vivoactive3") || deviceName.equals("vivoactive3m")) ? 44 : 56;
         dc.setColor(hourColor, Gfx.COLOR_TRANSPARENT);
-        dc.drawText(centerX - 6, lcdFont ? 51 : y, font, hour.format(showLeadingZero ? "%02d" : "%01d"), Gfx.TEXT_JUSTIFY_RIGHT);
+        dc.drawText(centerX - 6, timeYPosition, font, hour.format(showLeadingZero ? "%02d" : "%01d"), Gfx.TEXT_JUSTIFY_RIGHT);
         dc.setColor(upperForegroundColor, Gfx.COLOR_TRANSPARENT);
-        dc.drawText(centerX, lcdFont ? 51 : y, font, ":", Gfx.TEXT_JUSTIFY_CENTER);
+        dc.drawText(centerX, timeYPosition, font, ":", Gfx.TEXT_JUSTIFY_CENTER);
         dc.setColor(minuteColor, Gfx.COLOR_TRANSPARENT);
-        dc.drawText(centerX + 6, lcdFont ? 51 : y, font, clockTime.min.format("%02d"), Gfx.TEXT_JUSTIFY_LEFT);
+        dc.drawText(centerX + 6, timeYPosition, font, clockTime.min.format("%02d"), Gfx.TEXT_JUSTIFY_LEFT);
         dc.setColor(upperForegroundColor, Gfx.COLOR_TRANSPARENT);
     }
 
@@ -1165,56 +1182,60 @@ class Digital5View extends Ui.WatchFace {
 
     function getXYPositions(field) {
         var bmpX, bmpY, textX, textY, unitLcdX, unitLcdY, unitX, unitY;
-        switch(field) {
-            case 0: // UPPER LEFT
-                bmpX     = 16;
-                bmpY     = 157;
-                textX    = 115;
-                textY    = lcdFontDataFields ? 153 : 152;
+        
+        var font = GetFieldFont(field, false);
+        var fontSize = Graphics.getFontHeight(font);
+        var textYPadding = (fieldHeight - fontSize)/2;
+        switch (field) {
+            case UPPER_LEFT: // UPPER LEFT
+                bmpX     = 0.06667 * width;
+                bmpY     = dataFieldsTop + dataFieldsTopPadding;
+                textX    = centerX - 5;
+                textY    = dataFieldsTop + textYPadding;
                 unitLcdX = 16;
-                unitLcdY = 160;
+                unitLcdY = dataFieldsTop + 10;
                 unitX    = 16;
-                unitY    = 152;
+                unitY    = dataFieldsTop + 2;
                 break;
-            case 1: // UPPER RIGHT
-                bmpX     = 207;
-                bmpY     = 157;
-                textX    = lcdFontDataFields ? 202 : 196;
-                textY    = lcdFontDataFields ? 153 : 152;
-                unitLcdX = 207;
-                unitLcdY = 160;
-                unitX    = 200;
-                unitY    = 152;
+            case UPPER_RIGHT: // UPPER RIGHT
+                bmpX     = width - 33;
+                bmpY     = dataFieldsTop + dataFieldsTopPadding;
+                textX    = width - 38;
+                textY    = dataFieldsTop + textYPadding;
+                unitLcdX = width - 33;
+                unitLcdY = dataFieldsTop + 10;
+                unitX    = width - 40;
+                unitY    = dataFieldsTop + 2;
                 break;
-            case 2: // LOWER LEFT
-                bmpX     = 36;
-                bmpY     = 187;
-                textX    = 115;
-                textY    = lcdFontDataFields ? 184 : 183;
+            case LOWER_LEFT: // LOWER LEFT
+                bmpX     = 0.15 * width;
+                bmpY     = dataFieldsTop + fieldHeight + dataFieldsTopPadding;
+                textX    = centerX - 5;
+                textY    = dataFieldsTop + fieldHeight + textYPadding;
                 unitLcdX = 36;
-                unitLcdY = 190;
+                unitLcdY = dataFieldsTop + fieldHeight + 10;
                 unitX    = 36;
-                unitY    = 183;
+                unitY    = dataFieldsTop + fieldHeight + 3;
                 break;
-            case 3: // LOWER RIGHT
-                bmpX     = 187;
-                bmpY     = 187;
-                textX    = lcdFontDataFields ? 181 : 175;
-                textY    = lcdFontDataFields ? 184 : 183;
-                unitLcdX = 187;
-                unitLcdY = 190;
-                unitX    = 180;
-                unitY    = 183;
+            case LOWER_RIGHT: // LOWER RIGHT
+                bmpX     = width - 53;
+                bmpY     = dataFieldsTop + fieldHeight + dataFieldsTopPadding;
+                textX    = width - 59;
+                textY    = dataFieldsTop + fieldHeight + textYPadding;
+                unitLcdX = width - 53;
+                unitLcdY = dataFieldsTop + fieldHeight + 10;
+                unitX    = width - 60;
+                unitY    = dataFieldsTop + fieldHeight + 3;
                 break;
-            case 4: // BOTTOM_FIELD
-                bmpX     = 85;
-                bmpY     = 216;
-                textX    = 150;
-                textY    = 213;
-                unitLcdX = 0;
-                unitLcdY = 0;
-                unitX    = 0;
-                unitY    = 0;
+            case BOTTOM_FIELD: // BOTTOM_FIELD
+                bmpX     = 0.33 * width;
+                bmpY     = dataFieldsTop + 2 * fieldHeight + dataFieldsTopPadding;
+                textX    = centerX + 30;
+                textY    = dataFieldsTop + 2 * fieldHeight + textYPadding + 1;
+                unitLcdX = width - 83;
+                unitLcdY = dataFieldsTop + 2 * fieldHeight + 10;
+                unitX    = width - 90;
+                unitY    = dataFieldsTop + 2 * fieldHeight + 3;
                 break;
         }
         return [ bmpX, bmpY, textX, textY, unitLcdX, unitLcdY, unitX, unitY ];
@@ -1317,11 +1338,100 @@ class Digital5View extends Ui.WatchFace {
         if (value > max) { return max; }
         return value;
     }
+    
+    function GetFieldFont(fieldNumber, isUnitText) {
+        var tinyFont = Graphics.FONT_XTINY;
 
-    function getDeviceName() {
-        if (deviceName == null) {
-            deviceName = Ui.loadResource(Rez.Strings.deviceName);
+        if (width > 240 and !isUnitText){
+            tinyFont = Graphics.FONT_TINY;
         }
-        return deviceName;
+    
+       if (fieldNumber == BOTTOM_FIELD) {
+             if (isUnitText){
+                return Graphics.FONT_XTINY;
+             }
+             return digitalUpright20;
+       }
+
+       if (isUnitText){
+             return digitalUpright16;
+       }
+       return digitalUpright24;
+    }
+    
+    /// <summary>
+    /// Get the home date  and time, both time zone dependent. Depending on settings we may return the current date, and an empty time
+    /// </summary>
+    /// <returns>array that contains Date and Time</returns>
+    function calcHomeDateTime(){
+        var dst  = App.getApp().getProperty("DST");
+        var dayOfWeek = nowinfo.day_of_week;
+        var dayMonth = App.getApp().getProperty("DateFormat") == 0;
+        var dateFormat = dayMonth ? "$1$.$2$" : "$2$/$1$";
+        var monthAsText = App.getApp().getProperty("MonthAsText");
+        var timezoneOffset = clockTime.timeZoneOffset;
+        var showHomeTimezone = App.getApp().getProperty("ShowHomeTimezone");
+        var showHomeDate = App.getApp().getProperty("ShowHomeDate");
+        var homeTimezoneOffset = dst ? App.getApp().getProperty("HomeTimezoneOffset") + 3600 : App.getApp().getProperty("HomeTimezoneOffset");
+        var onTravel = timezoneOffset != homeTimezoneOffset;
+        
+        var monthText = "";
+        var timeText = "";
+        var currentWeekdayText    = weekdays[dayOfWeek - 1];
+        var currentDateText       = dayMonth ?  nowinfo.day.format(showLeadingZero ? "%02d" : "%01d") + " " + months[nowinfo.month - 1] : months[nowinfo.month - 1] + " " + nowinfo.day.format(showLeadingZero ? "%02d" : "%01d");
+        var currentDateNumberText = Lang.format(dateFormat, [nowinfo.day.format(showLeadingZero ? "%02d" : "%01d"), nowinfo.month.format(showLeadingZero ? "%02d" : "%01d")]);
+        monthText = currentWeekdayText + (monthAsText ? currentDateText : currentDateNumberText);
+        
+        if (!onTravel) {
+            // if we are not traveling, just show the current date, time will be empty
+            return [monthText, timeText];
+        }
+
+        if (showHomeTimezone || showHomeDate){
+            // we are traveling. If we are showing either home Time or home Date, we need to calculate this
+            var currentSeconds = clockTime.hour * 3600 + clockTime.min * 60 + clockTime.sec;
+            var utcSeconds     = currentSeconds - clockTime.timeZoneOffset;
+        
+            var homeDayOfWeek  = dayOfWeek - 1;
+            var homeDay        = nowinfo.day;
+            var homeMonth      = nowinfo.month;
+            var homeSeconds    = utcSeconds + homeTimezoneOffset;
+            if (dst) { 
+                homeSeconds = homeTimezoneOffset > 0 ? homeSeconds : homeSeconds - 3600; 
+            }
+            var homeHour       = ((homeSeconds / 3600)).toNumber() % 24l;
+            var homeMinute     = ((homeSeconds - (homeHour.abs() * 3600)) / 60) % 60;
+        
+            if (homeHour < 0) {
+                homeHour += 24;
+                homeDay--;
+                if (homeDay == 0) {
+                    homeMonth--;
+                    if (homeMonth == 0) { homeMonth = 12; }
+                    homeDay = daysOfMonth(homeMonth);
+                }
+                homeDayOfWeek--;
+                if (homeDayOfWeek < 0) { homeDayOfWeek = 6; }
+            }
+            if (homeMinute < 0) { homeMinute += 60; }
+
+            var ampm = is24Hour ? "" : homeHour < 12 ? "A" : "P";
+            homeHour = is24Hour ? homeHour : (homeHour == 12) ? homeHour : (homeHour % 12);
+            
+            if (showHomeDate) {
+                // if we want to show the home date, we need to calculate it
+                var homeWeekdayText    = weekdays[homeDayOfWeek];
+                var homeDateText       = dayMonth ?  
+                    homeDay.format(showLeadingZero ? "%02d" : "%01d") + " " + months[homeMonth - 1] : 
+                      months[homeMonth - 1] + " " + homeDay.format(showLeadingZero ? "%02d" : "%01d");
+                var homeDateNumberText = Lang.format(dateFormat, [homeDay.format(showLeadingZero ? "%02d" : "%01d"), homeMonth.format(showLeadingZero ? "%02d" : "%01d")]);
+                monthText =  homeWeekdayText + (monthAsText ? homeDateText : homeDateNumberText);
+            }
+
+            timeText = Lang.format("$1$:$2$", [homeHour.format(showLeadingZero ? "%02d" : "%01d"), homeMinute.format("%02d")]) + ampm;
+        }
+
+
+        return [monthText, timeText];
     }
 }
