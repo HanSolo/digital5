@@ -46,6 +46,7 @@
 	<string id="DST">Heure d'été</string>
 	
 	<string id="ShowHomeTimezone">Afficher le fuseau horaire Domicile</string>
+	<string id="ShowHomeDate">Afficher la date de domicile</string>
 	
 	<string id="HomeTimezoneOffset">Fuseau horaire Domicile</string>
 	

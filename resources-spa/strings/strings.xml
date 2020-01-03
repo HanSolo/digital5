@@ -46,6 +46,7 @@
 	<string id="DST">Horario de Verano</string>
 	
 	<string id="ShowHomeTimezone">Mostrar zona horaria local</string>
+	<string id="ShowHomeDate">Mostrar fecha de inicio</string>
 	
 	<string id="HomeTimezoneOffset">Desfase zona horaria local</string>
 	

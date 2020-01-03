@@ -15,9 +15,11 @@ using Toybox.SensorHistory as Sensor;
 
 
 class Digital5View extends Ui.WatchFace {
-	var debug = false;
+	var debug = true;
     var is24Hour;
     var secondsAlwaysOn;
+    var lcdFont = false;	
+    var lcdFontDataFields = false;
     var showLeadingZero;
     var clockTime;
     var sunRiseSet;
@@ -63,6 +65,7 @@ class Digital5View extends Ui.WatchFace {
     var sunsetText         = "--:--";
     var currentWeather;
     var digitalUpright72, digitalUpright26, digitalUpright24, digitalUpright20, digitalUpright16;
+    //var robotoCondensed72;
     var burnedIcon, burnedIconWhite, stepsIcon, stepsIconWhite;
     var alarmIcon, alarmIconWhite;
     var width, height;
@@ -101,6 +104,7 @@ class Digital5View extends Ui.WatchFace {
         digitalUpright24 = Ui.loadResource(Rez.Fonts.digitalUpright24);
         digitalUpright20 = Ui.loadResource(Rez.Fonts.digitalUpright20);
         digitalUpright16 = Ui.loadResource(Rez.Fonts.digitalUpright16);
+        //robotoCondensed72 = Ui.loadResource(Rez.Fonts.robotoCondensed72);
         burnedIcon = Ui.loadResource(Rez.Drawables.burned);
         burnedIconWhite = Ui.loadResource(Rez.Drawables.burnedWhite);
         stepsIcon = Ui.loadResource(Rez.Drawables.steps);
@@ -149,6 +153,8 @@ class Digital5View extends Ui.WatchFace {
 
         is24Hour                  = Sys.getDeviceSettings().is24Hour;
         secondsAlwaysOn           = App.getApp().getProperty("SecondsAlwaysOn");
+        //lcdFont                   = App.getApp().getProperty("LcdFont");	
+        //lcdFontDataFields         = App.getApp().getProperty("LcdFontDataFields");
         showLeadingZero           = App.getApp().getProperty("ShowLeadingZero");
         tempUnit                  = App.getApp().getProperty("TempUnit");
         coloredCalorieText        = App.getApp().getProperty("ColorizeCalorieText");
@@ -222,6 +228,14 @@ class Digital5View extends Ui.WatchFace {
             userHeight = profile.height;
             userAge    = nowinfo.year - profile.birthYear;
         }
+        
+        if (hourColor == upperBackgroundColor){
+            hourColor = upperForegroundColor;
+        }
+        if (minuteColor == upperBackgroundColor){
+            minuteColor = upperForegroundColor;
+        }
+
 
         // Mifflin-St.Jeor Formula (1990)
         var baseKcalMen   = (9.99 * userWeight) + (6.25 * userHeight) - (4.92 * userAge) + 5.0;             // base kcal men
@@ -502,23 +516,20 @@ class Digital5View extends Ui.WatchFace {
         secondsFont = digitalUpright20;
         secondsYPosition = dateYPosition - Graphics.getFontHeight(secondsFont);
         
-        if (lcdBackgroundVisible) {
+        if (lcdFont && lcdBackgroundVisible) {
             dc.setColor(darkUpperBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, upperBackgroundColor);
             if (showLeadingZero) {
-                dc.drawText(centerX, timeYPosition, digitalUpright72, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
+                dc.drawText(centerX, timeYPosition, timeFont, "88:88", Gfx.TEXT_JUSTIFY_CENTER);
             } else {
                 if (is24Hour) {
-                    dc.drawText(centerX, timeYPosition, digitalUpright72, clockTime.hour < 10 ? "8:88" : "88:88", Gfx.TEXT_JUSTIFY_CENTER);
+                    dc.drawText(centerX, timeYPosition, timeFont, clockTime.hour < 10 ? "8:88" : "88:88", Gfx.TEXT_JUSTIFY_CENTER);
                 } else {
-                    dc.drawText(centerX, timeYPosition, digitalUpright72, (clockTime.hour < 10 || clockTime.hour > 12) ? "8:88" : "88:88", Gfx.TEXT_JUSTIFY_CENTER);
+                    dc.drawText(centerX, timeYPosition, timeFont, (clockTime.hour < 10 || clockTime.hour > 12) ? "8:88" : "88:88", Gfx.TEXT_JUSTIFY_CENTER);
                 }
             }
         }
         drawTime(hourColor, minuteColor, timeFont, dc, timeYPosition);
-        if (!is24Hour) {
-            var amPm = clockTime.hour < 12 ? "am" : "pm";
-            dc.drawText(195, 93, digitalUpright20, amPm, Gfx.TEXT_JUSTIFY_LEFT);
-        }
+
 
         // draw Date
         if (onTravel) {
@@ -663,8 +674,8 @@ class Digital5View extends Ui.WatchFace {
             dc.drawText(xBase, secondsYPosition, secondsFont, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
         } 
         else {
-            dc.fillRectangle(xBase, 75, 25, Graphics.getFontHeight(secondsFont));
-            dc.setClip(xBase, 75, 25, Graphics.getFontHeight(secondsFont));
+            dc.fillRectangle(xBase, secondsYPosition, 25, Graphics.getFontHeight(secondsFont));
+            dc.setClip(xBase, secondsYPosition, 25, Graphics.getFontHeight(secondsFont));
             dc.setColor(upperForegroundColor, upperBackgroundColor);
             dc.drawText(xBase, secondsYPosition, secondsFont, Lang.format("$1$", [clockTime.sec.format("%02d")]), Gfx.TEXT_JUSTIFY_LEFT);
         }
@@ -1157,6 +1168,7 @@ class Digital5View extends Ui.WatchFace {
     function drawTime(hourColor, minuteColor, font, dc, timeYPosition) {
         var hh   = clockTime.hour;
         var hour = is24Hour ? hh : (hh == 12) ? hh : (hh % 12 == 0 ? 12 : hh % 12);
+        
         dc.setColor(hourColor, Gfx.COLOR_TRANSPARENT);
         dc.drawText(centerX - 6, timeYPosition, font, hour.format(showLeadingZero ? "%02d" : "%01d"), Gfx.TEXT_JUSTIFY_RIGHT);
         dc.setColor(upperForegroundColor, Gfx.COLOR_TRANSPARENT);
@@ -1164,6 +1176,16 @@ class Digital5View extends Ui.WatchFace {
         dc.setColor(minuteColor, Gfx.COLOR_TRANSPARENT);
         dc.drawText(centerX + 6, timeYPosition, font, clockTime.min.format("%02d"), Gfx.TEXT_JUSTIFY_LEFT);
         dc.setColor(upperForegroundColor, Gfx.COLOR_TRANSPARENT);
+        
+        if (!is24Hour) {
+        	var xBase = centerX + 70 + 3;
+        	var yBase = secondsYPosition;
+        	if (secondsAlwaysOn) {
+        	    yBase = yBase - Graphics.getFontHeight(digitalUpright20);
+        	}
+            var amPm = clockTime.hour < 12 ? "am" : "pm";
+            dc.drawText(xBase, yBase, digitalUpright20, amPm, Gfx.TEXT_JUSTIFY_LEFT);
+        }
     }
 
     function setBatteryColor(charge, dc) {
