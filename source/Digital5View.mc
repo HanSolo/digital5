@@ -318,7 +318,7 @@ class Digital5View extends Ui.WatchFace {
         var showPercentageUnder20 = App.getApp().getProperty("ShowPercentageUnder20");
         var charge = systemStats.battery + 0.5;
         var coloredBattery = App.getApp().getProperty("ColoredBattery");
-        showChargePercentage = showPercentageUnder20 && charge < 20;
+        showChargePercentage = showChargePercentage || showPercentageUnder20 && charge < 20;
         
         if (debug) {System.println("charge: " + charge + ", showPercentageUnder20: " + showPercentageUnder20 + ", showChargePercentage: " + showChargePercentage);}
 
