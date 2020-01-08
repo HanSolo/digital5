@@ -5,6 +5,17 @@ using Toybox.System;
 using Toybox.Time;
 using Toybox.Time.Gregorian;
 
+var debug = true;
+
+    function Log(method, message){
+    	if ($.debug){
+    	
+          var myTime = System.getClockTime(); 
+          var myTimeString = myTime.hour.format("%02d") + ":" + myTime.min.format("%02d") + ":" + myTime.sec.format("%02d");
+          if ($.debug) {System.println(myTimeString + " | " + method + " | " + message);}
+        }
+    }
+
 class Digital5ReloadedApp extends App.AppBase {
     hidden var view;
     hidden var sunRiseSet;
@@ -27,7 +38,7 @@ class Digital5ReloadedApp extends App.AppBase {
 
         view = new Digital5View();
         
-        Background.registerForTemporalEvent(new Time.Duration(900)); // 15 min
+        Background.registerForTemporalEvent(new Time.Duration(300)); // 15 min
         
         if( Toybox.WatchUi has :WatchFaceDelegate ) {
             return [view, new Digital5Delegate()];
@@ -41,14 +52,16 @@ class Digital5ReloadedApp extends App.AppBase {
     }
 
     function onBackgroundData(data) {
+        Log("Digital5ServiceDelegate.onBackgroundData","data: " + data);
+    
         if (data instanceof Dictionary) {
             var msg = data.get("msg");
-            if (msg.equals("FAIL") || msg.equals("WRONG KEY")) {
-            } else if (msg.equals("CURRENTLY")) {
+            App.getApp().setProperty("dsResult", msg);
+            if (msg.equals("CURRENTLY")) {
                 App.getApp().setProperty("temp", data.get("temp"));
             } else if (msg.equals("DAILY")) {
-                App.getApp().setProperty("tempMin", data.get("tempMin"));
-                App.getApp().setProperty("tempMax", data.get("tempMax"));
+                App.getApp().setProperty("minTemp", data.get("minTemp"));
+                App.getApp().setProperty("maxTemp", data.get("maxTemp"));
             }
             // rain, snow, sleet, wind, fog, cloudy
             var icon = data.get("icon");

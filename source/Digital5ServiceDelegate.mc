@@ -14,6 +14,7 @@ class Digital5ServiceDelegate extends System.ServiceDelegate {
         var apiKey = App.getApp().getProperty("DarkSkyApiKey");
         var lat    = App.getApp().getProperty("UserLat").toFloat();
         var lng    = App.getApp().getProperty("UserLng").toFloat();
+        
         if (System.getDeviceSettings().phoneConnected &&
             apiKey.length() > 0 &&
             (null != lat && null != lng)) {
@@ -37,13 +38,17 @@ class Digital5ServiceDelegate extends System.ServiceDelegate {
             :headers => { "Content-Type" => Comm.REQUEST_CONTENT_TYPE_JSON },
             :responseType => Comm.HTTP_RESPONSE_CONTENT_TYPE_JSON
         };
+        
+        if ($.debug) {System.println("Digital5ServiceDelegate.makeRequest - url: " + url + ", params: " + params);}
+        
         Comm.makeWebRequest(url, params, options, method(:onReceive));
     }
 
     function onReceive(responseCode, data) {
+        if ($.debug) {System.println("Digital5ServiceDelegate.onReceive - responseCode: " + responseCode + ", data: " + data);}
         if (responseCode == 200) {
             if (data instanceof Lang.String && data.equals("Forbidden")) {
-                var dict = { "msg" => "WRONG KEY" };
+                var dict = { "msg" => "KEY" };
                 Background.exit(dict);
             } else {
                 var currentWeather = App.getApp().getProperty("CurrentWeather");
@@ -69,7 +74,7 @@ class Digital5ServiceDelegate extends System.ServiceDelegate {
                 }
             }
         } else {
-            var dict = { "msg" => "FAIL" };
+            var dict = { "msg" => responseCode + " FAIL" };
             Background.exit(dict);
         }
     }

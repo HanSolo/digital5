@@ -13,9 +13,8 @@ using Toybox.Ant as Ant;
 using Toybox.SensorHistory as Sensor;
 
 
-
 class Digital5View extends Ui.WatchFace {
-	var debug = true;
+
     var is24Hour;
     var secondsAlwaysOn;
     var lcdFont = false;	
@@ -96,6 +95,13 @@ class Digital5View extends Ui.WatchFace {
 
     function initialize() {
         WatchFace.initialize();
+        
+        //reset weather data
+        App.getApp().setProperty("dsResult", "");
+        App.getApp().setProperty("temp", "");
+        App.getApp().setProperty("minTemp", "");
+        App.getApp().setProperty("maxTemp", "");
+
     }
 
     function onLayout(dc) {
@@ -142,13 +148,13 @@ class Digital5View extends Ui.WatchFace {
         
         distanceUnit  = Sys.getDeviceSettings().distanceUnits;
         
-        if (debug) {System.println("width: " + width + ", height: " + height);}
+        Log("Digital5View.onLayout","width: " + width + ", height: " + height);
         
     }
 
     function onUpdate(dc) {
         View.onUpdate(dc);
-
+        
         dc.clearClip();
 
         is24Hour                  = Sys.getDeviceSettings().is24Hour;
@@ -194,7 +200,6 @@ class Digital5View extends Ui.WatchFace {
 
         var lcdBackgroundVisible  = App.getApp().getProperty("LcdBackground");
         var profile               = UserProfile.getProfile();
-        var alarmCount            = Sys.getDeviceSettings().alarmCount;
         var dst                   = App.getApp().getProperty("DST");
         var timezoneOffset        = clockTime.timeZoneOffset;
         var showHomeTimezone      = App.getApp().getProperty("ShowHomeTimezone");
@@ -320,7 +325,7 @@ class Digital5View extends Ui.WatchFace {
         var coloredBattery = App.getApp().getProperty("ColoredBattery");
         showChargePercentage = showChargePercentage || showPercentageUnder20 && charge < 20;
         
-        if (debug) {System.println("charge: " + charge + ", showPercentageUnder20: " + showPercentageUnder20 + ", showChargePercentage: " + showChargePercentage);}
+        Log("Digital5View.onUpdate","(draw battery) charge: " + charge + ", showPercentageUnder20: " + showPercentageUnder20 + ", showChargePercentage: " + showChargePercentage);
 
         if (showChargePercentage) {
             batteryIconOffsetX = 7;
@@ -363,10 +368,10 @@ class Digital5View extends Ui.WatchFace {
         // draw notification
         var notificationCount = Sys.getDeviceSettings().notificationCount;
         if (notificationCount > 0) {
-             var startX = centerX - 55 - batteryIconOffsetX;
+            var startX = centerX - 55 - batteryIconOffsetX;
             var startY = 18;
  
-         if (debug) {System.println("startX: " + startX + ", startY: " + startY);}
+            Log("Digital5View.onUpdate","(draw notification) startX: " + startX + ", startY: " + startY + ", notificationCount: " + notificationCount);
  
             dc.setColor(darkUpperBackground ? Gfx.COLOR_WHITE : Gfx.COLOR_BLACK, upperBackgroundColor);
             dc.fillRectangle(startX, startY, 18, 11);
@@ -378,11 +383,11 @@ class Digital5View extends Ui.WatchFace {
         }
 
         // draw bluetooth
-        var connected = Sys.getDeviceSettings().phoneConnected;
-        
+        var connected = Sys.getDeviceSettings().phoneConnected;  
         if (connected) {
             var startX = centerX - 30 - batteryIconOffsetX;
             var startY = 12;
+            Log("Digital5View.onUpdate","(draw bluetooth) startX: " + startX + ", startY: " + startY + ", connected: " + connected);
             dc.setColor(upperForegroundColor, upperBackgroundColor);
             dc.drawLine(startX, startY, startX + 7, startY + 7);
             dc.drawLine(startX + 7, 19, startX + 3, startY + 11);
@@ -400,6 +405,7 @@ class Digital5View extends Ui.WatchFace {
         }
 
         // Draw Alarm
+        var alarmCount = Sys.getDeviceSettings().alarmCount;
         if (alarmCount > 0) {
             var alarmX = centerX + 42 + batteryIconOffsetX;
             dc.fillPolygon([[alarmX + 6, 17], [alarmX + 9, 21], [alarmX + 10, 25], [alarmX + 11, 26], [alarmX + 11, 27], [alarmX, 27], [alarmX, 26], [alarmX + 1, 25], [alarmX + 2, 21], [alarmX + 3, 19]]);
@@ -481,7 +487,7 @@ class Digital5View extends Ui.WatchFace {
             var moveBarRightPart = moveBarLength * 0.138888889;
             var moveBarX = dataFieldsTop - 6;
             
-            if (debug) {System.println("moveBarLength: " + moveBarLength + "moveBarLeft: " + moveBarLeft + "moveBarLeftPart: " + moveBarLeftPart + "moveBarRightStart: " + moveBarRightStart + "moveBarRightPart: " + moveBarRightPart + "moveBarX: " + moveBarX);}
+            Log("Digital5View.onUpdate","(draw move bar) moveBarLength: " + moveBarLength + "moveBarLeft: " + moveBarLeft + "moveBarLeftPart: " + moveBarLeftPart + "moveBarRightStart: " + moveBarRightStart + "moveBarRightPart: " + moveBarRightPart + "moveBarX: " + moveBarX);
             
             dc.setColor(darkUpperBackground ? Gfx.COLOR_DK_GRAY : Gfx.COLOR_LT_GRAY, upperBackgroundColor);
 
@@ -832,12 +838,37 @@ class Digital5View extends Ui.WatchFace {
                 break;
             case 13: // Weather
                 if (apiKey.length() > 0) {
+            
+                    Log("Digital5View.drawWithUnit","(weather) - apiKey: " + apiKey);
+            
                     if (field == BOTTOM_FIELD) { textX += 10; }
                     var icon = 7;
+                    var dsResult = App.getApp().getProperty("dsResult");
+                    Log("Digital5View.drawWithUnit","(weather) - dsResult: " + dsResult + ", length: " + dsResult.length());
+                    
+                    if (dsResult.length() == 0){
+                        Log("Digital5View.drawWithUnit","(weather) - no results yet, displaying empty");
+                    	fieldText = "----";
+                    	unitText = "";
+                    	break;
+                    }
+                    
+                    if (!dsResult.equals("CURRENTLY") && !dsResult.equals("DAILY")){
+                       Log("Digital5View.drawWithUnit","(weather) - displaying error");
+                       fieldText = dsResult;
+                       unitText = "";
+                       break;
+                    }
+
+
                     if (currentWeather) {
                         var temp = App.getApp().getProperty("temp");
-                        if (null == temp) {
-                            fieldText = "--/--";
+                        Log("Digital5View.drawWithUnit","(weather) - temp: " + temp);
+                       if (!(temp instanceof Toybox.Lang.Float)) {
+                            Log("Digital5View.drawWithUnit","(weather) - no current data available, displaying empty");
+                            fieldText = "----";
+                            unitText = "";
+                            break;
                         } else {
                             if (tempUnit == 1) { temp = temp * 1.8 + 32; }
                             icon = App.getApp().getProperty("icon");
@@ -845,25 +876,36 @@ class Digital5View extends Ui.WatchFace {
                             var bmpY  = xyPositions[1];
                             fieldText = temp.format("%.1f");
                         }
-                    } else {
-                        var tempMin = App.getApp().getProperty("tempMin");
-                        var tempMax = App.getApp().getProperty("tempMax");
-                        if (null == tempMin || null == tempMax) {
-                            fieldText = "--/--";
+                    } 
+                    else {
+                        var minTemp = App.getApp().getProperty("minTemp");
+                        var maxTemp = App.getApp().getProperty("maxTemp");
+                        Log("Digital5View.drawWithUnit","(weather) - minTemp: " + minTemp + ", maxTemp: " + maxTemp);
+                        if (!(minTemp instanceof Toybox.Lang.Float)) {
+                            Log("Digital5View.drawWithUnit","(weather) - no daily data available, displaying empty");
+                            fieldText = "----";
+                            unitText = "";
+                            break;
                         } else {
                             if (tempUnit == 1) {
-                                tempMin = tempMin * 1.8 + 32;
-                                tempMax = tempMax * 1.8 + 32;
+                                minTemp = minTemp * 1.8 + 32;
+                                maxTemp = maxTemp * 1.8 + 32;
                             }
                             icon = App.getApp().getProperty("icon");
                             var bmpX  = xyPositions[0];
                             var bmpY  = xyPositions[1];
-                            fieldText = tempMin.format("%.0f") + "/" + tempMax.format("%.0f");
+                            fieldText = minTemp.format("%.0f") + "/" + maxTemp.format("%.0f");
                         }
                     }
+                    
+                    Log("Digital5View.drawWithUnit","drawWithUnit (weather) - icon: " + icon );
+                    
                     drawWeatherSymbol(field, icon, dc, xyPositions);
-                } else {
-                    fieldText = "--/--";
+                } 
+                else {
+                    fieldText = "KEY";
+                    unitText = "";
+                    break;
                 }
                 unitText = tempUnit == 0 ? "C" : "F";
                 break;
@@ -878,7 +920,7 @@ class Digital5View extends Ui.WatchFace {
         var unitLcdY = xyPositions[5];
         var unitX    = xyPositions[6];
         var unitY    = xyPositions[7];
-        if (debug) {System.println("unitText: " + unitText + ", field: " + field);}
+        Log("Digital5View.drawUnitText", "unitText: " + unitText + ", field: " + field);
         if (field == BOTTOM_FIELD){
             switch(unitText.toLower()){
             case "km":
@@ -1456,4 +1498,13 @@ class Digital5View extends Ui.WatchFace {
 
         return [monthText, timeText];
     }
+    
+    //function Log(method, message){
+   // 	if ($.debug){
+   // 	
+   //       var myTime = System.getClockTime(); 
+   //       var myTimeString = myTime.hour.format("%02d") + ":" + myTime.min.format("%02d") + ":" + myTime.sec.format("%02d");
+   //       if ($.debug) {System.println(myTimeString + " | " + method + " | " + message);}
+   //     }
+   // }
 }

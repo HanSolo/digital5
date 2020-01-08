@@ -11,7 +11,7 @@
         <font id="digitalUpright72" antialias="false" filename="fonts/DigitalUprightThick_72.fnt" filter="0123456789: "/>
         <font id="digitalUpright26" antialias="false" filename="fonts/DigitalUprightThick_26.fnt" filter="ABDCDEFGHIJKLMNOPRSTUVWYZ0123456789.:/ "/>
         <font id="digitalUpright24" antialias="false" filename="fonts/DigitalUprightThick_24.fnt" filter="0123456789:.- /"/>
-        <font id="digitalUpright20" antialias="false" filename="fonts/DigitalUprightThick_20.fnt" filter="apmCDKW0123456789:.- /"/>        
+        <font id="digitalUpright20" antialias="false" filename="fonts/DigitalUprightThick_20.fnt" filter="abcdefghijklmnopqrstuvwxyzABDCDEFGHIJKLMNOPRSTUVWYZ0123456789:.- /"/>        
         <font id="digitalUpright16" antialias="false" filename="fonts/DigitalUprightThick_16.fnt" filter="ftbikmACDEFPW0123456789:-. "/>
     </fonts>
 </resources>
