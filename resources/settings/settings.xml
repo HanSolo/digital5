@@ -65,6 +65,14 @@
         <settingConfig type="boolean" />
     </setting>
     
+    <setting propertyKey="@Properties.LcdFont" title="@Strings.LcdFont">
+        <settingConfig type="boolean" />
+    </setting>
+    
+    <setting propertyKey="@Properties.LcdFontDataFields" title="@Strings.LcdFontDataFields">
+        <settingConfig type="boolean" />
+    </setting>
+
     <setting propertyKey="@Properties.BpmZones" title="@Strings.BpmZones">
         <settingConfig type="boolean" />
     </setting>

@@ -6,7 +6,11 @@
     <property id="Age"    type="number">47</property>
     
     <property id="LcdBackground" type="boolean">false</property>
-          
+    
+    <property id="LcdFont" type="boolean">true</property>
+    
+    <property id="LcdFontDataFields" type="boolean">true</property>
+        
     <property id="BpmZones" type="boolean">true</property>
 
     <property id="ShowHomeDate" type="boolean">false</property>

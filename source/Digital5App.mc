@@ -38,7 +38,7 @@ class Digital5ReloadedApp extends App.AppBase {
 
         view = new Digital5View();
         
-        Background.registerForTemporalEvent(new Time.Duration(300)); // 15 min
+        Background.registerForTemporalEvent(new Time.Duration(900)); // 15 min
         
         if( Toybox.WatchUi has :WatchFaceDelegate ) {
             return [view, new Digital5Delegate()];
@@ -84,6 +84,8 @@ class Digital5ReloadedApp extends App.AppBase {
             } else {
                 App.getApp().setProperty("icon", 7);
             }
+            
+            WatchUi.requestUpdate();
         }
     }
 
