@@ -100,10 +100,10 @@ class Digital5View extends Ui.WatchFace {
         WatchFace.initialize();
         
         //reset weather data
-        App.getApp().setProperty("dsResult", "");
-        App.getApp().setProperty("temp", "");
-        App.getApp().setProperty("minTemp", "");
-        App.getApp().setProperty("maxTemp", "");
+        //App.getApp().setProperty("dsResult", "");
+        //App.getApp().setProperty("temp", "");
+        //App.getApp().setProperty("minTemp", "");
+        //App.getApp().setProperty("maxTemp", "");
 
     }
 
@@ -490,7 +490,7 @@ class Digital5View extends Ui.WatchFace {
             stopAngleRight = stopAngleRight > 59.0 ? 59.0 : stopAngleRight;
             for(var i = 0; i < 10 ; i++) {
                 var startAngleRight = -10 + (i * 6);
-                if (startAngleRight < stopAngleRight) { dc.drawArc(centerX, centerY, 117, 0, startAngleRight, startAngleRight + 5); }
+                if (startAngleRight < stopAngleRight) { dc.drawArc(centerX, centerY, arcRadius, 0, startAngleRight, startAngleRight + 5); }
             }
         }
 
@@ -577,10 +577,10 @@ class Digital5View extends Ui.WatchFace {
             var notificationsBottomY = 30;
             var sunRiseY = (timeYPosition - notificationsBottomY) / 2 + notificationsBottomY;
             calcSunriseSunset();
-            drawArrow(dc, centerX - 70, sunRiseY, 0);
-            drawArrow(dc, centerX + 60, sunRiseY, 1);
-            dc.drawText(centerX - 50, sunRiseY - 5, lcdFont ? digitalUpright16 : robotoCondensed20, sunriseText, Gfx.TEXT_JUSTIFY_LEFT);
-            dc.drawText(centerX + 55 , sunRiseY - 5, lcdFont ? digitalUpright16 : robotoCondensed20, sunsetText, Gfx.TEXT_JUSTIFY_RIGHT);
+            drawArrow(dc, .4 * centerX, sunRiseY, 0);
+            drawArrow(dc, 1.5 * centerX, sunRiseY, 1);
+            dc.drawText(.4 * centerX + 15, sunRiseY - 5, lcdFont ? digitalUpright20 : robotoCondensed24, sunriseText, Gfx.TEXT_JUSTIFY_LEFT);
+            dc.drawText(1.5 * centerX - 5, sunRiseY - 5, lcdFont ? digitalUpright20 : robotoCondensed24, sunsetText, Gfx.TEXT_JUSTIFY_RIGHT);
         }
 
 
@@ -864,19 +864,19 @@ class Digital5View extends Ui.WatchFace {
                     var dsResult = App.getApp().getProperty("dsResult");
                     Log("Digital5View.drawWithUnit","(weather) - dsResult: " + dsResult + ", length: " + dsResult.length());
                     
-                    if (dsResult.length() == 0){
-                        Log("Digital5View.drawWithUnit","(weather) - no results yet, displaying empty");
-                    	fieldText = "----";
-                    	unitText = "";
-                    	break;
-                    }
+                    //if (dsResult.length() == 0){
+                    //    Log("Digital5View.drawWithUnit","(weather) - no results yet, displaying empty");
+                    //	fieldText = "----";
+                    //	unitText = "";
+                    //	break;
+                    //}
                     
-                    if (!dsResult.equals("CURRENTLY") && !dsResult.equals("DAILY")){
-                       Log("Digital5View.drawWithUnit","(weather) - displaying error");
-                       fieldText = dsResult;
-                       unitText = "";
-                       break;
-                    }
+                    //if (!dsResult.equals("CURRENTLY") && !dsResult.equals("DAILY")){
+                    //   Log("Digital5View.drawWithUnit","(weather) - displaying error");
+                    //   fieldText = dsResult;
+                    //   unitText = "";
+                    //   break;
+                    //}
 
 
                     if (currentWeather) {
@@ -946,34 +946,34 @@ class Digital5View extends Ui.WatchFace {
             case "km":
                 //drawCharacter(xyPositions, dc, K, 0);
                 //drawCharacter(xyPositions, dc, M, 6);
-                dc.drawText(bmpX, bmpY, robotoCondensed7, unitText, Gfx.TEXT_JUSTIFY_LEFT);
+                dc.drawText(unitX, unitY, robotoCondensed7, unitText, Gfx.TEXT_JUSTIFY_LEFT);
                 break;
             case "mi":
                 //drawCharacter(xyPositions, dc, M, 0);
                 //drawCharacter(xyPositions, dc, I, 0);
-                dc.drawText(bmpX, bmpY, robotoCondensed7, unitText, Gfx.TEXT_JUSTIFY_LEFT);
+                dc.drawText(unitX, unitY, robotoCondensed7, unitText, Gfx.TEXT_JUSTIFY_LEFT);
                 break;
             case "m":
                 //drawCharacter(xyPositions, dc, M, -5);
-                dc.drawText(bmpX, bmpY, robotoCondensed7, unitText, Gfx.TEXT_JUSTIFY_LEFT);
+                dc.drawText(unitX, unitY, robotoCondensed7, unitText, Gfx.TEXT_JUSTIFY_LEFT);
                 break;
             case "ft":
                 //drawCharacter(xyPositions, dc, F, 0);
                 //drawCharacter(xyPositions, dc, T, 0);
-                dc.drawText(bmpX, bmpY, robotoCondensed7, unitText, Gfx.TEXT_JUSTIFY_LEFT);
+                dc.drawText(unitX, unitY, robotoCondensed7, unitText, Gfx.TEXT_JUSTIFY_LEFT);
                 break;
             case "mb":
                 //drawCharacter(xyPositions, dc, M, 0);
                 //drawCharacter(xyPositions, dc, B, 0);
-                dc.drawText(bmpX, bmpY, robotoCondensed7, unitText, Gfx.TEXT_JUSTIFY_LEFT);
+                dc.drawText(unitX, unitY, robotoCondensed7, unitText, Gfx.TEXT_JUSTIFY_LEFT);
                 break;
             case "c":
                 //drawCharacter(xyPositions, dc, C, 6);
-                dc.drawText(bmpX, bmpY, robotoCondensed7, unitText, Gfx.TEXT_JUSTIFY_LEFT);
+                dc.drawText(unitX, unitY, robotoCondensed7, unitText, Gfx.TEXT_JUSTIFY_LEFT);
                 break;
             case "f":
                 //drawCharacter(xyPositions, dc, F, 6);
-                dc.drawText(bmpX, bmpY, robotoCondensed7, unitText, Gfx.TEXT_JUSTIFY_LEFT);
+                dc.drawText(unitX, unitY, robotoCondensed7, unitText, Gfx.TEXT_JUSTIFY_LEFT);
                 break;
             }          
             return;
@@ -1325,7 +1325,7 @@ class Digital5View extends Ui.WatchFace {
                 textY    = dataFieldsTop + 2 * fieldHeight + textYPadding + 1;
                 unitLcdX = width - 83;
                 unitLcdY = dataFieldsTop + 2 * fieldHeight + 10;
-                unitX    = width - 90;
+                unitX    = .7 * width;
                 unitY    = dataFieldsTop + 2 * fieldHeight + 3;
                 break;
         }
